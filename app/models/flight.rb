@@ -13,11 +13,13 @@ class Flight < ActiveRecord::Base
 	belongs_to :copilot, :class_name => "Person", :foreign_key => "begleiter"
 
 	def effective_pilot_name
+		# TODO handle incomplete names
 		return pilot.formal_name if pilot
 		nil
 	end
 
 	def effective_copilot_name
+		# TODO handle incomplete names
 		return copilot.formal_name if copilot
 		nil
 	end
@@ -79,6 +81,12 @@ class Flight < ActiveRecord::Base
 		return nil if !starts_here?
 		return nil if !launch_type
 		launch_type.short_name
+	end
+
+	def launch_type_pilot_log_designator
+		return nil if !starts_here?
+		return nil if !launch_type
+		launch_type.pilot_log_designator
 	end
 
 	def effective_launch_time

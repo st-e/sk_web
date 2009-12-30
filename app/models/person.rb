@@ -4,6 +4,14 @@ class Person < ActiveRecord::Base
 	has_many :flights
 	has_one :user, :foreign_key => 'person'
 
+	def full_name(with_nickname=false)
+		if with_nickname
+			"#{vorname} \"#{spitzname}\" #{nachname}"
+		else
+			"#{vorname} #{nachname}"
+		end
+	end
+
 	def formal_name
 		"#{nachname}, #{vorname}"
 	end

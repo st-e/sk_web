@@ -50,6 +50,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.flightlist 'flightlist/:date', :controller => 'flightlist', :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ }
   map.plane_log  'plane_log/:date' , :controller => 'plane_log' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ }
+  map.pilot_log  'pilot_log/:date' , :controller => 'pilot_log' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ } # TODO or range
   
   map.root :controller => 'home'
 

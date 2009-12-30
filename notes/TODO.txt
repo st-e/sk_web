@@ -2,4 +2,8 @@
 * Passwords not logged
 * Session store in database? Key in SVN?
 * use respond_to for pdf/html/csv/tex downloads (see controller guide)
+* login when no user exists
+* layout for .tex files
+* check all captions
+* date in local format
 

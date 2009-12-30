@@ -22,7 +22,7 @@ module ApplicationHelper
 			.gsub('^', '\\textasciicircum{}') \
 			.gsub('~', '\\textasciitilde{}') \
 			.gsub('"', '\\textquitedbl{}') \
-			.gsub('-', '{-}')
+			.gsub('-', '{-}') # - can have a special meaning, for example in ---
 			# Seems like guilsingl{left,right} don't work properly
 			# .gsub('<', '\\guilsinglleft{}')
 			# .gsub('>', '\\guilsinglright{}')
@@ -55,7 +55,10 @@ module ApplicationHelper
 	alias_method :c, :csv_escape
 
 	def version_string
-		"sk_web Version 2.0 (experimental)/Ruby #{RUBY_VERSION}/Rails #{Rails::VERSION::STRING}"
+		ruby="Ruby #{RUBY_VERSION}"
+		rails="Rails #{Rails::VERSION::STRING}"
+		mysql="MySQL #{Mysql.client_version.to_s.sub(/^(.)(..)(..)/, '\\1.\\2.\\3')}"
+		"sk_web Version 2.0 (experimental)/#{ruby}/#{rails}/#{mysql}"
 		# RUBY_RELEASE_DATE
 	end
 end
