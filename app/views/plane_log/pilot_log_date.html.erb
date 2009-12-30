@@ -1,4 +1,4 @@
-<h1>Startkladde Web-Zugriff: Bordbücher abrufen</h1>
+<h1>Startkladde Web-Zugriff: Flugbücher für <%= @person.full_name %></h1>
 
 <% form_tag do %>
 	<table>
@@ -17,9 +17,10 @@
 			<td>Monat: <%= text_field_tag 'month', Date.today.month, :size => 2 %></td>
 			<td>Tag:   <%= text_field_tag 'day'  , Date.today.day  , :size => 2 %></td>
 		</tr>
+		<%# TODO flight instructor mode %>
 		<tr>
 			<td>Format:</td>
-			<td><%= select_tag('format', options_for_select({"PDF"=>'pdf', "HTML"=>'html', "LaTeX"=>'tex'}, @format)) %></td>
+			<td><%= select_tag('format', options_for_select({"PDF"=>'pdf', "HTML"=>'html', "CSV"=>'csv', "LaTeX"=>'tex'}, @format)) %></td>
 		</tr>
 		<tr>
 			<td colspan="5">
