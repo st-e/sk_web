@@ -1,0 +1,4 @@
+Nr.,Kennz.,Typ,Pilot,Begleiter,Verein,SA,Start,Landg.,Dauer,Ld. Sfz.,Dauer,#Ldg.,Startort,Zielort,Zielort SFZ,Bemerkung
+<% @flights.each_with_index do |flight, index| %><%= c index+1 %>,<%= c flight.effective_plane_registration %>,<%= c flight.effective_plane_type %>,<%= c flight.effective_pilot_name %>,<%= c(flight.effective_copilot_name)%>,<%= c flight.effective_club %>,<%= c(flight.launch_type_text )%>,<%= c(flight.effective_launch_time )%>,<%= c(flight.effective_landing_time )%>,<%= c(flight.effective_duration )%>,<%= c(flight.effective_landing_time_towflight )%>,<%= c(flight.effective_duration_towflight )%>,<%= c flight.anzahl_landungen %>,<%= c flight.startort %>,<%= c flight.zielort %>,<%= c flight.effective_destination_towflight %>,<%= c flight.bemerkung %>
+<% end %>
+

@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>Startkladde: <%= controller.action_name %></title>
+  <%= stylesheet_link_tag 'scaffold' %>
+</head>
+<body>
+
+<% if flash[:notice] %><p style="color: green"><%= flash[:notice] %></p><% end %>
+<% if flash[:error]  %><p style="color: red"  ><%= flash[:error]  %></p><% end %>
+
+<%= yield %>
+
+<hr>
+
+<%= link_to "Hauptmenü", root_path %> |
+<% if session[:username] %>
+	Angemeldet als <%= h session[:username] %> (<%= link_to "Abmelden", logout_path %>)
+<% else %>
+	Nicht angemeldet (<%= link_to "Anmelden", login_path %>)
+<% end %>
+
+<div style="font-size:x-small">
+	Hauptflugbuch <%= h Settings.instance.location %> |
+	<%= h version_string %>
+</div>
+
+</body>
+</html>
+

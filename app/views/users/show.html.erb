@@ -1,0 +1,37 @@
+<h1>Benutzer: <%= h @user.username %></h1>
+
+<% person=@user.person %>
+
+<table>
+	<tr>
+		<th>Benutzername:</th>
+		<td><%= h @user.username %></td>
+	</tr>
+	<tr>
+		<th>Verein:</th>
+		<td><%= h @user.club %></td>
+	</tr>
+	<tr>
+		<th>Person:</th>
+		<td>
+			<% if person %>
+				<%= link_to "#{person.formal_name} (#{person.id})", person %>
+			<% else %>
+				-
+			<% end %>
+		</td>
+	</tr>
+	<tr>
+		<th>Vereinsadministrator:</th>
+		<td><%= h (@user.perm_club_admin)?"Ja":"Nein" %></td>
+	</tr>
+	<tr>
+		<th>Flugdatenbank lesen:</th>
+		<td><%= h (@user.perm_read_flight_db)?"Ja":"Nein" %></td>
+	</tr>
+</table>
+
+<%= link_to 'Editieren', edit_user_path(@user) %> |
+<%= link_to 'Passwort ändern', :action => 'change_password', :id => @user.username %> |
+<%= link_to 'Benutzerliste', users_path %>
+

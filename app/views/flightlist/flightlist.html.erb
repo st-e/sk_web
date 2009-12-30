@@ -1,0 +1,68 @@
+<style type="text/css">
+	<!--
+	table { text-align:left; border-collapse:collapse; }
+	td,th { padding-left:5px; padding-right:10px; }
+	td,th { padding-top:2px; padding-bottom:2px; }
+	td,th { border: 1px solid black }
+	td,th { font-size: 12px; }
+	-->
+</style>
+
+<h1>Hauptflugbuch <%= h Settings.instance.location %></h1>
+
+<p><%= h @date %></p>
+
+<% if @flights.empty? %>
+	<p>Keine Flüge</p>
+<% else %>
+	<p><%= h @flights.count %> Flüge</p>
+
+	<table>
+		<tr>
+			<th><nobr>Nr.</nobr></th>
+			<th><nobr>Kennz.</nobr></th>
+			<th><nobr>Typ</nobr></th>
+			<th><nobr>Pilot</nobr></th>
+			<th><nobr>Begleiter</nobr></th>
+			<th><nobr>Verein</nobr></th>
+			<th><nobr>SA</nobr></th>
+			<th><nobr>Start</nobr></th>
+			<th><nobr>Landg.</nobr></th>
+			<th><nobr>Dauer</nobr></th>
+			<th><nobr>Ld. Sfz.</nobr></th>
+			<th><nobr>Dauer</nobr></th>
+			<th><nobr>#Ldg.</nobr></th>
+			<th><nobr>Startort</nobr></th>
+			<th><nobr>Zielort</nobr></th>
+			<th><nobr>Zielort SFZ</nobr></th>
+			<th><nobr>Bemerkung</nobr></th>
+		</tr>
+
+		<% @flights.each_with_index do |flight, index| %>
+			<tr>
+				<td><nobr><%= h index+1 %>                                          </nobr></td>
+				<td><nobr><%= h flight.effective_plane_registration      || "???" %></nobr></td>
+				<td><nobr><%= h flight.effective_plane_type              || "???" %></nobr></td>
+				<td><nobr><%= h flight.effective_pilot_name              || "???" %></nobr></td>
+				<td><nobr><%= h(flight.effective_copilot_name            || "-"  )%></nobr></td>
+				<td><nobr><%= h flight.effective_club                    || "???" %></nobr></td>
+				<td><nobr><%= h(flight.launch_type_text                  || "-"  )%></nobr></td>
+				<td><nobr><%= h(flight.effective_launch_time             || "-"  )%></nobr></td>
+				<td><nobr><%= h(flight.effective_landing_time            || "-"  )%></nobr></td>
+				<td><nobr><%= h(flight.effective_duration                || "-"  )%></nobr></td>
+				<td><nobr><%= h(flight.effective_landing_time_towflight  || "-"  )%></nobr></td>
+				<td><nobr><%= h(flight.effective_duration_towflight      || "-"  )%></nobr></td>
+				<td><nobr><%= h flight.anzahl_landungen                           %></nobr></td>
+				<td><nobr><%= h flight.startort                                   %></nobr></td>
+				<td><nobr><%= h flight.zielort                                    %></nobr></td>
+				<td><nobr><%= h(flight.effective_destination_towflight   || "-"  )%></nobr></td>
+				<td><nobr><%= h flight.bemerkung                                  %></nobr></td>
+			</tr>
+		<% end %>
+	</table>
+<% end %>
+
+<hr>
+
+<p><%= h version_string %></p>
+

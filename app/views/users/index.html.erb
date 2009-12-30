@@ -1,0 +1,35 @@
+<h1>Benutzerliste</h1>
+
+<table>
+	<tr>
+		<th>Benutzername</th>
+		<th>Verein</th>
+		<th>Person</th>
+		<th>Vereinsadministrator</th>
+		<th>Flugdatenbank lesen</th>
+	</tr>
+
+	<% @users.each do |user| %>
+		<% person=user.person %>
+		<tr>
+			<td><%= link_to user.username, user %></td>
+			<td><%=h user.club %></td>
+			<td>
+				<% if person %>
+					<%= link_to "#{person.formal_name} (#{person.id})", person %>
+				<% else %>
+					-
+				<% end %>
+			</td>
+			<td><%= h (user.perm_club_admin)?"Ja":"Nein" %></td>
+			<td><%= h (user.perm_read_flight_db)?"Ja":"Nein" %></td>
+			<td><%= link_to 'Editieren', edit_user_path(user) %></td>
+			<td><%= link_to 'Löschen', user, :confirm => "Benutzer #{user.username} wirklich löschen?", :method => :delete %></td>
+		</tr>
+	<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Benutzer anlegen', new_user_path %>
+

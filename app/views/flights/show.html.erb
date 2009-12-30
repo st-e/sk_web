@@ -1,0 +1,33 @@
+<p>
+  <b>Startort:</b>
+  <%=h @flight.startort %>
+</p>
+
+<p>
+  <b>Zielort:</b>
+  <%=h @flight.zielort %>
+</p>
+
+<p>
+  <b>Anzahl landungen:</b>
+  <%=h @flight.anzahl_landungen %>
+</p>
+
+<p>
+  <b>Startzeit:</b>
+  <%=h @flight.startzeit %>
+</p>
+
+<p>
+  <b>Landezeit:</b>
+  <%=h @flight.landezeit %>
+</p>
+
+<p>
+  <b>Typ:</b>
+  <%=h @flight.typ %>
+</p>
+
+
+<%= link_to 'Edit', edit_flight_path(@flight) %> |
+<%= link_to 'Back', flights_path %>

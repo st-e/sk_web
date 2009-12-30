@@ -1,0 +1,32 @@
+<h1>Editing person</h1>
+
+<% form_for(@person) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :vorname %><br />
+    <%= f.text_field :vorname %>
+  </p>
+  <p>
+    <%= f.label :nachname %><br />
+    <%= f.text_field :nachname %>
+  </p>
+  <p>
+    <%= f.label :verein %><br />
+    <%= f.text_field :verein %>
+  </p>
+  <p>
+    <%= f.label :vereins_id %><br />
+    <%= f.text_field :vereins_id %>
+  </p>
+  <p>
+    <%= f.label :bemerkung %><br />
+    <%= f.text_field :bemerkung %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @person %> |
+<%= link_to 'Back', people_path %>

@@ -1,0 +1,39 @@
+<h1>Benutzer anlegen</h1>
+
+<% form_for(@user) do |f| %>
+	<%= f.error_messages %>
+
+	<table>
+		<tr>
+			<th><%= f.label :username, "Benutzername:" %></th>
+			<td><%= f.text_field :username %></td>
+		</tr>
+		<tr>
+			<th><%= label_tag :password1, "Passwort:" %></th>
+			<td><%= password_field_tag :password1 %></td>
+		</tr>
+		<tr>
+			<th><%= label_tag :password2, "Passwort (Wiederholung):" %></th>
+			<td><%= password_field_tag :password2 %></td>
+		</tr>
+		<tr>
+			<th><%= f.label :club, "Verein:" %></th>
+			<td><%= f.text_field :club %></td>
+		</tr>
+		<tr>
+			<th><%= f.label :perm_club_admin, "Vereinsadministrator:" %></th>
+			<td><%= f.check_box :perm_club_admin %></td>
+		</tr>
+		<tr>
+			<th><%= f.label :perm_read_flight_db, "Flugdatenbank lesen:" %></th>
+			<td><%= f.check_box :perm_read_flight_db %></td>
+		</tr>
+	</table>
+
+	<p>
+		<%= f.submit 'Anlegen' %>
+	</p>
+<% end %>
+
+<%= link_to 'Benutzerliste', users_path %>
+

@@ -1,0 +1,94 @@
+<%# TODO: latex escaping everywhere %>
+<%# TODO: column widths %>
+<%# TODO: use UTF8 if possible; otherwise umlauts will mess up the erb renderer %>
+\documentclass[8pt,a4paper]{scrartcl}
+\usepackage[ngerman]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[dvips]{geometry}
+\usepackage{ae}
+\usepackage[T1]{fontenc}
+\usepackage{scrpage2}
+\usepackage{longtable}
+\usepackage{lastpage}
+\usepackage[NewCommands]{ragged2e}
+\usepackage{array}
+\usepackage{pstricks}
+\pagestyle{scrheadings}
+\geometry{top=2.5cm,left=1.0cm,right=1.0cm,bottom=2.5cm}
+\begin{document}
+
+% No section numbers
+\setcounter{secnumdepth}{-2}
+
+\newcommand{\cliptext}[2]{\psclip{\psframe[linestyle=none](-1,-1)(#1,2)}{\hbox{#2}}\endpsclip}
+
+\cohead{Bordbücher <%= l Settings.instance.location %>}
+\lohead{}
+\rohead{<%= l @date %>}
+
+\cofoot{}
+\lofoot{<%= l version_string %>}
+\rofoot{Seite \thepage{} von \pageref{LastPage}}
+
+\setlength{\tabcolsep}{0.4mm}
+
+<% if @plane_log.empty? %>
+	<p>Keine Einträge</p>
+<% else %>
+	<% @plane_log.keys.sort.each { |club| %>
+		<% entries=@plane_log[club] %>
+
+		\section{<%= l club %>}
+
+		\begin{longtable}{
+		|>{\raggedright}p{15mm}
+		|>{\raggedright}p{29mm}
+		|>{\raggedright}p{14mm}
+		|>{\raggedright}p{31mm}
+		|>{\raggedright}p{06mm}
+		|>{\raggedright}p{23mm}
+		|>{\raggedright}p{23mm}
+		|>{\raggedright}p{ 9mm}
+		|>{\raggedright}p{ 9mm}
+		|>{\raggedright}p{ 9mm}
+		|>{\raggedright}p{ 8mm}
+		|
+		}
+			<%# For the clip rectangles, we have to add 0.5mm (determined experimentally) %>
+			\hline
+			  \cliptext{15.5mm}{Datum}
+			& \cliptext{29.5mm}{Verein}
+			& \cliptext{14.5mm}{Kennz.}
+			& \cliptext{31.5mm}{Name}
+			& \cliptext{06.5mm}{Ins.}
+			& \cliptext{23.5mm}{Startort}
+			& \cliptext{23.5mm}{Zielort}
+			& \cliptext{ 9.5mm}{Start}
+			& \cliptext{ 9.5mm}{Landg.}
+			& \cliptext{ 9.5mm}{\#Ldg.}
+			& \cliptext{ 8.5mm}{Dauer}
+			\tabularnewline\hline\hline\endhead
+
+
+			<%# TODO test: none-values %>
+			<%# Note that "---" should not be escaped and is thus outside of the call to l %>
+			<% entries.each { |entry| %>
+				  \cliptext{15.5mm}{<%= h @date                               %>}
+				& \cliptext{29.5mm}{<%= h club                                %>}
+				& \cliptext{14.5mm}{<%= h entry.registration                  %>}
+				& \cliptext{31.5mm}{<%= h entry.pilot_name                    %>}
+				& \cliptext{06.5mm}{<%= h entry.num_passengers_string         %>}
+				& \cliptext{23.5mm}{<%= h entry.departure_airfield            %>}
+				& \cliptext{23.5mm}{<%= h entry.destination_airfield          %>}
+				& \cliptext{ 9.5mm}{<%= h(entry.departure_time_string || "-") %>}
+				& \cliptext{ 9.5mm}{<%= h(entry.landing_time_string   || "-") %>}
+				& \cliptext{ 9.5mm}{<%= h entry.num_landings                  %>}
+				& \cliptext{ 8.5mm}{<%= h(entry.duration_string       || "-") %>}
+				\tabularnewline\hline
+			<% } %>
+		\end{longtable}
+	<% } %>
+<% end %>
+
+\end{document} 
+

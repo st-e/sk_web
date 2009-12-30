@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  kennzeichen: MyText
+  verein: MyString
+  typ: MyText
+  sitze: 
+  gattung: MyText
+  wettbewerbskennzeichen: MyText
+  bemerkung: MyText
+
+two:
+  kennzeichen: MyText
+  verein: MyString
+  typ: MyText
+  sitze: 
+  gattung: MyText
+  wettbewerbskennzeichen: MyText
+  bemerkung: MyText

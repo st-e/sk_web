@@ -1,0 +1,5 @@
+* User not found: 404 or error message
+* Passwords not logged
+* Session store in database? Key in SVN?
+* use respond_to for pdf/html/csv/tex downloads (see controller guide)
+

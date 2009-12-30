@@ -1,0 +1,62 @@
+# Methods added to this helper will be available to all templates in the application.
+module ApplicationHelper
+	def latex_escape(value)
+		return nil if !value
+		
+		# This is a bit ugly because \ gets \textbackslash{}, and { gets \{
+		# (likewise, } gets \}), so each of these would escape the
+		# already-escaped other. Thus, we only replace \ if not followed by {
+		# or } (that is, either a different character or the end of the line).
+		# Also, \, { and } are replaced first because they also occur in many
+		# other subsitutions
+		value.to_s \
+			.gsub('{', '\\{') \
+			.gsub('}', '\\}') \
+			.gsub(/\\([^{}])/, '\\textbackslash{}\\1') \
+			.gsub(/\\$/, '\\textbackslash{}') \
+			.gsub('$', '\\$') \
+			.gsub('%', '\\%') \
+			.gsub('_', '\\_') \
+			.gsub('&', '\\&') \
+			.gsub('#', '\\#') \
+			.gsub('^', '\\textasciicircum{}') \
+			.gsub('~', '\\textasciitilde{}') \
+			.gsub('"', '\\textquitedbl{}') \
+			.gsub('-', '{-}')
+			# Seems like guilsingl{left,right} don't work properly
+			# .gsub('<', '\\guilsinglleft{}')
+			# .gsub('>', '\\guilsinglright{}')
+	end
+
+	alias_method :l, :latex_escape
+
+	def csv_escape(value)
+		# Rules for OpenOffice:
+		#   - enclosing double quotes are removed
+		#   - after that, doubled double quotes at the beginning and at the end
+		#     (not in the middle) are replaced by a single double quote
+		# TODO determine rules for MS Excel
+
+		return nil if !value
+
+		value=value.to_s
+
+		# Replace double quotes at the beginning or at the end with two double quotes
+		value.gsub!(/^"/, '""')
+		value.gsub!(/"$/, '""')
+
+		# If the value contains a comma or begins or ends with a double quote,
+		# enclose it in double quotes
+		value="\"#{value}\"" if (value =~ /,/ || value =~ /^"/ || value =~ /"$/)
+
+		value
+	end
+
+	alias_method :c, :csv_escape
+
+	def version_string
+		"sk_web Version 2.0 (experimental)/Ruby #{RUBY_VERSION}/Rails #{Rails::VERSION::STRING}"
+		# RUBY_RELEASE_DATE
+	end
+end
+

@@ -1,0 +1,36 @@
+<h1>Listing flights</h1>
+
+<table>
+  <tr>
+	<th>Flugzeug</th>
+	<th>Pilot</th>
+	<th>Begleiter</th>
+    <th>Startort</th>
+    <th>Zielort</th>
+    <th>Anzahl Landungen</th>
+    <th>Startzeit</th>
+    <th>Landezeit</th>
+    <th>Typ</th>
+  </tr>
+
+<% @flights.each do |flight| %>
+  <tr>
+    <td><%=h flight.plane.kennzeichen %></td>
+    <td><%=h (flight.pilot)?(flight.pilot.formal_name):("-") %></td>
+    <td><%=h (flight.copilot)?(flight.copilot.formal_name):("-") %></td>
+    <td><%=h flight.startort %></td>
+    <td><%=h flight.zielort %></td>
+    <td><%=h flight.anzahl_landungen %></td>
+    <td><%=h flight.startzeit %></td>
+    <td><%=h flight.landezeit %></td>
+    <td><%=h flight.typ %></td>
+    <td><%= link_to 'Show', flight %></td>
+    <td><%= link_to 'Edit', edit_flight_path(flight) %></td>
+    <td><%= link_to 'Destroy', flight, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New flight', new_flight_path %>

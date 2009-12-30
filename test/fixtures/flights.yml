@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  startort: MyText
+  zielort: MyText
+  anzahl_landungen: 
+  startzeit: 2009-12-10 19:07:09
+  landezeit: 2009-12-10 19:07:09
+  typ: 
+
+two:
+  startort: MyText
+  zielort: MyText
+  anzahl_landungen: 
+  startzeit: 2009-12-10 19:07:09
+  landezeit: 2009-12-10 19:07:09
+  typ: 

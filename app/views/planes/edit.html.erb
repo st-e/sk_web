@@ -1,0 +1,43 @@
+<h1>Editing plane</h1>
+
+<% form_for(@plane) do |f| %>
+	<%= f.error_messages %>
+
+	<table>
+		<tr>
+			<td><%= f.label :kennzeichen %></td>
+			<td><%= f.text_field :kennzeichen %></td>
+		</tr>
+		<tr>
+			<td><%= f.label :verein %></td>
+			<td><%= f.text_field :verein %></td>
+		</tr>
+		<tr>
+			<td><%= f.label :typ %></td>
+			<td><%= f.text_field :typ %></td>
+		</tr>
+		<tr>
+			<td><%= f.label :sitze %></td>
+			<td><%= f.text_field :sitze %></td>
+		</tr>
+		<tr>
+			<td><%= f.label :gattung %></td>
+			<td><%= f.text_field :gattung %></td>
+		</tr>
+		<tr>
+			<td><%= f.label :wettbewerbskennzeichen %></td>
+			<td><%= f.text_field :wettbewerbskennzeichen %></td>
+		</tr>
+		<tr>
+			<td><%= f.label :bemerkung %></td>
+			<td><%= f.text_field :bemerkung %></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><%= f.submit 'Update' %></td>
+		</tr>
+	</td>
+<% end %>
+
+<%= link_to 'Show', @plane %> |
+<%= link_to 'Back', planes_path %>

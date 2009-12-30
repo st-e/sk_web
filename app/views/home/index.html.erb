@@ -1,0 +1,44 @@
+<h1>Hauptflugbuch <%= h Settings.instance.location %>: Hauptmenü</h1>
+
+<ul>
+  <li>Flüge
+    <ul>
+      <li><%= link_to "Startliste", :controller => 'flightlist' %></li>
+	  <li><%= link_to "Bordbücher", :controller => 'plane_log' %></li>
+	  <li><%= link_to "Flugbuch", :controller => 'pilot_log' %></li>
+	  <li><%= link_to "Flugdatenbank", :controller => 'flight_db' %></li>
+    </ul>
+  </li>
+  <li>Personen
+    <ul>
+      <li><%= link_to "Personenliste", people_path %></li>
+      <li><%= link_to "Neue Person anlegen", new_person_path %></li>
+      <li><%= link_to "Stammdaten einspielen", '' %></li>
+    </ul>
+  </li>
+<% if false %>
+  <li>Flugzeuge
+    <ul>
+      <li><%= link_to "Flugzeugliste", planes_path %></li>
+      <li><%= link_to "Neues Flugzeug anlegen", new_plane_path %></li>
+    </ul>
+  </li>
+<% end %>
+  <li>Benutzer
+    <ul>
+      <li><%= link_to "Benutzerliste", users_path %></li>
+      <li><%= link_to "Neuen Benutzer anlegen", new_user_path %></li>
+    </ul>
+  </li>
+  <li>Account
+    <ul>
+      <li><%= link_to "Passwort ändern", '' %></li>
+		<% if session[:username] %>
+			<li><%= link_to "Abmelden", logout_path %></li>
+		<% else %>
+			<li><%= link_to "Anmelden", login_path %></li>
+		<% end %>
+    </ul>
+  </li>
+</ul>
+
