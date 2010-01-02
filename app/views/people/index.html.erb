@@ -19,6 +19,7 @@
 			<td><%=h person.vereins_id %></td>
 			<td><%=h person.bemerkung %></td>
 			<td><%= h (user)?(user.username):"-" %></td>
+			<%# TODO overwrite %>
 			<td><%= link_to 'Anzeigen', person %></td>
 			<td><%= link_to 'Editieren', edit_person_path(person) %></td>
 			<td><%= link_to 'Löschen', person, :confirm => 'Are you sure?', :method => :delete %></td>

@@ -1,24 +1,29 @@
 <h1>Benutzer <%= h @user.username %> editieren</h1>
 
 <% form_for(@user) do |f| %>
+	<% person=@user.person %>
 	<%= f.error_messages %>
 
-	<p>Benutzername: <%= h @user.username %></p>
-
-	<p>
-		<%= f.label :club %>
-		<%= f.text_field :club %>
-	</p>
-
-	<p>
-		<%= f.check_box :perm_club_admin %>
-		<%= f.label :perm_club_admin, "Vereinsadministrator" %>
-	</p>
-
-	<p>
-		<%= f.check_box :perm_read_flight_db %>
-		<%= f.label :perm_read_flight_db, "Flugdatenbank lesen" %>
-	</p>
+	<table>
+		<tr>
+			<th>Benutzername:</th>
+			<td><%= h @user.username %></td>
+		</tr>
+		<tr>
+			<th><%= f.label :club, "Verein:" %></th>
+			<td><%= f.text_field :club %></td>
+		</tr>
+		<tr>
+			<th><%= f.label :person, "Person:" %></th>
+			<td><%= h (person)?"#{person.formal_name} (#{person.id})":"-" %> <%= submit_tag (person)?"Ändern":"Auswählen", :action => 'select_person' %>
+		</tr>
+		<tr>
+			<td colspan="2"><%= f.check_box :perm_club_admin %><%= f.label :perm_club_admin, "Vereinsadministrator" %></td>
+		</tr>
+		<tr>
+			<td colspan="2"><%= f.check_box :perm_read_flight_db %><%= f.label :perm_read_flight_db, "Flugdatenbank lesen" %></td>
+		</tr>
+	</table>
 
 	<p>
 		<%= f.submit 'Speichern' %>
