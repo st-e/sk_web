@@ -1,0 +1,40 @@
+<%#
+Notes:
+  - For the clip rectangles, we have to add 0.5mm (determined experimentally)
+  - "---" should not be escaped and is thus outside of the call to l
+%>
+
+<%
+	column_definition=table[:columns].map { |column|
+		"|>{\\raggedright}p{#{column[:width]}mm}"
+	}.join ("\n")
+%>
+
+\begin{longtable}{
+<%= column_definition %>
+|
+}
+
+<%
+	cells="  "+table[:columns].map { |column|
+		"\\cliptext{#{column[:width]+0.5}mm}{#{l column[:title]}}"
+	}.join ("\n& ")
+%>
+
+\hline
+<%= cells %>
+\tabularnewline\hline\hline\endhead
+
+<% table[:rows].each { |row| %>
+	<%
+		cells="  "+row.each_with_index.map { |data, index|
+			"\\cliptext{#{table[:columns][index][:width]+0.5}mm}{#{l(data)||"---"}}"
+		}.join ("\n& ")
+	%>
+
+<%= cells %>
+	\tabularnewline\hline
+<% } %>
+
+\end{longtable}
+

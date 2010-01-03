@@ -60,9 +60,10 @@ class FlightlistController < ApplicationController
 		# is a time, but the corresponding flags are not set), or where the
 		# launch/landing time is not valid (due to flight mode)
 
-		@date=date
-
 		format=params['format'] || @default_format
+		@date=date
+		# TODO ugly
+		@table=make_table(@flights, format=='tex' || format=='latex' || format =='pdf')
 
 		# TODO disallow all but PDF for non-privileged users
 		if format=='html'
@@ -72,12 +73,59 @@ class FlightlistController < ApplicationController
 		elsif format=='tex' || format=='latex'
 			render :text => render_to_string('flightlist.tex'), :content_type => 'text/plain'
 		elsif format=='csv'
+			@table[:rows].each { |row| puts "y "+row[-1] }
 			render :text => render_to_string('flightlist.csv'), :content_type => 'text/plain'
+			@table[:rows].each { |row| puts "z "+row[-1] }
 		elsif format=='pdf'
 			render_pdf 'flightlist.tex', :filename => "startkladde_#{date}.pdf"
 		else
 			render :text => "Invalid format #{format}"
 		end
+	end
+
+protected
+	def make_table(flights, short=false)
+		columns = [
+			{ :title => (short)?'Nr.'        :'Nr.'                   , :width =>  5 },
+			{ :title => (short)?'Kennz.'     :'Kennzeichen'           , :width => 16 },
+			{ :title => (short)?'Typ'        :'Typ'                   , :width => 20 },
+			{ :title => (short)?'Pilot'      :'Pilot'                 , :width => 27 },
+			{ :title => (short)?'Begleiter'  :'Begleiter'             , :width => 27 },
+			{ :title => (short)?'Verein'     :'Verein'                , :width => 25 },
+			{ :title => (short)?'SA'         :'Startart'              , :width =>  6 },
+			{ :title => (short)?'Start'      :'Startzeit'             , :width =>  9 },
+			{ :title => (short)?'Landg.'     :'Landezeit'             , :width =>  9 },
+			{ :title => (short)?'Dauer'      :'Dauer'                 , :width =>  9 },
+			{ :title => (short)?'Ld. Sfz.'   :'Landezeit Schleppflug' , :width => 11 },
+			{ :title => (short)?'Dauer'      :'Dauer Schleppflug'     , :width =>  9 },
+			{ :title => (short)?'#Ldg.'      :'Anzahl Landungen'      , :width =>  9 },
+			{ :title => (short)?'Startort'   :'Startort'              , :width => 19 },
+			{ :title => (short)?'Zielort'    :'Zielort'               , :width => 19 },
+			{ :title => (short)?'Zielort SFZ':'Zielort Schleppflug'   , :width => 19 },
+			{ :title => (short)?'Bemerkung'  :'Bemerkungen'           , :width => 22 }
+		]
+
+		rows=flights.each_with_index.map { |flight, index| [
+			index+1                                       ,
+			flight.effective_plane_registration     || "?",
+			flight.effective_plane_type             || "?",
+			flight.effective_pilot_name             || "?",
+			flight.effective_copilot_name                 ,
+			flight.effective_club                   || "?",
+			flight.launch_type_text                       ,
+			flight.effective_launch_time                  ,
+			flight.effective_landing_time                 ,
+			flight.effective_duration                     ,
+			flight.effective_landing_time_towflight       ,
+			flight.effective_duration_towflight           ,
+			flight.anzahl_landungen                       ,
+			flight.startort                               ,
+			flight.zielort                                ,
+			flight.effective_destination_towflight        ,
+			flight.bemerkung
+		] }
+
+		{ :columns => columns, :rows => rows, :data => flights }
 	end
 end
 

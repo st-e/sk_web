@@ -23,7 +23,7 @@ module ApplicationHelper
 			.gsub('#', '\\#') \
 			.gsub('^', '\\textasciicircum{}') \
 			.gsub('~', '\\textasciitilde{}') \
-			.gsub('"', '\\textquitedbl{}') \
+			.gsub('"', '\\textquotedbl{}') \
 			.gsub('-', '{-}') # - can have a special meaning, for example in ---
 			# Seems like guilsingl{left,right} don't work properly
 			# .gsub('<', '\\guilsinglleft{}')
@@ -44,8 +44,10 @@ module ApplicationHelper
 		value=value.to_s
 
 		# Replace double quotes at the beginning or at the end with two double quotes
-		value.gsub!(/^"/, '""')
-		value.gsub!(/"$/, '""')
+		# Don't use gsub! becaus that will change the original string
+		value=value \
+			.gsub(/^"/, '""') \
+			.gsub(/"$/, '""')
 
 		# If the value contains a comma or begins or ends with a double quote,
 		# enclose it in double quotes

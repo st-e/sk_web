@@ -38,71 +38,7 @@
 <% else %>
 	<%= l @flights.count %> Flüge
 
-	\begin{longtable}{
-		|>{\raggedright}p{ 5mm}
-		|>{\raggedright}p{16mm}
-		|>{\raggedright}p{20mm}
-		|>{\raggedright}p{27mm}
-		|>{\raggedright}p{27mm}
-		|>{\raggedright}p{25mm}
-		|>{\raggedright}p{ 6mm}
-		|>{\raggedright}p{ 9mm}
-		|>{\raggedright}p{ 9mm}
-		|>{\raggedright}p{ 9mm}
-		|>{\raggedright}p{11mm}
-		|>{\raggedright}p{ 9mm}
-		|>{\raggedright}p{ 9mm}
-		|>{\raggedright}p{19mm}
-		|>{\raggedright}p{19mm}
-		|>{\raggedright}p{19mm}
-		|>{\raggedright}p{22mm}
-		|
-	}
-	<%# For the clip rectangles, we have to add 0.5mm (determined experimentally) %>
-	\hline
-	  \cliptext{ 5.5mm}{Nr.}
-	& \cliptext{16.5mm}{Kennz.}
-	& \cliptext{20.5mm}{Typ}
-	& \cliptext{27.5mm}{Pilot}
-	& \cliptext{27.5mm}{Begleiter}
-	& \cliptext{25.5mm}{Verein}
-	& \cliptext{ 6.5mm}{SA}
-	& \cliptext{ 9.5mm}{Start}
-	& \cliptext{ 9.5mm}{Landg.}
-	& \cliptext{ 9.5mm}{Dauer}
-	& \cliptext{11.5mm}{Ld. Sfz.}
-	& \cliptext{ 9.5mm}{Dauer}
-	& \cliptext{ 9.5mm}{\#Ldg.}
-	& \cliptext{19.5mm}{Startort}
-	& \cliptext{19.5mm}{Zielort}
-	& \cliptext{19.5mm}{Zielort SFZ}
-	& \cliptext{22.5mm}{Bemerkung}
-	\tabularnewline\hline\hline\endhead
-
-	<%# TODO test: none-values %>
-	<%# Note that "---" should not be escaped and is thus outside of the call to l %>
-	<% @flights.each_with_index { |flight, index| %>
-		  \cliptext{ 5.5mm}{<%= index+1 %>}
-		& \cliptext{16.5mm}{<%= l flight.effective_plane_registration      || "???" %>}
-		& \cliptext{20.5mm}{<%= l flight.effective_plane_type              || "???" %>}
-		& \cliptext{27.5mm}{<%= l flight.effective_pilot_name              || "???" %>}
-		& \cliptext{27.5mm}{<%= l(flight.effective_copilot_name)           || "---" %>}
-		& \cliptext{25.5mm}{<%= l flight.effective_club                    || "???" %>}
-		& \cliptext{ 6.5mm}{<%= l(flight.launch_type_text)                 || "---" %>}
-		& \cliptext{ 9.5mm}{<%= l(flight.effective_launch_time)            || "---" %>}
-		& \cliptext{ 9.5mm}{<%= l(flight.effective_landing_time)           || "---" %>}
-		& \cliptext{ 9.5mm}{<%= l(flight.effective_duration)               || "---" %>}
-		& \cliptext{11.5mm}{<%= l(flight.effective_landing_time_towflight) || "---" %>}
-		& \cliptext{ 9.5mm}{<%= l(flight.effective_duration_towflight)     || "---" %>}
-		& \cliptext{ 9.5mm}{<%= l flight.anzahl_landungen                           %>}
-		& \cliptext{19.5mm}{<%= l flight.startort                                   %>}
-		& \cliptext{19.5mm}{<%= l flight.zielort                                    %>}
-		& \cliptext{19.5mm}{<%= l(flight.effective_destination_towflight)  || "---" %>}
-		& \cliptext{22.5mm}{<%= l flight.bemerkung                                  %>} <%# '_#^%f---oo{b\\ar}baz\\' %>
-		\tabularnewline\hline
-	<% } %>
-
-	\end{longtable}
+	<%= render :partial => 'partials/list_table.tex.erb', :locals => { :table => @table } %>
 <% end %>
 
 \end{document}

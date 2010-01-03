@@ -1,0 +1,3 @@
+<%= table[:columns].map { |column| c column[:title] }.join(',') %>
+<% table[:rows].each { |row| %><%= row.map { |data| c(data)}.join(',') %>
+<% } %>

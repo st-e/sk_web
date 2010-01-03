@@ -1,3 +1,4 @@
+* utf8 characters in pdf fail
 * use alias_attribute in all models
 * define human_attribute_name
 * User not found: 404 or error message
@@ -10,4 +11,5 @@
 * date in local format
 * only allow deletion of unused people
 * date range for pilot log and flight db
+* overwrite confirmation without javascript
 
