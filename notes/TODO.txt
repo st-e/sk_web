@@ -1,16 +1,23 @@
+Critical:
 * utf8 characters in pdf fail
-* layout for tex
-* use alias_attribute in all models
-* define human_attribute_name
-* User not found: 404 or error message
 * Passwords not logged
-* Session store in database? Key in SVN?
-* use respond_to for pdf/html/csv/tex downloads (see controller guide)
 * login when no user exists
-* layout for .tex files
 * check all captions
-* date in local format
+* html title
 * only allow deletion of unused people
 * date range for pilot log and flight db
 * overwrite confirmation without javascript
+
+Major:
+* layout for tex
+* use alias_attribute in all models
+* User not found: 404 or error message
+* Session store in database? Key in SVN?
+
+Minor:
+
+Nice to have:
+* define human_attribute_name instead of manual text specification
+* date in local format
+
 

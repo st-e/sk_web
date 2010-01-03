@@ -17,6 +17,3 @@ Create user: name unique
 
 		db.import_persons (persons);
 
-Plane log:
-access without login allows from local hosts
-
