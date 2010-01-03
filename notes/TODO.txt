@@ -1,4 +1,5 @@
 * utf8 characters in pdf fail
+* layout for tex
 * use alias_attribute in all models
 * define human_attribute_name
 * User not found: 404 or error message

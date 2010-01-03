@@ -1,4 +1,1 @@
-Datum,Muster,Kennzeichen,Flugzeugführer,Begleiter,Startart,Startort,Zielort,Startzeit,Landezeit,Flugdauer,Bemerkung
-<% @flights.each do |flight| %><%= c flight.effective_time.date %>,<%= c flight.plane.typ %>,<%= c flight.plane.kennzeichen %>,<%= c flight.effective_pilot_name || "?" %>,<%= c flight.effective_copilot_name || "-" %>,<%= c flight.launch_type_pilot_log_designator || "?" %>,<%= c flight.startort %>,<%= c flight.zielort %>,<%= c(flight.effective_launch_time || "?") %>,<%= c(flight.effective_landing_time || "?") %>,<%= c(flight.effective_duration || "?") %>,<%= c flight.bemerkung %>
-<% end %>
-
+<%= render :partial => 'partials/list_table', :locals => { :table => @table } %>

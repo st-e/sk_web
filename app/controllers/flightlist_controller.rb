@@ -13,7 +13,7 @@ class FlightlistController < ApplicationController
 		redirect_options={ :controller => 'flightlist', :action => 'show' }
 
 		format=params['format'] || @default_format
-		redirect_options[:format]=format if format!=@default_format
+		redirect_options[:format]=format
 
 		if params['date_spec']=='today'
 			redirect_options[:date]='today'
@@ -46,7 +46,7 @@ class FlightlistController < ApplicationController
 			end
 		rescue ArgumentError
 			# TODO: error message (flash message), redirect to form with (erroneous) values entered
-			# flash[:notice] = 'Flight was successfully created.'
+			# flash[:error] = 'Moo!'
 			redirect_to :action => 'index'
 		end
 
@@ -63,23 +63,16 @@ class FlightlistController < ApplicationController
 		format=params['format'] || @default_format
 		@date=date
 		# TODO ugly
-		@table=make_table(@flights, format=='tex' || format=='latex' || format =='pdf')
+		@table=make_table(@flights, format=='tex' || format =='pdf')
 
 		# TODO disallow all but PDF for non-privileged users
-		if format=='html'
-			render 'flightlist.html'
-			# TODO make a method (or can render do this? send_data can.)
-			response.headers["Content-Disposition"] = "inline; filename=startkladde_#{date}.html"
-		elsif format=='tex' || format=='latex'
-			render :text => render_to_string('flightlist.tex'), :content_type => 'text/plain'
-		elsif format=='csv'
-			@table[:rows].each { |row| puts "y "+row[-1] }
-			render :text => render_to_string('flightlist.csv'), :content_type => 'text/plain'
-			@table[:rows].each { |row| puts "z "+row[-1] }
-		elsif format=='pdf'
-			render_pdf 'flightlist.tex', :filename => "startkladde_#{date}.pdf"
-		else
-			render :text => "Invalid format #{format}"
+		respond_to do |format|
+			format.html { render 'flightlist'        ; set_filename "startkladde_#{date}.html" }
+			format.pdf  { render_pdf 'flightlist.tex'; set_filename "startkladde_#{date}.pdf"  }
+			format.tex  { render 'flightlist'        ; set_filename "startkladde_#{date}.tex"  }
+			format.csv  { render 'flightlist'        ; set_filename "startkladde_#{date}.csv"  }
+#			format.xml  { render :xml => @flights    ; set_filename "startkladde_#{date}.xml"  }
+#			format.json { render :json => @flights   ; set_filename "startkladde_#{date}.json" }
 		end
 	end
 

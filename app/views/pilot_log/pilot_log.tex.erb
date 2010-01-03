@@ -38,56 +38,7 @@
 <% else %>
 	<%= l @flights.count %> Flüge
 
-	\begin{longtable}{
-		|>{\raggedright}p{15mm}
-		|>{\raggedright}p{12mm}
-		|>{\raggedright}p{14mm}
-		|>{\raggedright}p{20mm}
-		|>{\raggedright}p{20mm}
-		|>{\raggedright}p{10mm}
-		|>{\raggedright}p{15mm}
-		|>{\raggedright}p{15mm}
-		|>{\raggedright}p{13mm}
-		|>{\raggedright}p{13mm}
-		|>{\raggedright}p{13mm}
-		|>{\raggedright}p{20mm}
-		|
-	}
-	<%# For the clip rectangles, we have to add 0.5mm (determined experimentally) %>
-	\hline
-	  \cliptext{15.5mm}{Tag}
-	& \cliptext{12.5mm}{Muster}
-	& \cliptext{14.5mm}{Kennz.}
-	& \cliptext{20.5mm}{Flugzeugführer}
-	& \cliptext{20.5mm}{Begleiter}
-	& \cliptext{10.5mm}{Startart}
-	& \cliptext{15.5mm}{Startort}
-	& \cliptext{15.5mm}{Zielort}
-	& \cliptext{13.5mm}{Startzeit}
-	& \cliptext{13.5mm}{Landezeit}
-	& \cliptext{13.5mm}{Flugdauer}
-	& \cliptext{20.5mm}{Bemerkung}
-	\tabularnewline\hline\hline\endhead
-
-	<%# TODO test: none-values %>
-	<%# Note that "---" should not be escaped and is thus outside of the call to l %>
-	<% @flights.each_with_index { |flight, index| %>
-		  \cliptext{15.5mm}{<%= l flight.effective_time.date                       %>}
-		& \cliptext{12.5mm}{<%= l flight.plane.typ                                 %>}
-		& \cliptext{14.5mm}{<%= l flight.plane.kennzeichen                         %>}
-		& \cliptext{20.5mm}{<%= l flight.effective_pilot_name             || "?"   %>}
-		& \cliptext{20.5mm}{<%= l(flight.effective_copilot_name)          || "---" %>}
-		& \cliptext{10.5mm}{<%= l flight.launch_type_pilot_log_designator || "?"   %>}
-		& \cliptext{15.5mm}{<%= l flight.startort                                  %>}
-		& \cliptext{15.5mm}{<%= l flight.zielort                                   %>}
-		& \cliptext{13.5mm}{<%= l(flight.effective_launch_time            || "?")  %>}
-		& \cliptext{13.5mm}{<%= l(flight.effective_landing_time           || "?")  %>}
-		& \cliptext{13.5mm}{<%= l(flight.effective_duration               || "?")  %>}
-		& \cliptext{20.5mm}{<%= l flight.bemerkung                                 %>}
-		\tabularnewline\hline
-	<% } %>
-
-	\end{longtable}
+	<%= render :partial => 'partials/list_table.tex.erb', :locals => { :table => @table } %>
 <% end %>
 
 \end{document}

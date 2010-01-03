@@ -10,7 +10,8 @@ class ApplicationController < ActionController::Base
 	# Scrub sensitive parameters from your log
 	# filter_parameter_logging :password
 
-	def render_pdf(template, options)
+protected
+	def generate_pdf(template)
 		Dir.mktmpdir { |dir|
 			texfile="#{dir}/file.tex"
 			dvifile="#{dir}/file.dvi"
@@ -22,7 +23,7 @@ class ApplicationController < ActionController::Base
 			}
 
 			# TODO error handling, for example: pstricks not installed
-			# TODO option for calling latex 1/2/3 times (don't merge options below)
+			# TODO option for calling latex 1/2/3 times
 			latexcommand="latex -interaction=nonstopmode -output-directory=#{dir} #{texfile}"
 			dvipscommand="dvips -o #{psfile} #{dvifile}"
 			pstopdfcommand="ps2pdf -sOutputFile=#{pdffile} #{psfile}"
@@ -36,13 +37,19 @@ class ApplicationController < ActionController::Base
 
 			# Note that we cannot use send_file here to send the PDF file
 			# because it will be deleted after this method returns (render
-			# seems to work, but is not what we want). Maybe it will work with
-			# :stream=>false.
-			send_data File.read(pdffile), { :type => 'application/pdf', :disposition => 'inline' }.merge(options)
+			# seems to work, but is not what we want).
+			File.read(pdffile)
 		}
 	end
 
-protected
+	def render_pdf(template, options={})
+		send_data generate_pdf(template), { :type => 'application/pdf', :disposition => 'inline' }.merge(options)
+	end
+
+	def set_filename(filename)
+		response.headers["Content-Disposition"] = "inline; filename=#{filename}"
+	end
+
 	# Allow access to an action without being logged in
 	def self.allow_public(*options)
 		skip_before_filter :require_login, options

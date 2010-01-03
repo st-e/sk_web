@@ -8,38 +8,6 @@
 <% else %>
 	<p><%= h @flights.count %> Flüge</p>
 
-	<table>
-		<tr>
-			<th><nobr>Datum</nobr></th>
-			<th><nobr>Muster</nobr></th>
-			<th><nobr>Kennzeichen</nobr></th>
-			<th><nobr>Flugzeugführer</nobr></th>
-			<th><nobr>Begleiter</nobr></th>
-			<th><nobr>Startart</nobr></th>
-			<th><nobr>Startort</nobr></th>
-			<th><nobr>Zielort</nobr></th>
-			<th><nobr>Startzeit</nobr></th>
-			<th><nobr>Landezeit</nobr></th>
-			<th><nobr>Flugdauer</nobr></th>
-			<th><nobr>Bemerkung</nobr></th>
-		</tr>
-
-		<% @flights.each do |flight| %>
-			<tr>
-				<td><nobr><%= h flight.effective_time.date                     %></nobr></td>
-				<td><nobr><%= h flight.plane.typ                               %></nobr></td>
-				<td><nobr><%= h flight.plane.kennzeichen                       %></nobr></td>
-				<td><nobr><%= h flight.effective_pilot_name || "?"             %></nobr></td>
-				<td><nobr><%= h flight.effective_copilot_name || "-"           %></nobr></td>
-				<td><nobr><%= h flight.launch_type_pilot_log_designator || "?" %></nobr></td>
-				<td><nobr><%= h flight.startort                                %></nobr></td>
-				<td><nobr><%= h flight.zielort                                 %></nobr></td>
-				<td><nobr><%= h(flight.effective_launch_time || "?")           %></nobr></td>
-				<td><nobr><%= h(flight.effective_landing_time   || "?")        %></nobr></td>
-				<td><nobr><%= h(flight.effective_duration   || "?")            %></nobr></td>
-				<td><nobr><%= h flight.bemerkung                               %></nobr></td>
-			</tr>
-		<% end %>
-	</table>
+	<%= render :partial => 'partials/list_table', :locals => { :table => @table } %>
 <% end %>
 

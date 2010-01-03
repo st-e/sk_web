@@ -21,7 +21,7 @@ class PilotLogController < ApplicationController
 		redirect_options={ :controller => 'pilot_log', :action => 'show' }
 
 		format=params['format'] || @default_format
-		redirect_options[:format]=format if format!=@default_format
+		redirect_options[:format]=format
 
 		if params['date_spec']=='today'
 			redirect_options[:date]='today'
@@ -87,20 +87,51 @@ class PilotLogController < ApplicationController
 		format=params['format'] || @default_format
 
 		@date=date
+		@table=make_table(@flights)
 
-		if format=='html'
-			# TODO set the file name here (via header)
-			render 'pilot_log.html'
-		elsif format=='tex' || format=='latex'
-			render :text => render_to_string('pilot_log.tex'), :content_type => 'text/plain'
-		elsif format=='csv'
-			render :text => render_to_string('pilot_log.csv'), :content_type => 'text/plain'
-		elsif format=='pdf'
-			# TODO include pilot name in filename
-			render_pdf 'pilot_log.tex', :filename => "flugbuch_#{date}.pdf" # TODO date spec
-		else
-			render :text => "Invalid format #{format}"
+		respond_to do |format|
+			format.html { render 'pilot_log'        ; set_filename "flugbuch_#{date}.html" }
+			format.pdf  { render_pdf 'pilot_log.tex'; set_filename "flugbuch_#{date}.pdf"  }
+			format.tex  { render 'pilot_log'        ; set_filename "flugbuch_#{date}.tex"  }
+			format.csv  { render 'pilot_log'        ; set_filename "flugbuch_#{date}.csv"  }
+#			format.xml  { render :xml => @flights   ; set_filename "flugbuch_#{date}.xml"  }
+#			format.json { render :json => @flights  ; set_filename "flugbuch_#{date}.json" }
 		end
+	end
+
+protected
+	def make_table(flights, short=false)
+		columns = [
+			{ :title => 'Datum'           , :width => 14 },
+			{ :title => 'Muster'          , :width => 12 },
+			{ :title => 'Kennzeichen'     , :width => 16 },
+			{ :title => 'Flugzeugführer'  , :width => 20 },
+			{ :title => 'Begleiter'       , :width => 20 },
+			{ :title => 'Startart'        , :width => 11 },
+			{ :title => 'Starort'         , :width => 15 },
+			{ :title => 'Zielort'         , :width => 15 },
+			{ :title => 'Start'           , :width => 12 },
+			{ :title => 'Landung'         , :width => 12 },
+			{ :title => 'Flugdauer'       , :width => 13 },
+			{ :title => 'Bemerkungen'     , :width => 20 }
+		]
+
+		rows=flights.each_with_index.map { |flight, index| [
+			flight.effective_date                         ,
+			flight.plane.typ                              ,
+			flight.plane.kennzeichen                      ,
+			flight.effective_pilot_name             || "?",
+			flight.effective_copilot_name                 ,
+			flight.launch_type_pilot_log_designator || "?",
+			flight.startort                               ,
+			flight.zielort                                ,
+			flight.effective_launch_time            || "?",
+			flight.effective_landing_time           || "?",
+			flight.effective_duration               || "?",
+			flight.bemerkung                              
+		] }
+
+		{ :columns => columns, :rows => rows, :data => flights }
 	end
 end
 

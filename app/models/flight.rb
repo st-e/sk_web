@@ -60,14 +60,14 @@ class Flight < ActiveRecord::Base
 
 	def self.flight_type_text(flight_type)
 		case flight_type
-			when '1'; return nil
-			when '2'; return "Normalflug"
-			when '3'; return "Schulung (2)"
-			when '4'; return "Schulung (1)"
-			when '5'; nil
-			when '6'; return "Gastflug (P)"
-			when '8'; return "Gastflug (E)"
-			when '7'; return "Schlepp"
+			when 1; return nil
+			when 2; return "Normalflug"
+			when 3; return "Schulung (2)"
+			when 4; return "Schulung (1)"
+			when 5; nil
+			when 6; return "Gastflug (P)"
+			when 8; return "Gastflug (E)"
+			when 7; return "Schlepp"
 			else; nil
 		end
 	end

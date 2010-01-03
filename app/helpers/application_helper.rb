@@ -28,6 +28,9 @@ module ApplicationHelper
 			# Seems like guilsingl{left,right} don't work properly
 			# .gsub('<', '\\guilsinglleft{}')
 			# .gsub('>', '\\guilsinglright{}')
+
+			# TODO: " shoud be ,,/``
+			# TODO: , and ` must be escaped (because of ,, and ``; what about ''?)
 	end
 
 	alias_method :l, :latex_escape

@@ -12,7 +12,7 @@ class PlaneLogController < ApplicationController
 		redirect_options={ :controller => 'plane_log', :action => 'show' }
 
 		format=params['format'] || @default_format
-		redirect_options[:format]=format if format!=@default_format
+		redirect_options[:format]=format
 
 		if params['date_spec']=='today'
 			redirect_options[:date]='today'
@@ -61,26 +61,61 @@ class PlaneLogController < ApplicationController
 		# is a time, but the corresponding flags are not set), or where the
 		# launch/landing time is not valid (due to flight mode)
 
+		format=params['format'] || @default_format
+
 		@plane_log=Hash.new { |hash, key| hash[key]=[] }
 		PlaneLog.create_for_flights(flights).each_pair { |plane, log_entries|
 			@plane_log[plane.verein]+=log_entries
 		}
 
+		@tables={}
+		@plane_log.each_pair { |club, entries|
+			@tables[club]=make_table(entries)
+		}
+
 		@date=date
 
-		format=params['format'] || @default_format
 
 		# TODO disallow all but PDF for non-privileged users
-		if format=='html'
-			# TODO we should set the :filename here, but it seems we cannot do that with render. Maybe use render_to_string and send_data.
-			render 'plane_log.html'
-		elsif format=='tex' || format=='latex'
-			render :text => render_to_string('plane_log.tex'), :content_type => 'text/plain'
-		elsif format=='pdf'
-			render_pdf 'plane_log.tex', :filename => "bordbuecher_#{date}.pdf"
-		else
-			render :text => "Invalid format #{format}"
+		respond_to do |format|
+			format.html { render 'plane_log'        ; set_filename "bordbuecher_#{date}.html" }
+			format.pdf  { render_pdf 'plane_log.tex'; set_filename "bordbuecher_#{date}.pdf"  }
+			format.tex  { render 'plane_log'        ; set_filename "bordbuecher_#{date}.tex"  }
+#			format.csv  { render 'plane_log'        ; set_filename "bordbuecher_#{date}.csv"  }
+#			format.xml  { render :xml => @flights   ; set_filename "bordbuecher_#{date}.xml"  }
+#			format.json { render :json => @flights  ; set_filename "bordbuecher_#{date}.json" }
 		end
+	end
+
+protected
+	def make_table(entries)
+		columns = [
+			{ :title => 'Kennzeichen'      , :width => 17 },
+			{ :title => 'Datum'            , :width => 15 },
+			{ :title => 'Name'             , :width => 32 },
+			{ :title => 'Insassen'         , :width => 11 },
+			{ :title => 'Startort'         , :width => 24 },
+			{ :title => 'Zielort'          , :width => 24 },
+			{ :title => 'Startzeit'        , :width => 14 },
+			{ :title => 'Landezeit'        , :width => 14 },
+			{ :title => 'Anzahl Landungen' , :width => 25 },
+			{ :title => 'Dauer'            , :width =>  8 }
+		]
+
+		rows=entries.map { |entry| [
+			entry.registration          ,
+			entry.date                  ,
+			entry.pilot_name            ,
+			entry.num_passengers_string ,
+			entry.departure_airfield    ,
+			entry.destination_airfield  ,
+			entry.departure_time_string ,
+			entry.landing_time_string   ,
+			entry.num_landings          ,
+			entry.duration_string       
+		] }
+
+		{ :columns => columns, :rows => rows, :data => entries }
 	end
 end
 
