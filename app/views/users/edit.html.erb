@@ -1,7 +1,7 @@
 <h1>Benutzer <%= h @user.username %> editieren</h1>
 
 <% form_for(@user) do |f| %>
-	<% person=@user.person %>
+	<% person=@user.associated_person %>
 	<%= f.error_messages %>
 
 	<%# TODO default button with <div style="display:none;"> %>
@@ -19,6 +19,7 @@
 			<th><%= f.label :person, "Person:" %></th>
 			<td>
 				<%= h (person)?"#{person.formal_name} (#{person.id})":"-" %>
+				<%= f.hidden_field 'person', { :value => (person)?(person.id):0 } %>
 				<%= submit_tag (person)?"Ändern":"Auswählen", :name => 'select_person' %>
 			</td>
 		</tr>
@@ -41,7 +42,9 @@
 	</p>
 <% end %>
 
-<%= link_to 'Anzeigen', @user %> |
-<%= link_to 'Passwort ändern', :action => 'change_password', :id => @user.username %> |
-<%= link_to 'Benutzerliste', users_path %>
+<p>
+	<%= link_to 'Anzeigen', @user %> |
+	<%= link_to 'Passwort ändern', :action => 'change_password', :id => @user.username %> |
+	<%= link_to 'Benutzerliste', users_path %>
+</p>
 

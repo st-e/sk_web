@@ -10,7 +10,7 @@ class PilotLogController < ApplicationController
 		# TODO make function
 		user=User.find(session[:username])
 
-		@person=user.person
+		@person=user.associated_person
 
 		if !@person
 			flash[:error]="Es kann kein Flugubch angezeigt werden, da dem Benutzer #{user.username} keine Person zugeordnet ist."
@@ -47,7 +47,7 @@ class PilotLogController < ApplicationController
 		# TODO make function
 		user=User.find(session[:username])
 
-		@person=user.person
+		@person=user.associated_person
 
 		if !@person
 			flash[:error]="Es kann kein Flugubch angezeigt werden, da dem Benutzer #{user.username} keine Person zugeordnet ist."

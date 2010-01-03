@@ -1,4 +1,5 @@
-* use proper properties (different from table column names) if possible
+* use alias_attribute in all models
+* define human_attribute_name
 * User not found: 404 or error message
 * Passwords not logged
 * Session store in database? Key in SVN?

@@ -51,27 +51,13 @@ class UsersController < ApplicationController
 	end
 
 	def edit
-#		if params[:user]
-#			# A user was given - we're probably back from a subpage.
-#			@user = User.new(params[:user])
-#			@user.username=params[:user][:username]
-#		else
-			# TODO: if multiple edit windows are opened, all of them will redirect
-			# back to the origin of the last one
-			session[:origin]=request.referer
-			@user = User.find(params[:id])
-#		end
+		# TODO: if multiple edit windows are opened, all of them will redirect
+		# back to the origin of the last one
+		session[:origin]=request.referer
+		@user = User.find(params[:id])
 
-#		render :text => params.inspect and return
-
-		if params[:user]
-			person_id=params[:user][:person]
-			person=(person_id.blank? || person_id=='0')?nil:(Person.find(person_id))
-#			render :text => @user.person.formal_name
-			params[:user][:person]=nil
-			@user.attributes=params[:user]
-			@user.person=person
-		end
+		# If a user parameter is given, we've probably returned from a subpage.
+		@user.attributes=params[:user] if params[:user]
 	end
 
 	def update
@@ -81,6 +67,8 @@ class UsersController < ApplicationController
 			if @user.update_attributes(params[:user])
 				flash[:notice] = 'Benutzer wurde gespeichert'
 
+				# TODO: make function
+				# TODO: doesn't work after person selection
 				if session[:origin]
 					redirect_to session[:origin]
 					session[:origin]=nil

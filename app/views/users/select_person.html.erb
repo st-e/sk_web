@@ -1,43 +1,48 @@
 <h1>Personenauswahl für Benutzer <%= h @user.username %></h1>
 
-<% person=@user.person %>
-
 <% form_for(@user, :url => { :action => "edit" }) do |f| %>
 	<%= f.hidden_field 'id'                 , { :value => @user.username            } %>
 	<%= f.hidden_field 'club'               , { :value => @user.club                } %>
-	<%= f.hidden_field 'person'             , { :value => (person)?(person.id):0    } %>
 	<%= f.hidden_field 'perm_club_admin'    , { :value => @user.perm_club_admin     } %>
 	<%= f.hidden_field 'perm_read_flight_db', { :value => @user.perm_read_flight_db } %>
 	
-	<%= f.submit 'Joah' %>
-<% end %>
 
-
-<% if false %>
-	<tr>
-		<th>Nachname</th>
-		<th>Vorname</th>
-		<th>Verein</th>
-		<th>Vereins-ID</th>
-		<th>Bemerkung</th>
-		<th>Benutzer</th>
-	</tr>
-
-	<% @people.each do |person| %>
-		<% user=person.user %>
+	<table>
 		<tr>
-			<td><%=h person.nachname %></td>
-			<td><%=h person.vorname %></td>
-			<td><%=h person.verein %></td>
-			<td><%=h person.vereins_id %></td>
-			<td><%=h person.bemerkung %></td>
-			<td><%= h (user)?(user.username):"-" %></td>
-			<%# TODO overwrite %>
-			<td><%= link_to 'Anzeigen', person %></td>
-			<td><%= link_to 'Editieren', edit_person_path(person) %></td>
-			<td><%= link_to 'Löschen', person, :confirm => 'Are you sure?', :method => :delete %></td>
+			<td><%= f.radio_button 'person', '0', :checked => !(@user.associated_person) %></td>
+			<td colspan=6>Keine Person</td>
 		</tr>
-	<% end %>
 
+		<tr>
+			<th></th>
+			<th>ID</th>
+			<th>Nachname</th>
+			<th>Vorname</th>
+			<th>Verein</th>
+			<th>Vereins-ID</th>
+			<th>Bemerkung</th>
+		</tr>
+
+		<% @people.each do |person| %>
+			<tr>
+				<% checked=(@user.person==person.id)  %><%# person is the primary key, not the object %>
+				<td><%= f.radio_button 'person', person.id, :checked => checked %></td>
+				<td><%=h person.id %></td>
+				<td><%=h person.nachname %></td>
+				<td><%=h person.vorname %></td>
+				<td><%=h person.verein %></td>
+				<td><%=h person.vereins_id %></td>
+				<td><%=h person.bemerkung %></td>
+			</tr>
+		<% end %>
+
+	</table>
+	<%= f.submit 'OK' %>
 <% end %>
+
+<p>
+	<%= link_to 'Anzeigen', @user %> |
+	<%= link_to 'Editieren', edit_user_path(@user) %> |
+	<%= link_to 'Benutzerliste', users_path %>
+</p>
 
