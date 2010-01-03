@@ -1,4 +1,4 @@
-<h1>Person <%= @person.full_name %> editieren</h1>
+<%= page_title "Person #{@person.full_name} editieren" %>
 
 <% form_for(@person) do |f| %>
 	<%= f.error_messages %>

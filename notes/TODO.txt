@@ -7,17 +7,23 @@ Critical:
 * only allow deletion of unused people
 * date range for pilot log and flight db
 * overwrite confirmation without javascript
+* remove create/edit flight actions
+* Add: change own password
+* Add: import master data
+* Add: overwrite person
 
 Major:
-* layout for tex
+* use table partial for resource lists
+* use table partial for person selection
 * use alias_attribute in all models
 * User not found: 404 or error message
 * Session store in database? Key in SVN?
 
 Minor:
+* paginated tables for resource lists and person selection
+* layout for tex
 
 Nice to have:
 * define human_attribute_name instead of manual text specification
 * date in local format
-
 

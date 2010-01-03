@@ -1,4 +1,4 @@
-<h1>Personenauswahl für Benutzer <%= h @user.username %></h1>
+<%= page_title "Personenauswahl für Benutzer #{h @user.username}" %>
 
 <% form_for(@user, :url => { :action => "edit" }) do |f| %>
 	<%= f.hidden_field 'id'                 , { :value => @user.username            } %>

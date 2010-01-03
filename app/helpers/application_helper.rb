@@ -68,5 +68,12 @@ module ApplicationHelper
 		"sk_web Version 2.0 (experimental)/#{ruby}/#{rails}/#{mysql}"
 		# RUBY_RELEASE_DATE
 	end
+
+	def page_title(title)
+		content_for :title do
+			title
+		end
+		"<h1>#{title}</h1>"
+	end
 end
 
