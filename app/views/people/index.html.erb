@@ -2,6 +2,7 @@
 
 <table>
 	<tr>
+		<th>ID</th>
 		<th>Nachname</th>
 		<th>Vorname</th>
 		<th>Verein</th>
@@ -13,14 +14,14 @@
 	<% @people.each do |person| %>
 		<% user=person.user %>
 		<tr>
-			<td><%=h person.last_name %></td>
-			<td><%=h person.first_name %></td>
+			<td><%= link_to person.id, person %></td>
+			<td><%= link_to person.last_name, person %></td>
+			<td><%= link_to person.first_name, person %></td>
 			<td><%=h person.verein %></td>
 			<td><%=h person.vereins_id %></td>
 			<td><%=h person.bemerkung %></td>
 			<td><%= h (user)?(user.username):"-" %></td>
 			<%# TODO overwrite %>
-			<td><%= link_to 'Anzeigen', person %></td>
 			<td><%= link_to 'Editieren', edit_person_path(person) %></td>
 			<td><%= link_to 'Löschen', person, :confirm => 'Are you sure?', :method => :delete %></td>
 		</tr>

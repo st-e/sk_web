@@ -1,26 +1,49 @@
-<h1>Person: <%= h "#{@person.full_name}" %></h1>
+<% user=@person.user %>
 
-<p><b>Nachname:</b><%=h @person.nachname %></p>
+<h1>Person: <%= h @person.full_name %></h1>
 
-<p><b>Vorname:</b><%=h @person.vorname %></p>
+<table>
+	<tr>
+		<th>ID:</th>
+		<td><%=h @person.id %></td>
+	</tr>
 
-<p><b>Verein:</b><%=h @person.verein %></p>
+	<tr>
+		<th>Nachname:</th>
+		<td><%=h @person.nachname %></td>
+	</tr>
 
-<p>
-	<b>Benutzer:</b>
-	<% user=@person.user %>
-	<% if user %>
-		<%= link_to "#{user.username}", user %>
-	<% else %>
-		-
-	<% end %>
-</p>
+	<tr>
+		<th>Vorname:</th>
+		<td><%=h @person.vorname %></td>
+	</tr>
 
-<p><b>ID:</b><%=h @person.id %></p>
+	<tr>
+		<th>Verein:</th>
+		<td><%=h @person.verein %></td>
+	</tr>
 
-<p><b>Vereins-ID:</b><%=h @person.vereins_id %></p>
+	<tr>
+		<th>Benutzer:</th>
+		<td>
+			<% if user %>
+				<%= link_to "#{user.username}", user %>
+			<% else %>
+				-
+			<% end %>
+		</td>
+	</tr>
 
-<p><b>Bemerkung:</b><%=h @person.bemerkung %></p>
+	<tr>
+		<th>Vereins-ID:</th>
+		<td><%=h @person.vereins_id %></td>
+	</tr>
+
+	<tr>
+		<th>Bemerkung:</th>
+		<td><%=h @person.bemerkung %></td>
+	</tr>
+</table>
 
 
 <%= link_to 'Editieren', edit_person_path(@person) %> |

@@ -1,31 +1,33 @@
-<h1>New person</h1>
+<h1>Person anlegen</h1>
 
 <% form_for(@person) do |f| %>
-  <%= f.error_messages %>
+	<%= f.error_messages %>
 
-  <p>
-    <%= f.label :vorname %><br />
-    <%= f.text_field :vorname %>
-  </p>
-  <p>
-    <%= f.label :nachname %><br />
-    <%= f.text_field :nachname %>
-  </p>
-  <p>
-    <%= f.label :verein %><br />
-    <%= f.text_field :verein %>
-  </p>
-  <p>
-    <%= f.label :vereins_id %><br />
-    <%= f.text_field :vereins_id %>
-  </p>
-  <p>
-    <%= f.label :bemerkung %><br />
-    <%= f.text_field :bemerkung %>
-  </p>
-  <p>
-    <%= f.submit 'Create' %>
-  </p>
+	<table>
+		<tr>
+			<th><%= f.label :vorname %>:</th>
+			<td><%= f.text_field :vorname %></td>
+		</tr>
+		<tr>
+			<th><%= f.label :nachname %>:</th>
+			<td><%= f.text_field :nachname %></td>
+		</tr>
+		<tr>
+			<th><%= f.label :verein %>:</th>
+			<td><%= f.text_field :verein %></td>
+		</tr>
+		<tr>
+			<th><%= f.label :vereins_id %>:</th>
+			<td><%= f.text_field :vereins_id %></td>
+		</tr>
+		<tr>
+			<th><%= f.label :bemerkung %>:</th>
+			<td><%= f.text_field :bemerkung %></td>
+		</tr>
+	</table>
+
+	<p><%= f.submit 'Anlegen' %></p>
 <% end %>
 
-<%= link_to 'Back', people_path %>
+<%= link_to 'Personenliste', people_path %>
+
