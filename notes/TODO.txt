@@ -8,4 +8,6 @@
 * layout for .tex files
 * check all captions
 * date in local format
+* only allow deletion of unused people
+* date range for pilot log and flight db
 

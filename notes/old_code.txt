@@ -1,89 +1,9 @@
-User login:
-LOGIN_ERROR_IF (!db.sk_user_exists (username), "Der Benutzer \""+username+"\" existiert nicht");
-LOGIN_ERROR_IF (!db.sk_user_authenticate (username, password), "Falsches Passwort");
-
-// Document footer:
-// * hr
-// * Angemeldet als xxx (Abmelden) / Nicht angemeldet (Anmelden)
-// * Zurück zum Hauptmenü
-// * Version
-
 // Valid user names: [a-z][A-Z]_.-
-
-const QString csv_field_person_last_name="Nachname";
-const QString csv_field_person_first_name="Vorname";
-const QString csv_field_person_comments="Bemerkungen";
-const QString csv_field_person_club_id="Vereins-ID";
-const QString csv_field_person_club_id_old="Vereins-ID_alt";
-
-User fields:
-"Benutzername",        
-"Person",              
-"Passwort",            
-"Passwort wiederholen",
-"Vereinsadmin",        
-"Flugdatenbank lesen", 
-"Verein",              
-
-
-Pilot log fields:
-"Tag"            (15)
-"Muster"         (12)
-"Kennzeichen"    (14)
-"Flugzeugführer" (20)
-"Begleiter"      (20)
-"Startart"       (10)
-"Ort Start"      (15)
-"Ort Landung"    (15)
-"Zeit Start"     (13)
-"Zeit Landung"   (13)
-"Flugdauer"      (13)
-"Bemerkung"      (20)
-
-Flight db fields:
-"Datum"                      
-"Nummer"                     
-"Kennzeichen"                
-"Typ"                        
-"Flugzeug Verein"            
-"Pilot Nachname"             
-"Pilot Vorname"              
-"Pilot Verein"               
-"Pilot VID"                  
-"Begleiter Nachname"         
-"Begleiter Vorname"          
-"Begleiter Verein"           
-"Begleiter VID"              
-"Flugtyp"                    
-"Anzahl Landungen"           
-"Modus"                      
-"Startzeit"                  
-"Landezeit"                  
-"Flugdauer"                  
-"Startart"                   
-"Kennzeichen Schleppflugzeug"
-"Modus Schleppflugzeug"      
-"Landung Schleppflugzeug"    
-"Startort"                   
-"Zielort"                    
-"Zielort Schleppflugzeug"    
-"Bemerkungen"                
-"Abrechnungshinweis"         
-"DBID"                       
-
-		// Output the document, *after* the session has been saved. This is
-		// required to avoid a race condition where the next page is loaded before
-		// the session has been saved completely.
 
 // Add towplane registration as comment if not known from launch type
 
-Passwort ändern:
-int ret=db.sk_user_change_password (user_name, new_password_1);
-
 Delete person: !db.person_used (id)
 Create person: club id unique
-
-Merge person
 
 Delete user: not self, own club
 
@@ -97,14 +17,6 @@ Create user: name unique
 
 		db.import_persons (persons);
 
-Pilot log:
-person for user exists
-flight instructor mode no/strict/loose
-
 Plane log:
 access without login allows from local hosts
-
-Flight db:
-Schleppflüge einzeln
-Format: Standard/Plugin
 

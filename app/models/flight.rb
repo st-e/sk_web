@@ -1,4 +1,5 @@
 require 'text'
+require 'util'
 
 class Flight < ActiveRecord::Base
 	# Status flags used in the database
@@ -38,6 +39,41 @@ class Flight < ActiveRecord::Base
 	def effective_plane_type
 		return nil if !plane
 		plane.typ
+	end
+
+	def self.mode_text(mode)
+		case mode
+			when "l"; "Lokal"
+			when "k"; "Kommt"
+			when "g"; "Geht"
+			else; nil
+		end
+	end
+
+	def mode_text
+		Flight.mode_text(modus)
+	end
+
+	def mode_text_towflight
+		Flight.mode_text(modus_sfz)
+	end
+
+	def self.flight_type_text(flight_type)
+		case flight_type
+			when '1'; return nil
+			when '2'; return "Normalflug"
+			when '3'; return "Schulung (2)"
+			when '4'; return "Schulung (1)"
+			when '5'; nil
+			when '6'; return "Gastflug (P)"
+			when '8'; return "Gastflug (E)"
+			when '7'; return "Schlepp"
+			else; nil
+		end
+	end
+
+	def flight_type_text
+		Flight.flight_type_text(typ)
 	end
 
 	def is_local?
@@ -117,6 +153,12 @@ class Flight < ActiveRecord::Base
 		format_duration(landezeit-startzeit, false)
 	end
 
+	def effective_towplane_registration
+		return nil if !is_airtow?
+		# We now know that launch_type is not nil
+		launch_type.registration
+	end
+
 	def effective_landing_time_towflight
 		return nil if !is_airtow?
 		return nil if !towflight_lands_here?
@@ -151,7 +193,17 @@ class Flight < ActiveRecord::Base
 			startzeit
 		elsif lands_here?
 			landezeit
+		else
+			# This should not happen because any flight either starts or lands here
+			nil
 		end
+	end
+
+	# TODO use instead of effective_time.date
+	def effective_date
+		time=effective_time
+		return nil if !time
+		time.date
 	end
 
 	def can_merge_plane_log_entry?(prev)

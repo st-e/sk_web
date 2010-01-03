@@ -40,20 +40,17 @@ ActionController::Routing::Routes.draw do |map|
 
   # See how all your routes lay out with "rake routes"
 
-  # Install the default routes as the lowest priority.
-  # Note: These default routes make all actions in every controller accessible via GET requests. You should
-  # consider removing or commenting them out if you're using named routes and resources.
   
-  #map.flightlist_today  'flightlist/today'    , :controller => 'flightlist', :action => 'show', :date => 'today'
-  #map.flightlist_today  'flightlist/yesterday', :controller => 'flightlist', :action => 'show', :date => 'yesterday'
-  #map.flightlist_single 'flightlist/:date'    , :controller => 'flightlist', :action => 'show', :requirements => {:date => /\d\d\d\d-\d\d-\d\d/ }
-
   map.flightlist 'flightlist/:date', :controller => 'flightlist', :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ }
   map.plane_log  'plane_log/:date' , :controller => 'plane_log' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ }
   map.pilot_log  'pilot_log/:date' , :controller => 'pilot_log' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ } # TODO or range
+  map.flight_db  'flight_db/:date' , :controller => 'flight_db' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ } # TODO or range
   
   map.root :controller => 'home'
 
+  # Install the default routes as the lowest priority.
+  # Note: These default routes make all actions in every controller accessible via GET requests. You should
+  # consider removing or commenting them out if you're using named routes and resources.
   map.connect ':controller/:id/:action'
   map.connect ':controller/:action'
   map.connect ':controller', :action => 'index'
