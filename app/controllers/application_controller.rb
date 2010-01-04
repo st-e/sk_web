@@ -70,6 +70,61 @@ protected
 		User.find(session[:username])
 	end
 
+	def date_spec
+		case params['date']
+			when 'today'     then 'today'
+			when 'yesterday' then 'yesterday'
+			when 'single'    then sprintf("%04d-%02d-%02d", params['year'], params['month'], params['day'])
+			when 'range'     then sprintf("%04d-%02d-%02d_%04d-%02d-%02d", params['start_year'], params['start_month'], params['start_day'], params['end_year'], params['end_month'], params['end_day'])
+			else nil
+		end
+	end
+
+	# Returns [first_time, last_time] where last_time is exclusive
+	def time_range(date_spec)
+		# Note that we store the date in a temporary variable in order to avoid
+		# race conditions
+
+		first_time=last_time=nil
+
+		if date_spec=='today'
+			date=Date.today
+		elsif date_spec=='yesterday'
+			date=Date.today-1
+			# TODO ^...$
+		elsif date_spec =~ /^\d\d\d\d-\d\d-\d\d$/
+			date=Date.parse(date_spec)
+			# TODO ^...$
+		elsif date_spec =~ /^(\d\d\d\d-\d\d-\d\d)_(\d\d\d\d-\d\d-\d\d)$/
+			first_time=Date.parse($1).midnight
+			last_time =Date.parse($2).midnight+1.day
+		else
+			throw ArgumentError
+		end
+
+		# In some cases, we determined a single date
+		first_time=date.midnight       if !first_time
+		last_time= date.midnight+1.day if !last_time
+
+		[first_time, last_time]
+	end
+
+	# Will redirect with the given options and :date=>date_spec
+	# All variables needed by the template have to be set
+	def redirect_to_with_date(redirect_options)
+		# If no date is given, render the date selection form
+		# TODO rename template to index and get rid of template parameter
+		render and return if !params['date']
+
+		# If no date specification could be constructed (invalid date type, for
+		# example 'tomorrow'), redirect back
+		ds=date_spec
+		redirect_to and return if !ds
+
+		# Redirect to the show action with the date specification
+		redirect_to redirect_options.merge({ :date=>ds })
+	end
+
 private
 	def require_login
 		unless logged_in?

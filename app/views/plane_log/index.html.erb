@@ -1,0 +1,17 @@
+<%= page_title "Startkladde Web-Zugriff: Bordbücher" %>
+
+<% form_tag do %>
+	<table>
+		<%= render :partial=>'partials/date_fields' %>
+		<tr>
+			<td>Format:</td>
+			<td><%= select_tag('format', options_for_select({"PDF"=>'pdf', "HTML"=>'html', "LaTeX"=>'tex'}, @format)) %></td>
+		</tr>
+		<tr>
+			<td colspan="5">
+			  <%= submit_tag 'Abrufen' %>
+			</td>
+		</tr>
+	</table>
+<% end %>
+

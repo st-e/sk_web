@@ -20,8 +20,8 @@ ActionController::Routing::Routes.draw do |map|
   # Flight list, plane log, pilot log and flight log accept a date specification
   map.flightlist 'flightlist/:date.:format', :controller => 'flightlist', :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ }
   map.plane_log  'plane_log/:date.:format' , :controller => 'plane_log' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ }
-  map.pilot_log  'pilot_log/:date.:format' , :controller => 'pilot_log' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ } # TODO or range
-  map.flight_db  'flight_db/:date.:format' , :controller => 'flight_db' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ } # TODO or range
+  map.pilot_log  'pilot_log/:date.:format' , :controller => 'pilot_log' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d|\d\d\d\d-\d\d-\d\d_\d\d\d\d-\d\d-\d\d)/ }
+  map.flight_db  'flight_db/:date.:format' , :controller => 'flight_db' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d|\d\d\d\d-\d\d-\d\d_\d\d\d\d-\d\d-\d\d)/ }
 
   # Session control
   map.login  'login',  :controller => 'session', :action => 'login'

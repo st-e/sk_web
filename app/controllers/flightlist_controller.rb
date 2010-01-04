@@ -10,48 +10,13 @@ class FlightlistController < ApplicationController
 
 	# GET /flightList
 	def index
-		redirect_options={ :controller => 'flightlist', :action => 'show' }
-
-		format=params['format'] || @default_format
-		redirect_options[:format]=format
-
-		if params['date_spec']=='today'
-			redirect_options[:date]='today'
-			redirect_to redirect_options
-		elsif params['date_spec']=='yesterday'
-			redirect_options[:date]='yesterday'
-			redirect_to redirect_options
-		elsif params['date_spec']=='single' 
-			if params.has_key?('year') && params.has_key?('month') && params.has_key?('day')
-				# TODO must be dddd-dd-dd (0 padding)
-				redirect_options[:date]="#{params['year']}-#{params['month']}-#{params['day']}"
-				redirect_to redirect_options
-			else
-				redirect_to
-			end
-		else
-			@format=format
-			render "flightlist_date.html.erb"
-		end
+		@format=params['format'] || @default_format
+		redirect_to_with_date :action=>'show', :format=>@format
 	end
 
 	def show
-		begin
-			if params['date']=='today'
-				date=Date.today
-			elsif params['date']=='yesterday'
-				date=Date.today-1
-			elsif params['date'] =~ /\d\d\d\d-\d\d-\d\d/
-				date=Date.parse(params['date'])
-			end
-		rescue ArgumentError
-			# TODO: error message (flash message), redirect to form with (erroneous) values entered
-			# flash[:error] = 'Moo!'
-			redirect_to :action => 'index'
-		end
-
-		first_time=date.midnight
-		last_time= date.midnight+1.day
+		date=params['date']
+		first_time, last_time=time_range(date)
 
 		condition="(startzeit>=:first_time AND startzeit<:last_time) OR (landezeit>=:first_time AND landezeit<:last_time)"
 		condition_values={ :first_time=>first_time, :last_time=>last_time }
@@ -71,8 +36,8 @@ class FlightlistController < ApplicationController
 			format.pdf  { render_pdf 'flightlist.tex'; set_filename "startkladde_#{date}.pdf"  }
 			format.tex  { render 'flightlist'        ; set_filename "startkladde_#{date}.tex"  }
 			format.csv  { render 'flightlist'        ; set_filename "startkladde_#{date}.csv"  }
-#			format.xml  { render :xml => @flights    ; set_filename "startkladde_#{date}.xml"  }
-#			format.json { render :json => @flights   ; set_filename "startkladde_#{date}.json" }
+			#format.xml  { render :xml => @flights    ; set_filename "startkladde_#{date}.xml"  }
+			#format.json { render :json => @flights   ; set_filename "startkladde_#{date}.json" }
 		end
 	end
 

@@ -1,0 +1,3 @@
+New features:
+  - Go to http://localhost:3000/pilot_log/today.html directly and log in
+

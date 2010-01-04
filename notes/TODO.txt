@@ -10,6 +10,8 @@ Critical:
 * Prevent deletion of flights/planes => remove resource routes
 
 Major:
+* for pilot_log, plane_log, flightlist, flight_db: displayed date range, and
+  filename for 'today'
 * use table_for for all resource lists
 * use table_for for person selection
 * use alias_attribute in all models
@@ -17,12 +19,15 @@ Major:
 * Session store in database? Key in SVN?
 
 Minor:
+* Better date input (single field accepting local and ISO date)
 * When overwriting a person, display their number of flights
 * route /person/1/overwrite/2
 * paginated tables for resource lists and person selection
 * layout for tex
 * use yesno
 * "Create user" for person if there is none yet
+* When using time_range, recover from ArgumentError (invalid date), redirect to
+  the form, display an error message and preenter the (erroneous) values
 
 Nice to have:
 * define human_attribute_name instead of manual text specification

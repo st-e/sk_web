@@ -1,0 +1,19 @@
+<%= page_title "Startkladde Web-Zugriff: Flugdatenbank" %>
+
+<% form_tag do %>
+	<table>
+		<%= render :partial=>'partials/date_fields', :locals=>{ :enable_range=>true } %>
+		<%# TODO format plugin %>
+		<%# TODO separate towflights %>
+		<tr>
+			<td>Format:</td>
+			<td><%= select_tag('format', options_for_select({"HTML"=>'html', "CSV"=>'csv'}, @format)) %></td>
+		</tr>
+		<tr>
+			<td colspan="5">
+			  <%= submit_tag 'Abrufen' %>
+			</td>
+		</tr>
+	</table>
+<% end %>
+

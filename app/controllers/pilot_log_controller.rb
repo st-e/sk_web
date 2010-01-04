@@ -9,7 +9,6 @@ class PilotLogController < ApplicationController
 	def index
 		# TODO make function
 		user=User.find(session[:username])
-
 		@person=user.associated_person
 
 		if !@person
@@ -18,29 +17,8 @@ class PilotLogController < ApplicationController
 			return
 		end
 
-		redirect_options={ :controller => 'pilot_log', :action => 'show' }
-
-		format=params['format'] || @default_format
-		redirect_options[:format]=format
-
-		if params['date_spec']=='today'
-			redirect_options[:date]='today'
-			redirect_to redirect_options
-		elsif params['date_spec']=='yesterday'
-			redirect_options[:date]='yesterday'
-			redirect_to redirect_options
-		elsif params['date_spec']=='single' 
-			if params.has_key?('year') && params.has_key?('month') && params.has_key?('day')
-				# TODO must be dddd-dd-dd (0 padding)
-				redirect_options[:date]="#{params['year']}-#{params['month']}-#{params['day']}"
-				redirect_to redirect_options
-			else
-				redirect_to
-			end
-		else
-			@format=format
-			render "pilot_log_date"
-		end
+		@format=params['format'] || @default_format
+		redirect_to_with_date :action=>'show', :format=>@format
 	end
 
 	def show
@@ -55,26 +33,8 @@ class PilotLogController < ApplicationController
 			return
 		end
 
-		# TODO use function, see plane_log_controller
-		begin
-			if params['date']=='today'
-				date=Date.today
-			elsif params['date']=='yesterday'
-				date=Date.today-1
-			elsif params['date'] =~ /\d\d\d\d-\d\d-\d\d/
-				date=Date.parse(params['date'])
-			# TODO or date range
-			end
-		rescue ArgumentError
-			# TODO: error message (flash message), redirect to form with (erroneous) values entered
-			# flash[:notice] = 'Flight was successfully created.'
-			redirect_to :action => 'index'
-		end
-
-		# TODO use function, see plane_log_controller
-		# TODO this has a lot of code duplication with plane_log_controller
-		first_time=date.midnight
-		last_time= date.midnight+1.day
+		date=params['date']
+		first_time, last_time=time_range(date)
 
 		condition="pilot=:person AND ((startzeit>=:first_time AND startzeit<:last_time) OR (landezeit>=:first_time AND landezeit<:last_time))"
 		condition_values={ :person=>@person.id, :first_time=>first_time, :last_time=>last_time }
@@ -94,8 +54,8 @@ class PilotLogController < ApplicationController
 			format.pdf  { render_pdf 'pilot_log.tex'; set_filename "flugbuch_#{date}.pdf"  }
 			format.tex  { render 'pilot_log'        ; set_filename "flugbuch_#{date}.tex"  }
 			format.csv  { render 'pilot_log'        ; set_filename "flugbuch_#{date}.csv"  }
-#			format.xml  { render :xml => @flights   ; set_filename "flugbuch_#{date}.xml"  }
-#			format.json { render :json => @flights  ; set_filename "flugbuch_#{date}.json" }
+			#format.xml  { render :xml => @flights   ; set_filename "flugbuch_#{date}.xml"  }
+			#format.json { render :json => @flights  ; set_filename "flugbuch_#{date}.json" }
 		end
 	end
 
