@@ -3,7 +3,7 @@
 <%# TODO: use UTF8 if possible; otherwise umlauts will mess up the erb renderer %>
 \documentclass[8pt,a4paper]{scrartcl}
 \usepackage[ngerman]{babel}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[dvips]{geometry}
 \usepackage{ae}
 \usepackage[T1]{fontenc}
@@ -22,7 +22,7 @@
 
 \newcommand{\cliptext}[2]{\psclip{\psframe[linestyle=none](-1,-1)(#1,2)}{\hbox{#2}}\endpsclip}
 
-\cohead{Bordbücher <%= l Settings.instance.location %>}
+\cohead{BordbÃ¼cher <%= l Settings.instance.location %>}
 \lohead{}
 \rohead{<%= l @date %>}
 
@@ -33,7 +33,7 @@
 \setlength{\tabcolsep}{0.4mm}
 
 <% if @plane_log.empty? %>
-	<p>Keine Einträge</p>
+	<p>Keine EintrÃ¤ge</p>
 <% else %>
 	<% @plane_log.keys.sort.each { |club| %>
 		<% entries=@plane_log[club] %>

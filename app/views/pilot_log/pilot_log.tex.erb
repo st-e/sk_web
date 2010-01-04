@@ -3,7 +3,7 @@
 <%# TODO: use UTF8 if possible; otherwise umlauts will mess up the erb renderer %>
 \documentclass[8pt,a4paper]{scrartcl}
 \usepackage[ngerman]{babel}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[dvips]{geometry}
 \usepackage{ae}
 \usepackage[T1]{fontenc}
@@ -23,7 +23,7 @@
 \newcommand{\cliptext}[2]{\psclip{\psframe[linestyle=none](-1,-1)(#1,2)}{\hbox{#2}}\endpsclip}
 
 <%# TODO configurable %>
-\cohead{Flugbuch f"ur <%= l @person.full_name %>}
+\cohead{Flugbuch für <%= l @person.full_name %>}
 \lohead{}
 \rohead{<%= l @date %>} <%# TODO date spec %>
 
@@ -34,9 +34,9 @@
 \setlength{\tabcolsep}{0.4mm}
 
 <% if @flights.empty? %>
-	Keine Fl"uge im angegebenen Zeitraum
+	Keine Flüge im angegebenen Zeitraum
 <% else %>
-	<%= l @flights.count %> Fl�ge
+	<%= l @flights.count %> Flüge
 
 	<%= render :partial => 'partials/list_table.tex.erb', :locals => { :table => @table } %>
 <% end %>

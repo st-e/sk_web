@@ -12,9 +12,9 @@ ActionController::Routing::Routes.draw do |map|
 
 
   # Allow POST to edit for the "Select person" subpage
-  map.resources :users, :member => { :edit => :post, :change_password => :get }
+  map.resources :users, :member => { :edit => :post, :change_password => [:get, :post] }
   #map.resources :flights # Not available
-  map.resources :planes
+  #map.resources :planes
   map.resources :people, :member => { :overwrite => [:get, :post] }
   
   # Flight list, plane log, pilot log and flight log accept a date specification

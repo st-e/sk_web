@@ -3,7 +3,7 @@
 <%# TODO: use UTF8 if possible; otherwise umlauts in this file will mess up the erb renderer %>
 \documentclass[8pt,a4paper,landscape]{scrartcl}
 \usepackage[ngerman]{babel}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[dvips]{geometry}
 \usepackage{ae}
 \usepackage[T1]{fontenc}
@@ -33,13 +33,12 @@
 \setlength{\tabcolsep}{0.4mm}
 
 <% if @flights.empty? %>
-	Keine Fl"uge
+	Keine Flüge
 <% else %>
-	<%= l @flights.count %> Fl�ge
+	<%= l @flights.count %> Flüge
 
 	<%= render :partial => 'partials/list_table.tex.erb', :locals => { :table => @table } %>
 <% end %>
 
 \end{document}
-
 

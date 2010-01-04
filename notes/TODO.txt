@@ -1,36 +1,35 @@
-Critical:
-* database is latin1?
-* utf8 characters in pdf fail
-* Passwords not logged
+Critical (before release):
 * login when no user exists
 * only allow deletion of unused people
-* overwrite confirmation without javascript
+* delete confirmation without javascript
 * Add: import master data
 * Prevent deletion of flights/planes => remove resource routes
-
-Major:
+* Only allow operations with appropriate permissions
 * for pilot_log, plane_log, flightlist, flight_db: displayed date range, and
   filename for 'today'
-* use table_for for all resource lists
-* use table_for for person selection
-* use alias_attribute in all models
-* User not found: 404 or error message
 * Session store in database? Key in SVN?
+* flight_db: separate towflights; format plugins
 
-Minor:
-* Better date input (single field accepting local and ISO date)
-* When overwriting a person, display their number of flights
-* route /person/1/overwrite/2
+Major (important changes):
 * paginated tables for resource lists and person selection
 * layout for tex
 * use yesno
+
+Minor (less important changes or much work):
+* When overwriting a person, display their number of flights
+* route /person/1/overwrite/2
 * "Create user" for person if there is none yet
 * When using time_range, recover from ArgumentError (invalid date), redirect to
   the form, display an error message and preenter the (erroneous) values
+* User not found: 404 or error message
+* use alias_attribute in all models
+* order of file formats
+* better error reporting with latex files
 
 Nice to have:
 * define human_attribute_name instead of manual text specification
 * date in local format
 * consolidate tabel partial and table_for
+* create/edit planes
 * create/edit flights
 
