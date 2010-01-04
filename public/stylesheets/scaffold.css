@@ -8,6 +8,8 @@ td,th { border: 1px solid black }
 td,th { font-size: 12px; }
 */
 
+.nobreak { white-space:nowrap; }
+
 table.list { border-collapse: collapse }
 table.list td,th { padding: 2px 10px 2px 5px } /* top, right, bottom, left */
 table.list td,th { border: solid white; border-width: 1px }

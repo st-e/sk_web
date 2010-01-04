@@ -14,7 +14,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users, :member => { :change_password => :get }
   map.resources :flights
   map.resources :planes
-  map.resources :people
+  map.resources :people, :member => { :overwrite => :get }
   
   map.flightlist 'flightlist/:date.:format', :controller => 'flightlist', :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ }
   map.plane_log  'plane_log/:date.:format' , :controller => 'plane_log' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ }

@@ -1,6 +1,6 @@
 <table class="list">
 	<tr class="header">
-		<% table[:columns].each { |column| %>
+		<% table[:columns].reject { |column| column[:title]==nil }.each { |column| %>
 			<th><nobr><%= h column[:title] %></nobr></th>
 		<% } %>
 	</tr>

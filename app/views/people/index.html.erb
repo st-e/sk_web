@@ -1,33 +1,31 @@
 <%= page_title "Personenliste" %>
 
-<table>
-	<tr>
-		<th>ID</th>
-		<th>Nachname</th>
-		<th>Vorname</th>
-		<th>Verein</th>
-		<th>Vereins-ID</th>
-		<th>Bemerkung</th>
-		<th>Benutzer</th>
-	</tr>
-
-	<% @people.each do |person| %>
+<% table_for(@people) { |table| %>
+	<% table.header { |header| %>
+		<%= header.text "ID"         %>
+		<%= header.text "Nachname"   %>
+		<%= header.text "Vorname"    %>
+		<%= header.text "Verein"     %>
+		<%= header.text "Vereins-ID" %>
+		<%= header.text "Bemerkung"  %>
+		<%= header.text "Benutzer"   %>
+	<% } %>
+	<% table.body { |body, person| %>
 		<% user=person.user %>
-		<tr>
-			<td><%= link_to person.id, person %></td>
-			<td><%= link_to person.last_name, person %></td>
-			<td><%= link_to person.first_name, person %></td>
-			<td><%=h person.verein %></td>
-			<td><%=h person.vereins_id %></td>
-			<td><%=h person.bemerkung %></td>
-			<td><%= h (user)?(user.username):"-" %></td>
-			<%# TODO overwrite %>
-			<td><%= link_to 'Editieren', edit_person_path(person) %></td>
-			<td><%= link_to 'Löschen', person, :confirm => 'Are you sure?', :method => :delete %></td>
-		</tr>
-	<% end %>
-</table>
+		<%= body.cell link_to(person.id, person)                      %>
+		<%= body.cell link_to(person.last_name, person)               %>
+		<%= body.cell link_to(person.first_name, person)              %>
+		<%= body.text person.verein                                   %>
+		<%= body.text person.vereins_id                               %>
+		<%= body.text person.bemerkung                                %>
+		<%= body.text((user)?(user.username):"-")                     %>
+		<%= body.cell link_to('Editieren',     edit_person_path(      person))                    %>
+		<%= body.cell link_to('Überschreiben', overwrite_person_path( person))                    %>
+		<%= body.cell link_to('Löschen', person, :confirm => 'Are you sure?', :method => :delete) %>
+	<% } %>
+<% } %>
 
 <br />
 
 <%= link_to 'New person', new_person_path %>
+
