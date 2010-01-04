@@ -9,6 +9,7 @@
 		<%= header.text "Vereins-ID" %>
 		<%= header.text "Bemerkung"  %>
 		<%= header.text "Benutzer"   %>
+		<%#= header.text "Benutzt?"   %>
 	<% } %>
 
 	<% table.body { |body, person| %>
@@ -20,6 +21,7 @@
 		<%= body.text person.vereins_id                               %>
 		<%= body.text person.bemerkung                                %>
 		<%= body.cell((user)?link_to(user.username, user):h("-"))     %>
+		<%#= body.text yesno(person.used?)     %>
 		<%= body.cell link_to('Editieren',     edit_person_path(      person))                    %>
 		<%= body.cell link_to('Löschen', person, :confirm => 'Are you sure?', :method => :delete) %>
 		<%= body.cell link_to('Überschreiben', overwrite_person_path( person))                    %>

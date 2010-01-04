@@ -62,7 +62,12 @@ class PeopleController < ApplicationController
 
 	def destroy
 		@person=Person.find(params[:id])
-		@person.destroy
+
+		if @person.used?
+			flash[:error]="Die Person #{@person.full_name} kann nicht gelöscht werden, da sie in Benutzung ist."
+		else
+			@person.destroy
+		end
 
 		respond_to do |format|
 			format.html { redirect_to(people_url) }
@@ -113,6 +118,9 @@ class PeopleController < ApplicationController
 		flash[:error]="Nach dem Überschreiben existiert noch ein Flug, der auf die Person verweist"     and redirect_to and return if Flight.exists? :pilot     =>wrong_person_id
 		flash[:error]="Nach dem Überschreiben existiert noch ein Flug, der auf die Person verweist"     and redirect_to and return if Flight.exists? :begleiter =>wrong_person_id
 		flash[:error]="Nach dem Überschreiben existiert noch ein Flug, der auf die Person verweist"     and redirect_to and return if Flight.exists? :towpilot  =>wrong_person_id
+
+		# Once again for safety
+		flash[:error]="Nach dem Überschreiben ist die Person noch in Benutzung" and redirect_to and return if @wrong_person.used?
 
 		# Delete the person
 		wrong_person_name=@wrong_person.full_name

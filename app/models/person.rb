@@ -1,7 +1,6 @@
 class Person < ActiveRecord::Base
 	set_table_name "person_temp" 
 	 
-	has_many :flights
 	has_one :user, :foreign_key => 'person'
 
 	# TODO replace all
@@ -21,6 +20,19 @@ class Person < ActiveRecord::Base
 
 	def formal_name
 		"#{nachname}, #{vorname}"
+	end
+
+	def destroy
+		# Don't allow destruction of people which are in use
+		return if used?
+		super
+	end
+
+	def used?
+		User  .exists?(:person    =>id)||
+		Flight.exists?(:pilot     =>id)||
+		Flight.exists?(:begleiter =>id)||
+		Flight.exists?(:towpilot  =>id)
 	end
 	
 	 #validates_presence_of :name, :title
