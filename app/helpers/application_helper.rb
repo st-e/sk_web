@@ -3,7 +3,9 @@ require 'erb'
 
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-	include TableFor
+	def yesno(value)
+		(value)?"Ja":"Nein"
+	end
 
 	def latex_escape(value)
 		return nil if !value
@@ -111,12 +113,21 @@ module ApplicationHelper
 			@array=array
 		end
 
-		def header(options={})
+		def header_row(options={})
 			classes=["header"]
 			classes << "nobreak" if options[:nobreak]
 
 			@target.concat "<tr class=\"#{classes.join(' ')}\">"
 			yield TableForRowContext.new(:header=>true)
+			@target.concat '</tr>'
+		end
+
+		def body_row(options={})
+			classes=["data"]
+			classes << "nobreak" if options[:nobreak]
+
+			@target.concat "<tr class=\"#{classes.join(' ')}\">"
+			yield TableForRowContext.new
 			@target.concat '</tr>'
 		end
 

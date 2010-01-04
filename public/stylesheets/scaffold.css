@@ -1,13 +1,5 @@
 body { background-color: #fff; color: #333; }
 
-/*
-table { text-align:left; border-collapse:collapse; }
-td,th { padding-left:5px; padding-right:10px; }
-td,th { padding-top:2px; padding-bottom:2px; }
-td,th { border: 1px solid black }
-td,th { font-size: 12px; }
-*/
-
 .nobreak { white-space:nowrap; }
 
 table.list { border-collapse: collapse }

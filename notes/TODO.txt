@@ -1,5 +1,4 @@
 Critical:
-* Add: overwrite person
 * date range for pilot log and flight db
 * remove create/edit flight actions
 * utf8 characters in pdf fail
@@ -8,6 +7,7 @@ Critical:
 * only allow deletion of unused people
 * overwrite confirmation without javascript
 * Add: import master data
+* Prevent deletion of flights/planes => remove resource routes
 
 Major:
 * use table_for for all resource lists
@@ -17,8 +17,12 @@ Major:
 * Session store in database? Key in SVN?
 
 Minor:
+* When overwriting a person, display their number of flights
+* route /person/1/overwrite/2
 * paginated tables for resource lists and person selection
 * layout for tex
+* use yesno
+* "Create user" for person if there is none yet
 
 Nice to have:
 * define human_attribute_name instead of manual text specification

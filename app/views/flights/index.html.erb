@@ -15,9 +15,9 @@
 
 <% @flights.each do |flight| %>
   <tr>
-    <td><%=h flight.plane.kennzeichen %></td>
-    <td><%=h (flight.pilot)?(flight.pilot.formal_name):("-") %></td>
-    <td><%=h (flight.copilot)?(flight.copilot.formal_name):("-") %></td>
+    <td><%=h flight.the_plane.kennzeichen %></td>
+    <td><%=h (flight.the_pilot)?(flight.the_pilot.formal_name):("-") %></td>
+    <td><%=h (flight.the_copilot)?(flight.the_copilot.formal_name):("-") %></td>
     <td><%=h flight.startort %></td>
     <td><%=h flight.zielort %></td>
     <td><%=h flight.anzahl_landungen %></td>

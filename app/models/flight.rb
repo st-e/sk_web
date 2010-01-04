@@ -9,36 +9,37 @@ class Flight < ActiveRecord::Base
 
 	set_table_name "flug_temp" 
 
-	belongs_to :plane,  :foreign_key => "flugzeug" 
-	belongs_to :pilot, :class_name => "Person", :foreign_key => "pilot"
-	belongs_to :copilot, :class_name => "Person", :foreign_key => "begleiter"
+	belongs_to :the_plane  , :class_name => "Plane" , :foreign_key => "flugzeug" 
+	belongs_to :the_pilot  , :class_name => "Person", :foreign_key => "pilot"
+	belongs_to :the_copilot, :class_name => "Person", :foreign_key => "begleiter"
+	# TODO towplane, towpilot
 
 	def effective_pilot_name
 		# TODO handle incomplete names
-		return pilot.formal_name if pilot
+		return the_pilot.formal_name if the_pilot
 		nil
 	end
 
 	def effective_copilot_name
 		# TODO handle incomplete names
-		return copilot.formal_name if copilot
+		return the_copilot.formal_name if the_copilot
 		nil
 	end
 
 	def effective_club
-		return pilot.verein if pilot
-		return plane.verein if plane
+		return the_pilot.verein if the_pilot
+		return the_plane.verein if the_plane
 		nil
 	end
 
 	def effective_plane_registration
-		return nil if !plane
-		plane.kennzeichen
+		return nil if !the_plane
+		the_plane.kennzeichen
 	end
 
 	def effective_plane_type
-		return nil if !plane
-		plane.typ
+		return nil if !the_plane
+		the_plane.typ
 	end
 
 	def self.mode_text(mode)
@@ -157,6 +158,7 @@ class Flight < ActiveRecord::Base
 		return nil if !is_airtow?
 		# We now know that launch_type is not nil
 		launch_type.registration
+		# TODO other airtow!
 	end
 
 	def effective_landing_time_towflight
@@ -210,7 +212,7 @@ class Flight < ActiveRecord::Base
 		return false if !prev
 
 		# Cannot merge entries of different planes
-		return false unless plane.kennzeichen == prev.plane.kennzeichen
+		return false unless the_plane.kennzeichen == prev.the_plane.kennzeichen
 
 		# Can only merge if both flights are local, return to the departure
 		# airfield and are at the same airfield.

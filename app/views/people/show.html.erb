@@ -2,49 +2,7 @@
 
 <% user=@person.user %>
 
-<table>
-	<tr>
-		<th>ID:</th>
-		<td><%=h @person.id %></td>
-	</tr>
-
-	<tr>
-		<th>Nachname:</th>
-		<td><%=h @person.nachname %></td>
-	</tr>
-
-	<tr>
-		<th>Vorname:</th>
-		<td><%=h @person.vorname %></td>
-	</tr>
-
-	<tr>
-		<th>Verein:</th>
-		<td><%=h @person.verein %></td>
-	</tr>
-
-	<tr>
-		<th>Benutzer:</th>
-		<td>
-			<% if user %>
-				<%= link_to "#{user.username}", user %>
-			<% else %>
-				-
-			<% end %>
-		</td>
-	</tr>
-
-	<tr>
-		<th>Vereins-ID:</th>
-		<td><%=h @person.vereins_id %></td>
-	</tr>
-
-	<tr>
-		<th>Bemerkung:</th>
-		<td><%=h @person.bemerkung %></td>
-	</tr>
-</table>
-
+<%= render :partial => 'person', :locals => { :person=>@person } %>
 
 <%= link_to 'Editieren', edit_person_path(@person) %> |
 <%= link_to 'Personenliste', people_path %>

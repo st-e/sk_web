@@ -129,9 +129,9 @@ protected
 			last_date=date
 			number+=1
 
-			plane=flight.plane
-			pilot=flight.pilot
-			copilot=flight.copilot
+			plane=flight.the_plane
+			pilot=flight.the_pilot
+			copilot=flight.the_copilot
 			
 			[
 				date                                   ,

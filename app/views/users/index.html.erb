@@ -1,33 +1,27 @@
 <%= page_title "Benutzerliste" %>
 
-<table>
-	<tr>
-		<th>Benutzername</th>
-		<th>Verein</th>
-		<th>Person</th>
-		<th>Vereinsadministrator</th>
-		<th>Flugdatenbank lesen</th>
-	</tr>
 
-	<% @users.each do |user| %>
+<% table_for(@users) { |table| %>
+	<% table.header_row { |header| %>
+		<%= header.text "Benutzername"         %>
+		<%= header.text "Verein"               %>
+		<%= header.text "Person"               %>
+		<%= header.text "Vereinsadministrator" %>
+		<%= header.text "Flugdatenbank lesen"  %>
+	<% } %>
+
+	<% person_formatter=lambda { |p| "#{p.formal_name} (#{p.id})" } %>
+	<% table.body { |body, user| %>
 		<% person=user.associated_person %>
-		<tr>
-			<td><%= link_to user.username, user %></td>
-			<td><%=h user.club %></td>
-			<td>
-				<% if person %>
-					<%= link_to "#{person.formal_name} (#{person.id})", person %>
-				<% else %>
-					-
-				<% end %>
-			</td>
-			<td><%= h (user.perm_club_admin)?"Ja":"Nein" %></td>
-			<td><%= h (user.perm_read_flight_db)?"Ja":"Nein" %></td>
-			<td><%= link_to 'Editieren', edit_user_path(user) %></td>
-			<td><%= link_to 'Löschen', user, :confirm => "Benutzer #{user.username} wirklich löschen?", :method => :delete %></td>
-		</tr>
-	<% end %>
-</table>
+		<%= body.cell link_to(user.username, user)                                    %>
+		<%= body.text user.club                                                       %>
+		<%= body.cell((person)?link_to(person_formatter.call(person), person):h("-")) %>
+		<%= body.text yesno(user.perm_club_admin)                                     %>
+		<%= body.text yesno(user.perm_read_flight_db)                                 %>
+		<%= body.cell link_to 'Editieren', edit_user_path(user)                                                              %>
+		<%= body.cell link_to 'Löschen', user, :confirm => "Benutzer #{user.username} wirklich löschen?", :method => :delete %>
+	<% } %>
+<% } %>
 
 <br />
 

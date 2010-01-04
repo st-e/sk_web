@@ -1,42 +1,39 @@
 <%= page_title "Personenauswahl für Benutzer #{h @user.username}" %>
 
-<% form_for(@user, :url => { :action => "edit" }) do |f| %>
+<% form_for(@user, :url => { :action => "edit" }, :html => {:method => :post}) do |f| %>
 	<%= f.hidden_field 'id'                 , { :value => @user.username            } %>
 	<%= f.hidden_field 'club'               , { :value => @user.club                } %>
 	<%= f.hidden_field 'perm_club_admin'    , { :value => @user.perm_club_admin     } %>
 	<%= f.hidden_field 'perm_read_flight_db', { :value => @user.perm_read_flight_db } %>
 	
+	<% table_for(@people) { |table| %>
+		<% table.body_row { |header| %>
+			<%= header.cell f.radio_button 'person', '0', :checked => !(@user.associated_person) %>
+			<%= header.text "Keine Person", :colspan=>6 %>
+		<% } %>
 
-	<table>
-		<tr>
-			<td><%= f.radio_button 'person', '0', :checked => !(@user.associated_person) %></td>
-			<td colspan=6>Keine Person</td>
-		</tr>
+		<% table.header_row { |header| %>
+			<%= header.text nil          %>
+			<%= header.text "ID"         %>
+			<%= header.text "Nachname"   %>
+			<%= header.text "Vorname"    %>
+			<%= header.text "Verein"     %>
+			<%= header.text "Vereins-ID" %>
+			<%= header.text "Bemerkung"  %>
+		<% } %>
 
-		<tr>
-			<th></th>
-			<th>ID</th>
-			<th>Nachname</th>
-			<th>Vorname</th>
-			<th>Verein</th>
-			<th>Vereins-ID</th>
-			<th>Bemerkung</th>
-		</tr>
+		<% table.body { |body, person| %>
+			<% checked=(@user.person==person.id)  %><%# person is the primary key, not the object %>
+			<%= body.cell f.radio_button('person', person.id, :checked => checked) %>
+			<%= body.cell link_to(person.id, person)                      %>
+			<%= body.cell link_to(person.last_name, person)               %>
+			<%= body.cell link_to(person.first_name, person)              %>
+			<%= body.text person.verein                                   %>
+			<%= body.text person.vereins_id                               %>
+			<%= body.text person.bemerkung                                %>
+		<% } %>
+	<% } %>
 
-		<% @people.each do |person| %>
-			<tr>
-				<% checked=(@user.person==person.id)  %><%# person is the primary key, not the object %>
-				<td><%= f.radio_button 'person', person.id, :checked => checked %></td>
-				<td><%=h person.id %></td>
-				<td><%=h person.nachname %></td>
-				<td><%=h person.vorname %></td>
-				<td><%=h person.verein %></td>
-				<td><%=h person.vereins_id %></td>
-				<td><%=h person.bemerkung %></td>
-			</tr>
-		<% end %>
-
-	</table>
 	<%= f.submit 'OK' %>
 <% end %>
 

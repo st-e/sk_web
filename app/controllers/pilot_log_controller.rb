@@ -118,8 +118,8 @@ protected
 
 		rows=flights.each_with_index.map { |flight, index| [
 			flight.effective_date                         ,
-			flight.plane.typ                              ,
-			flight.plane.kennzeichen                      ,
+			flight.the_plane.typ                              ,
+			flight.the_plane.kennzeichen                      ,
 			flight.effective_pilot_name             || "?",
 			flight.effective_copilot_name                 ,
 			flight.launch_type_pilot_log_designator || "?",

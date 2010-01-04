@@ -1,7 +1,7 @@
 <%= page_title "Personenliste" %>
 
 <% table_for(@people) { |table| %>
-	<% table.header { |header| %>
+	<% table.header_row { |header| %>
 		<%= header.text "ID"         %>
 		<%= header.text "Nachname"   %>
 		<%= header.text "Vorname"    %>
@@ -10,6 +10,7 @@
 		<%= header.text "Bemerkung"  %>
 		<%= header.text "Benutzer"   %>
 	<% } %>
+
 	<% table.body { |body, person| %>
 		<% user=person.user %>
 		<%= body.cell link_to(person.id, person)                      %>
@@ -18,10 +19,10 @@
 		<%= body.text person.verein                                   %>
 		<%= body.text person.vereins_id                               %>
 		<%= body.text person.bemerkung                                %>
-		<%= body.text((user)?(user.username):"-")                     %>
+		<%= body.cell((user)?link_to(user.username, user):h("-"))     %>
 		<%= body.cell link_to('Editieren',     edit_person_path(      person))                    %>
-		<%= body.cell link_to('Überschreiben', overwrite_person_path( person))                    %>
 		<%= body.cell link_to('Löschen', person, :confirm => 'Are you sure?', :method => :delete) %>
+		<%= body.cell link_to('Überschreiben', overwrite_person_path( person))                    %>
 	<% } %>
 <% } %>
 
