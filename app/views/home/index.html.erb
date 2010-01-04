@@ -32,7 +32,7 @@
   </li>
   <li>Account
     <ul>
-      <li><%= link_to "Passwort ändern", '' %></li>
+		<li><%= link_to "Passwort ändern", :controller => 'session', :action => 'change_password' %></li>
 		<% if session[:username] %>
 			<li><%= link_to "Abmelden", logout_path %></li>
 		<% else %>

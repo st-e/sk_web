@@ -94,16 +94,17 @@ class UsersController < ApplicationController
 
 	def change_password
 		@user = User.find(params[:id])
+		@display_old_password=false
 
 		password1=params[:password1]
 		password2=params[:password2]
 		
 		if password1 && password2
-			if password1.blank?
-				flash.now[:error] = 'Passwort darf nicht leer sein'
-				render
-			elsif password1!=password2
+			if password1!=password2
 				flash.now[:error] = 'Passwörter stimmen nicht überein'
+				render
+			elsif password1.blank?
+				flash.now[:error] = 'Passwort darf nicht leer sein'
 				render
 			else
 				@user.password=mysql_password_hash(password1)

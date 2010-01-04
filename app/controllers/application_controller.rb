@@ -61,6 +61,14 @@ protected
 		before_filter :require_local_or_logged_in, options
 	end
 
+	def current_username
+		session[:username]
+	end
+
+	def current_user
+		return nil if !session[:username]
+		User.find(session[:username])
+	end
 
 private
 	def require_login
