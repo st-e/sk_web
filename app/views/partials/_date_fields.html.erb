@@ -1,3 +1,9 @@
+<%
+	format="%d.%m.%Y"
+	date_formatter=lambda { |date| date.strftime(format).gsub(/(^|\.)0/, '\1') }
+	today=Date.today
+	first_date=Date.new(today.year, 1, 1)
+%>
 <tr>
 	<td>Datum:</td>
 	<td><%= radio_button_tag('date', 'today', true) %>Heute</td>
@@ -8,25 +14,16 @@
 </tr>
 <tr>
 	<td></td>
-	<td><%= radio_button_tag('date', 'single', false) %>Anderes Datum: </td>
-	<td>Jahr:  <%= text_field_tag 'year' , Date.today.year , :size => 4 %></td>
-	<td>Monat: <%= text_field_tag 'month', Date.today.month, :size => 2 %></td>
-	<td>Tag:   <%= text_field_tag 'day'  , Date.today.day  , :size => 2 %></td>
+	<td><%= radio_button_tag('date', 'single', false) %>Anderes Datum: <%= text_field_tag 'single_date', date_formatter.call(today), :size=>10, :maxlength=>10 %></td>
 </tr>
 <% if local_assigns[:enable_range] %>
 <tr>
 	<td></td>
-	<td><%= radio_button_tag('date', 'range', false) %>Bereich: </td>
-	<td>Jahr:  <%= text_field_tag 'start_year' , Date.today.year , :size => 4 %></td>
-	<td>Monat: <%= text_field_tag 'start_month', 1               , :size => 2 %></td>
-	<td>Tag:   <%= text_field_tag 'start_day'  , 1               , :size => 2 %></td>
-</tr>
-<tr>
-	<td></td>
-	<td style="text-align: right">bis</td>
-	<td>Jahr:  <%= text_field_tag 'end_year' , Date.today.year , :size => 4 %></td>
-	<td>Monat: <%= text_field_tag 'end_month', Date.today.month, :size => 2 %></td>
-	<td>Tag:   <%= text_field_tag 'end_day'  , Date.today.day  , :size => 2 %></td>
+	<td>
+		<%= radio_button_tag('date', 'range', false) %>Bereich:
+		<%= text_field_tag 'first_date', date_formatter.call(first_date), :size=>10, :maxlength=>10 %> bis
+		<%= text_field_tag 'last_date' , date_formatter.call(today     ), :size=>10, :maxlength=>10 %>
+	</td>
 </tr>
 <% end %>
 

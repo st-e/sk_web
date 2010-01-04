@@ -1,5 +1,4 @@
 Critical:
-* date range for pilot log and flight db
 * remove create/edit flight actions
 * utf8 characters in pdf fail
 * Passwords not logged

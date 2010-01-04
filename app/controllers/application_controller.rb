@@ -70,12 +70,26 @@ protected
 		User.find(session[:username])
 	end
 
+#	def reformat_date
+#	end
+
 	def date_spec
+#		date_type=params['date']
+#		if date_type=='today'
+#
+#		elsif date_type=='yesterday'
+#		elsif date_type=='single'
+#		elsif date_type=='range'
+#		else
+#		end
+
 		case params['date']
 			when 'today'     then 'today'
 			when 'yesterday' then 'yesterday'
-			when 'single'    then sprintf("%04d-%02d-%02d", params['year'], params['month'], params['day'])
-			when 'range'     then sprintf("%04d-%02d-%02d_%04d-%02d-%02d", params['start_year'], params['start_month'], params['start_day'], params['end_year'], params['end_month'], params['end_day'])
+			when 'single'    then Date.parse(params['single_date']).to_s
+			when 'range'     then first=params['first_date']; last=params['last_date']; "#{Date.parse(first)}_#{Date.parse(last)}"
+#			when 'single'    then sprintf("%04d-%02d-%02d", params['year'], params['month'], params['day'])
+#			when 'range'     then sprintf("%04d-%02d-%02d_%04d-%02d-%02d", params['start_year'], params['start_month'], params['start_day'], params['end_year'], params['end_month'], params['end_day'])
 			else nil
 		end
 	end
