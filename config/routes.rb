@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # Allow POST to edit for the "Select person" subpage
   map.resources :users, :member => { :edit => :post, :change_password => :get }
-  map.resources :flights
+  #map.resources :flights # Not available
   map.resources :planes
   map.resources :people, :member => { :overwrite => [:get, :post] }
   
