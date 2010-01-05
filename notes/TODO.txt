@@ -9,7 +9,6 @@ Critical (before release):
   - create any user on first connect
 
 Major (important changes):
-* 1 Flüge
 * paginated tables for resource lists and person selection
 * layout for tex
 * use yesno

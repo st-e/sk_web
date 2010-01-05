@@ -2,11 +2,9 @@
 
 <p><%= render :partial=>'partials/date_range', :locals=>{:date_range=>@date_range} %></p>
 
-<% if @flights.empty? %>
-	<p>Keine Flüge im angegebenen Zeitraum</p>
-<% else %>
-	<p><%= h @flights.count %> Flüge</p>
+<p><%= render :partial=>'partials/flight_count', :locals=>{:num_flights=>@flights.size} %></p>
 
+<% if !@flights.empty? %>
 	<%= render :partial => 'partials/list_table', :locals => { :table => @table } %>
 <% end %>
 

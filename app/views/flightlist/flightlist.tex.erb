@@ -32,11 +32,9 @@
 
 \setlength{\tabcolsep}{0.4mm}
 
-<% if @flights.empty? %>
-	Keine Flüge
-<% else %>
-	<%= l @flights.count %> Flüge
+<%= render :partial=>'partials/flight_count.tex', :locals=>{:num_flights=>@flights.size} %>
 
+<% if !@flights.empty? %>
 	<%= render :partial => 'partials/list_table.tex.erb', :locals => { :table => @table } %>
 <% end %>
 
