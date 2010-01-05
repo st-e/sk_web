@@ -4,19 +4,26 @@ require 'tmpdir'
 class FlightDbController < ApplicationController
 	def initialize
 		@default_format="html"
+		@default_data_format="default"
 	end
 
 	def index
 		@format=params['format'] || @default_format
-		redirect_to_with_date :action=>'show', :format=>@format
+		parameters={}
+		parameters[:format]=@format
+		parameters[:towflights_extra]='true' if params['towflights_extra'].to_b
+		parameters[:data_format]=params['data_format'] if params['data_format']!=@default_data_format
+		redirect_to_with_date parameters.merge({:action=>'show'})
 	end
 
 	def show
 		format=params['format'] || @default_format
 
 		@date_range=date_range(params['date'])
-		# TODO have to sort?
-		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true})#.sort_by { |flight| flight.effective_time }
+
+		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true})
+		@flights+=Flight.make_towflights(@flights) if params['towflights_extra'].to_b
+		@flights=@flights.sort_by { |flight| flight.effective_time }
 
 		@table=make_table(@flights)
 
@@ -30,38 +37,46 @@ class FlightDbController < ApplicationController
 		end
 	end
 
+	def self.data_format_options
+		# TODO read plugins
+		{
+			"Standard" => 'default',
+			"LSV Albgau (Plugin)" => 'lsv_albgau'
+		}
+	end
+
 protected
 	def make_table(flights)
 		columns = [
-			{ :title => 'Datum'                       , :width => 0 },
-			{ :title => 'Nummer'                      , :width => 0 },
-			{ :title => 'Kennzeichen'                 , :width => 0 },
-			{ :title => 'Typ'                         , :width => 0 },
-			{ :title => 'Flugzeug Verein'             , :width => 0 },
-			{ :title => 'Pilot Nachname'              , :width => 0 },
-			{ :title => 'Pilot Vorname'               , :width => 0 },
-			{ :title => 'Pilot Verein'                , :width => 0 },
-			{ :title => 'Pilot VID'                   , :width => 0 },
-			{ :title => 'Begleiter Nachname'          , :width => 0 },
-			{ :title => 'Begleiter Vorname'           , :width => 0 },
-			{ :title => 'Begleiter Verein'            , :width => 0 },
-			{ :title => 'Begleiter VID'               , :width => 0 },
-			{ :title => 'Flugtyp'                     , :width => 0 },
-			{ :title => 'Anzahl Landungen'            , :width => 0 },
-			{ :title => 'Modus'                       , :width => 0 },
-			{ :title => 'Startzeit'                   , :width => 0 },
-			{ :title => 'Landezeit'                   , :width => 0 },
-			{ :title => 'Flugdauer'                   , :width => 0 },
-			{ :title => 'Startart'                    , :width => 0 },
-			{ :title => 'Kennzeichen Schleppflugzeug' , :width => 0 },
-			{ :title => 'Modus Schleppflugzeug'       , :width => 0 },
-			{ :title => 'Landung Schleppflugzeug'     , :width => 0 },
-			{ :title => 'Startort'                    , :width => 0 },
-			{ :title => 'Zielort'                     , :width => 0 },
-			{ :title => 'Zielort Schleppflugzeug'     , :width => 0 },
-			{ :title => 'Bemerkungen'                 , :width => 0 },
-			{ :title => 'Abrechnungshinweis'          , :width => 0 },
-			{ :title => 'DBID'                        , :width => 0 }
+			{ :title => 'Datum'                       },
+			{ :title => 'Nummer'                      },
+			{ :title => 'Kennzeichen'                 },
+			{ :title => 'Typ'                         },
+			{ :title => 'Flugzeug Verein'             },
+			{ :title => 'Pilot Nachname'              },
+			{ :title => 'Pilot Vorname'               },
+			{ :title => 'Pilot Verein'                },
+			{ :title => 'Pilot VID'                   },
+			{ :title => 'Begleiter Nachname'          },
+			{ :title => 'Begleiter Vorname'           },
+			{ :title => 'Begleiter Verein'            },
+			{ :title => 'Begleiter VID'               },
+			{ :title => 'Flugtyp'                     },
+			{ :title => 'Anzahl Landungen'            },
+			{ :title => 'Modus'                       },
+			{ :title => 'Startzeit'                   },
+			{ :title => 'Landezeit'                   },
+			{ :title => 'Flugdauer'                   },
+			{ :title => 'Startart'                    },
+			{ :title => 'Kennzeichen Schleppflugzeug' },
+			{ :title => 'Modus Schleppflugzeug'       },
+			{ :title => 'Landung Schleppflugzeug'     },
+			{ :title => 'Startort'                    },
+			{ :title => 'Zielort'                     },
+			{ :title => 'Zielort Schleppflugzeug'     },
+			{ :title => 'Bemerkungen'                 },
+			{ :title => 'Abrechnungshinweis'          },
+			{ :title => 'DBID'                        }
 		]
 
 		last_date=nil

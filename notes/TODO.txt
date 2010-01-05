@@ -1,5 +1,5 @@
 Critical (before release):
-* flight_db: separate towflights; format plugins
+* flight_db: format plugins
 * Add: import master data
 * Only allow operations with appropriate permissions
 * Session store in database? Key in SVN?
@@ -11,6 +11,9 @@ Critical (before release):
 Major (important changes):
 * paginated tables for resource lists and person selection
 * layout for tex
+* consider towflights for pilot log
+* make it not break on flights with NULL date (Flight.new.save)
+* Flight.<=> (and use sort instead of sort_by)
 
 Minor (less important changes or much work):
 * make class DateRange

@@ -7,3 +7,7 @@ Notes:
 	if in database.yml the database encoding is set to utf8, but not when it is
 	set to latin1?
 
+Tests:
+  - towflight extra works for other and unknown towplane
+  - incomplete towpilot name
+

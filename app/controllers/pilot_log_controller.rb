@@ -45,7 +45,7 @@ class PilotLogController < ApplicationController
 			else
 				"pilot=:person"
 		end
-		condition_values={:person=>@person.id, :type=>Flight.training2_flight_type}
+		condition_values={:person=>@person.id, :type=>Flight.flight_type_training2}
 
 		# TODO have to sort?
 		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true}, [condition, condition_values])#.sort_by { |flight| flight.effective_time }

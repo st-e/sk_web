@@ -114,7 +114,7 @@ protected
 			last_date =Date.parse($2)
 			first_date..last_date
 		else
-			throw ArgumentError.new("Invalid date specification")
+			raise ArgumentError, "Invalid date specification"
 		end
 	end
 

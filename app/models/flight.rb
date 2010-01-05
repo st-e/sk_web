@@ -73,8 +73,16 @@ class Flight < ActiveRecord::Base
 		end
 	end
 
-	def self.training2_flight_type
+	def self.flight_type_training2
 		3
+	end
+
+	def self.flight_type_tow
+		7
+	end
+
+	def is_towflight?
+		typ=Flight.flight_type_tow
 	end
 
 	def flight_type_text
@@ -109,8 +117,26 @@ class Flight < ActiveRecord::Base
 		status & STATUS_TOWPLANE_LANDED
 	end
 
+	def set_status(started, landed, towflight_landed)
+		s=0
+		s|=STATUS_STARTED         if started
+		s|=STATUS_LANDED          if landed
+		s|=STATUS_TOWPLANE_LANDED if towflight_landed
+		self.status=s.to_s # the self. is important
+	end
+
+	# TODO rename to the_launch_type
 	def launch_type
 		LaunchType.find(startart)
+	end
+
+	# TODO rename to the_launch_type=
+	def launch_type=(lt)
+		if lt
+			self.startart=lt.id # self.!
+		else
+			self.startart=0 # self.!
+		end
 	end
 
 	def is_airtow?
@@ -165,6 +191,23 @@ class Flight < ActiveRecord::Base
 		# TODO other airtow!
 	end
 
+	def towplane_id
+		lt=launch_type
+
+		return 0 if !lt
+		return 0 if !lt.is_airtow?
+
+		if lt.towplane_known?
+			# The registration of the towplane is known from the launch type
+			plane=Plane.first(:conditions => {:kennzeichen=>lt.registration})
+			return 0 if !plane
+			plane.id
+		else
+			# Other towplane - the id of the towplane is stored in the flight
+			towplane
+		end
+	end
+
 	def effective_landing_time_towflight
 		return nil if !is_airtow?
 		return nil if !towflight_lands_here?
@@ -200,7 +243,7 @@ class Flight < ActiveRecord::Base
 		elsif lands_here? && landed?
 			landezeit
 		else
-			# This should not happen because any flight either starts or lands here
+			# Prepared flight
 			nil
 		end
 	end
@@ -249,6 +292,75 @@ class Flight < ActiveRecord::Base
 		# to filter out all flights where the effective date is not in the
 		# range.
 		Flight.all(query_args).select { |flight| range.include? flight.effective_date }
+	end
+
+	def make_towflight
+		towflight=Flight.new
+
+		# Make sure the towflight is not accidentally saved
+		class << towflight
+			def create_or_update; raise ArgumentError, "Thou shalt not save this flight!"; end
+			def save;             raise ArgumentError, "Thou shalt not save this flight!"; end
+			def save!;            raise ArgumentError, "Thou shalt not save this flight!"; end
+		end
+
+		# The tow flight has the same ID as the flight so they can be related
+		# to each other
+		towflight.id=id
+
+		# The plane of the towflight is the towplane of the flight
+		towflight.flugzeug=towplane_id
+
+		# The pilot of the towflight is the towpilot of the flight; the
+		# towflight has not copilot or towpilot
+		towflight.pilot=towpilot
+		# towflight.copilot
+		# towflight.towpilot
+		towflight.pvn=tpvn
+		towflight.pnn=tpnn
+		#towflight.bvn
+		#towflight.bnn
+		#towflight.tpvn
+		#towflight.tpnn
+		
+		# The launch time of the towflight is the launch time of the flight;
+		# the landing time of the towflight is the towflight landing time of
+		# the flight
+		towflight.startzeit=startzeit
+		towflight.landezeit=land_schlepp
+		# towflight.land_schlepp
+
+		towflight.launch_type=LaunchType.self_launch
+		towflight.typ=Flight.flight_type_tow
+
+		towflight.startort=startort
+		towflight.zielort=zielort_sfz
+		# towflight.zielort_sfz
+
+		towflight.anzahl_landungen=(towflight_lands_here? && towflight_landed?)?1:0
+
+		towflight.bemerkung="Schleppflug für Flug Nr. #{id}"
+		#towflight.abrechnungshinweis
+		towflight.modus=modus_sfz
+		#towflight.modus_sfz
+		#towflight.towplane=nil
+
+		towflight.set_status started?, towflight_landed?, false
+
+		towflight
+	end
+
+	def self.make_towflights(flights)
+		towflights=[]
+
+		flights.each { |flight|
+			if flight.is_airtow?
+				towflight=flight.make_towflight
+				towflights << towflight if towflight
+			end
+		}
+
+		towflights
 	end
 end
 

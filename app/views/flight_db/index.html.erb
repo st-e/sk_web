@@ -6,6 +6,14 @@
 		<%# TODO format plugin %>
 		<%# TODO separate towflights %>
 		<tr>
+			<td>Schleppflüge einzeln:</td>
+			<td><%= check_box_tag 'towflights_extra', 'true' %></td>
+		</tr>
+		<tr>
+			<td>Datenformat:</td>
+			<td><%= select_tag 'data_format', options_for_select(FlightDbController.data_format_options) %></td>
+		</tr>
+		<tr>
 			<td>Format:</td>
 			<td><%= select_tag('format', options_for_select({"HTML"=>'html', "CSV"=>'csv'}, @format)) %></td>
 		</tr>
