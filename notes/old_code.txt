@@ -1,13 +1,8 @@
-// Valid user names: [a-z][A-Z]_.-
-
 // Add towplane registration as comment if not known from launch type
 
-Delete person: !db.person_used (id)
 Create person: club id unique
 
 Delete user: not self, own club
-
-Create user: name unique
 
 // Import master data:
 	// Check the persons for errors.

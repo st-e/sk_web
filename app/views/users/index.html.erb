@@ -3,6 +3,11 @@
 
 <% table_for(@users) { |table| %>
 	<% table.header_row { |header| %>
+		<%= header.text "Benutzerdaten" , :colspan=>3 %>
+		<%= header.text "Berechtigungen", :colspan=>2 %>
+	<% } %>
+
+	<% table.header_row { |header| %>
 		<%= header.text "Benutzername"         %>
 		<%= header.text "Verein"               %>
 		<%= header.text "Person"               %>
