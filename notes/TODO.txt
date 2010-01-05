@@ -1,5 +1,4 @@
 Critical (before release):
-* flight_db: format plugins
 * Add: import master data
 * Only allow operations with appropriate permissions
 * Session store in database? Key in SVN?

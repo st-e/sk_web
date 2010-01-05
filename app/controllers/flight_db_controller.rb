@@ -25,7 +25,14 @@ class FlightDbController < ApplicationController
 		@flights+=Flight.make_towflights(@flights) if params['towflights_extra'].to_b
 		@flights=@flights.sort_by { |flight| flight.effective_time }
 
-		@table=make_table(@flights)
+		@data_format=params['data_format']
+		if !@data_format
+			@table=make_table(@flights)
+		else
+			@data_format_plugin=DataFormatPlugin.registered_plugins[@data_format]
+			@table=@data_format_plugin.make_table(@flights)
+		end
+
 
 		respond_to do |format|
 			format.html { render 'flight_db'        ; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.html" }
@@ -38,10 +45,10 @@ class FlightDbController < ApplicationController
 	end
 
 	def self.data_format_options
-		# TODO read plugins
-		{
-			"Standard" => 'default',
-			"LSV Albgau (Plugin)" => 'lsv_albgau'
+		result=[["Standard", 'default']]
+		
+		result+=DataFormatPlugin.registered_plugins.to_a.map { |name, plugin|
+			["#{plugin.title} (Plugin)", name]
 		}
 	end
 

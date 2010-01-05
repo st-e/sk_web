@@ -6,6 +6,10 @@
 	<%= render :partial=>'partials/flight_count', :locals=>{:num_flights=>@flights.size} %>
 </p>
 
+<% if @data_format_plugin %>
+	<p>Format: <%= @data_format_plugin.title %> (Plugin-Version: <%= @data_format_plugin.version %>, Autor: <%= @data_format_plugin.author %>)</p>
+<% end %>
+
 <% if !@flights.empty? %>
 	<%= render :partial => 'partials/list_table', :locals => { :table => @table } %>
 <% end %>

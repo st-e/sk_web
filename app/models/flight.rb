@@ -59,30 +59,31 @@ class Flight < ActiveRecord::Base
 		Flight.mode_text(modus_sfz)
 	end
 
+	TYPE_NORMAL=2
+	TYPE_TRAINING_2=3
+	TYPE_TRAINING_1=4
+	TYPE_GUEST_PRIVATE=6
+	TYPE_GUEST_EXTERNAL=8
+	TYPE_TOW=7
+
 	def self.flight_type_text(flight_type)
 		case flight_type
-			when 1; return nil
-			when 2; return "Normalflug"
-			when 3; return "Schulung (2)"
-			when 4; return "Schulung (1)"
-			when 5; nil
-			when 6; return "Gastflug (P)"
-			when 8; return "Gastflug (E)"
-			when 7; return "Schlepp"
+			when Flight::TYPE_NORMAL; return "Normalflug"
+			when Flight::TYPE_TRAINING_2; return "Schulung (2)"
+			when Flight::TYPE_TRAINING_1; return "Schulung (1)"
+			when Flight::TYPE_GUEST_PRIVATE; return "Gastflug (P)"
+			when Flight::TYPE_GUEST_EXTERNAL; return "Gastflug (E)"
+			when Flight::TYPE_TOW; return "Schlepp"
 			else; nil
 		end
 	end
 
-	def self.flight_type_training2
-		3
-	end
-
-	def self.flight_type_tow
-		7
+	def is_training?
+		self.typ==TYPE_TRAINING_1 || self.typ==TYPE_TRAINING_2
 	end
 
 	def is_towflight?
-		typ=Flight.flight_type_tow
+		typ=Flight.TYPE_TOW
 	end
 
 	def flight_type_text
@@ -156,15 +157,22 @@ class Flight < ActiveRecord::Base
 		launch_type.pilot_log_designator
 	end
 
+	def launch_time_valid?
+		starts_here? and started?
+	end
+
+	def landing_time_valid?
+		lands_here? and landed?
+	end
+
 	def effective_launch_time
-		return nil if !starts_here?
-		return nil if !started?
+		return nil if !launch_time_valid?
+		# TODO return time, and use in LSV albgau plugin
 		startzeit.strftime('%H:%M')
 	end
 
 	def effective_landing_time
-		return nil if !lands_here?
-		return nil if !landed?
+		return nil if !landing_time_valid?
 		landezeit.strftime('%H:%M')
 	end
 
@@ -331,7 +339,7 @@ class Flight < ActiveRecord::Base
 		# towflight.land_schlepp
 
 		towflight.launch_type=LaunchType.self_launch
-		towflight.typ=Flight.flight_type_tow
+		towflight.typ=TYPE_TOW
 
 		towflight.startort=startort
 		towflight.zielort=zielort_sfz
