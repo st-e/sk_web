@@ -8,6 +8,8 @@
 
 <% if @data_format_plugin %>
 	<p>Format: <%= @data_format_plugin.title %> (Plugin-Version: <%= @data_format_plugin.version %>, Autor: <%= @data_format_plugin.author %>)</p>
+<% else %>
+	<p>Format: Standard</p>
 <% end %>
 
 <% if !@flights.empty? %>
