@@ -1,7 +1,6 @@
 <%= page_title "Flugbuch für #{h @person.full_name}" %>
 
-<%# TODO date spec %>
-<p><%= h @date %></p>
+<p><%= render :partial=>'partials/date_range', :locals=>{:date_range=>@date_range} %></p>
 
 <% if @flights.empty? %>
 	<p>Keine Flüge im angegebenen Zeitraum</p>

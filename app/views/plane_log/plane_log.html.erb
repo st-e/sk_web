@@ -1,6 +1,6 @@
 <%= page_title "Hauptflugbuch #{h Settings.instance.location}" %>
 
-<p><%= h @date %></p>
+<p><%= render :partial=>'partials/date_range', :locals=>{:date_range=>@date_range} %></p>
 
 <% if @plane_log.empty? %>
 	<p>Keine Einträge</p>

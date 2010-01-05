@@ -24,7 +24,7 @@
 
 \cohead{Bordbücher <%= l Settings.instance.location %>}
 \lohead{}
-\rohead{<%= l @date %>}
+\rohead{<%= render :partial=>'partials/date_range.tex', :locals=>{:date_range=>@date_range} %>}
 
 \cofoot{}
 \lofoot{<%= l version_string %>}

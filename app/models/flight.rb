@@ -183,7 +183,7 @@ class Flight < ActiveRecord::Base
 	end
 
 	def num_people
-		if copilot
+		if the_copilot
 			2
 		else
 			1
@@ -191,9 +191,9 @@ class Flight < ActiveRecord::Base
 	end
 
 	def effective_time
-		if starts_here?
+		if starts_here? && started?
 			startzeit
-		elsif lands_here?
+		elsif lands_here? && landed?
 			landezeit
 		else
 			# This should not happen because any flight either starts or lands here
@@ -224,6 +224,27 @@ class Flight < ActiveRecord::Base
 		# For motor planes: only allow merging of towflights
 		# TODO: gliders and motor gliders true, other only for towflights
 		true
+	end
+
+	# additional_conditions is an array ["foo=:f", {:f=>42}]
+	def Flight.find_by_date_range(range, options={}, additional_conditions=nil)
+		begin_time=range.begin.midnight
+		end_time  =range.end  .midnight; end_time=end_time+1.day unless range.exclude_end?
+
+		condition="(startzeit>=:begin_time AND startzeit<:end_time) OR (landezeit>=:begin_time AND landezeit<:end_time)"
+		condition_values={ :begin_time=>begin_time, :end_time=>end_time }
+
+		if additional_conditions
+			condition="(#{additional_conditions[0]}) AND (#{condition})"
+			condition_values.merge! additional_conditions[1]
+		end
+
+		query_args=options.merge({ :conditions => [condition, condition_values] })
+		# It is possible that the start/landing time of a flight is in range,
+		# but insignificant (for example, for a leaving flight). Thus, we have
+		# to filter out all flights where the effective date is not in the
+		# range.
+		Flight.all(query_args).select { |flight| range.include? flight.effective_date }
 	end
 end
 

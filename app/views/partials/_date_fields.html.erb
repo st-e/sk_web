@@ -1,6 +1,4 @@
 <%
-	format="%d.%m.%Y"
-	date_formatter=lambda { |date| date.strftime(format).gsub(/(^|\.)0/, '\1') }
 	today=Date.today
 	first_date=Date.new(today.year, 1, 1)
 %>
@@ -14,15 +12,15 @@
 </tr>
 <tr>
 	<td></td>
-	<td><%= radio_button_tag('date', 'single', false) %>Anderes Datum: <%= text_field_tag 'single_date', date_formatter.call(today), :size=>10, :maxlength=>10 %></td>
+	<td><%= radio_button_tag('date', 'single', false) %>Anderes Datum: <%= text_field_tag 'single_date', date_formatter(german_format, true).call(today), :size=>10, :maxlength=>10 %></td>
 </tr>
 <% if local_assigns[:enable_range] %>
 <tr>
 	<td></td>
 	<td>
 		<%= radio_button_tag('date', 'range', false) %>Bereich:
-		<%= text_field_tag 'first_date', date_formatter.call(first_date), :size=>10, :maxlength=>10 %> bis
-		<%= text_field_tag 'last_date' , date_formatter.call(today     ), :size=>10, :maxlength=>10 %>
+		<%= text_field_tag 'first_date', date_formatter(german_format, true).call(first_date), :size=>10, :maxlength=>10 %> bis
+		<%= text_field_tag 'last_date' , date_formatter(german_format, true).call(today     ), :size=>10, :maxlength=>10 %>
 	</td>
 </tr>
 <% end %>

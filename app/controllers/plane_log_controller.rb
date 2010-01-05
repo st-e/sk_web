@@ -14,20 +14,13 @@ class PlaneLogController < ApplicationController
 	end
 
 	def show
-		date=params['date']
-		first_time, last_time=time_range(date)
-
-		condition="(startzeit>=:first_time AND startzeit<:last_time) OR (landezeit>=:first_time AND landezeit<:last_time)"
-		condition_values={ :first_time=>first_time, :last_time=>last_time }
-		flights=Flight.all(:readonly=>true, :conditions => [condition, condition_values])#.sort_by { |flight| flight.effective_time }
-		# TODO filter out flights that have not started/landed (that is, there
-		# is a time, but the corresponding flags are not set), or where the
-		# launch/landing time is not valid (due to flight mode)
+		@date_range=date_range(params['date'])
+		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true})
 
 		format=params['format'] || @default_format
 
 		@plane_log=Hash.new { |hash, key| hash[key]=[] }
-		PlaneLog.create_for_flights(flights).each_pair { |plane, log_entries|
+		PlaneLog.create_for_flights(@flights).each_pair { |plane, log_entries|
 			@plane_log[plane.verein]+=log_entries
 		}
 
@@ -36,16 +29,14 @@ class PlaneLogController < ApplicationController
 			@tables[club]=make_table(entries)
 		}
 
-		@date=date
-
 		# TODO disallow all but PDF for non-privileged users
 		respond_to do |format|
-			format.html { render 'plane_log'        ; set_filename "bordbuecher_#{date}.html" }
-			format.pdf  { render_pdf 'plane_log.tex'; set_filename "bordbuecher_#{date}.pdf"  }
-			format.tex  { render 'plane_log'        ; set_filename "bordbuecher_#{date}.tex"  }
-			#format.csv  { render 'plane_log'        ; set_filename "bordbuecher_#{date}.csv"  }
-			#format.xml  { render :xml => @flights   ; set_filename "bordbuecher_#{date}.xml"  }
-			#format.json { render :json => @flights  ; set_filename "bordbuecher_#{date}.json" }
+			format.html { render 'plane_log'        ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.html" }
+			format.pdf  { render_pdf 'plane_log.tex'; set_filename "bordbuecher_#{date_range_filename(@date_range)}.pdf"  }
+			format.tex  { render 'plane_log'        ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.tex"  }
+			#format.csv  { render 'plane_log'        ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.csv"  }
+			#format.xml  { render :xml => @flights   ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.xml"  }
+			#format.json { render :json => @flights  ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.json" }
 		end
 	end
 

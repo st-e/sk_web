@@ -1,9 +1,6 @@
 Critical (before release):
 * Add: import master data
-* Prevent deletion of flights/planes => remove resource routes
 * Only allow operations with appropriate permissions
-* for pilot_log, plane_log, flightlist, flight_db: displayed date range, and
-  filename for 'today'
 * Session store in database? Key in SVN?
 * flight_db: separate towflights; format plugins
 * login when no user exists
@@ -12,10 +9,12 @@ Critical (before release):
   - create any user on first connect
 
 Major (important changes):
+* 1 Flüge
 * paginated tables for resource lists and person selection
 * layout for tex
 * use yesno
 * delete confirmation without javascript
+* make class DateRange
 
 Minor (less important changes or much work):
 * When overwriting a person, display their number of flights
@@ -27,6 +26,7 @@ Minor (less important changes or much work):
 * use alias_attribute in all models
 * order of file formats
 * better error reporting with latex files
+* use :readonly=>true for all queries where applicable
 
 Nice to have:
 * define human_attribute_name instead of manual text specification

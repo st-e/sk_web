@@ -25,7 +25,7 @@
 <%# TODO configurable %>
 \cohead{Flugbuch für <%= l @person.full_name %>}
 \lohead{}
-\rohead{<%= l @date %>} <%# TODO date spec %>
+\rohead{<%= render :partial=>'partials/date_range.tex', :locals=>{:date_range=>@date_range} %>}
 
 \cofoot{}
 \lofoot{<%= l version_string %>}

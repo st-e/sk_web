@@ -1,7 +1,6 @@
 <%= page_title "Flugdatenbank #{Settings.instance.location}" %>
 
-<%# TODO date spec %>
-<p><%= h @date %></p>
+<p><%= render :partial=>'partials/date_range', :locals=>{:date_range=>@date_range} %></p>
 
 <% if @flights.empty? %>
 	<p>Keine Flüge im angegebenen Zeitraum</p>

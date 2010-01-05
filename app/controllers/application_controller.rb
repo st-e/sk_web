@@ -70,57 +70,64 @@ protected
 		User.find(session[:username])
 	end
 
-#	def reformat_date
-#	end
-
+	# A date specification is a string describing a date or a date range. The
+	# kind of date specification is determined from he 'date' parameter. And
+	# potentially other parameters.
+	#
+	# date param |date specification    |other params
+	# -----------+----------------------+---------------------
+	# today      |'today'               |
+	# yesterday  |'yesterday'           |
+	# single     |xxxx-xx-xx            |single_date
+	# range      |xxxx-xx-xx_xxxx-xx-xx |first_date, last_date
 	def date_spec
-#		date_type=params['date']
-#		if date_type=='today'
-#
-#		elsif date_type=='yesterday'
-#		elsif date_type=='single'
-#		elsif date_type=='range'
-#		else
-#		end
-
 		case params['date']
 			when 'today'     then 'today'
 			when 'yesterday' then 'yesterday'
-			when 'single'    then Date.parse(params['single_date']).to_s
-			when 'range'     then first=params['first_date']; last=params['last_date']; "#{Date.parse(first)}_#{Date.parse(last)}"
-#			when 'single'    then sprintf("%04d-%02d-%02d", params['year'], params['month'], params['day'])
-#			when 'range'     then sprintf("%04d-%02d-%02d_%04d-%02d-%02d", params['start_year'], params['start_month'], params['start_day'], params['end_year'], params['end_month'], params['end_day'])
+			when 'single'    then
+				single=params['single_date']
+				Date.parse(single).to_s
+			when 'range'     then
+				first =params['first_date' ]
+				last  =params['last_date'  ]
+				"#{Date.parse(first)}_#{Date.parse(last)}"
 			else nil
 		end
 	end
 
-	# Returns [first_time, last_time] where last_time is exclusive
-	def time_range(date_spec)
-		# Note that we store the date in a temporary variable in order to avoid
-		# race conditions
-
-		first_time=last_time=nil
+	# Constructs a range of dates from a date specification
+	def date_range(date_spec)
+		# Note that in the case of 'today' and 'yesterday', we store the date
+		# in a temporary variable in order to avoid race conditions
 
 		if date_spec=='today'
 			date=Date.today
+			date..date
 		elsif date_spec=='yesterday'
 			date=Date.today-1
-			# TODO ^...$
+			date..date
 		elsif date_spec =~ /^\d\d\d\d-\d\d-\d\d$/
 			date=Date.parse(date_spec)
-			# TODO ^...$
+			date..date
 		elsif date_spec =~ /^(\d\d\d\d-\d\d-\d\d)_(\d\d\d\d-\d\d-\d\d)$/
-			first_time=Date.parse($1).midnight
-			last_time =Date.parse($2).midnight+1.day
+			first_date=Date.parse($1)
+			last_date =Date.parse($2)
+			first_date..last_date
 		else
-			throw ArgumentError
+			throw ArgumentError.new("Invalid date specification")
 		end
+	end
 
-		# In some cases, we determined a single date
-		first_time=date.midnight       if !first_time
-		last_time= date.midnight+1.day if !last_time
+	def date_range_filename(date_range)
+		first=date_range.begin
+		last=date_range.end
+		last=last-1 if date_range.exclude_end?
 
-		[first_time, last_time]
+		if first==last
+			first.to_s
+		else
+			"#{first}_#{last}"
+		end
 	end
 
 	# Will redirect with the given options and :date=>date_spec

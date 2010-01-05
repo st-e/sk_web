@@ -153,5 +153,17 @@ module ApplicationHelper
 		yield TableForContext.new(self, array)
 		concat '</table>'
 	end
+
+	def german_format
+		"%d.%m.%Y"
+	end
+
+	def date_formatter(format, strip_leading_zeros=false)
+		lambda { |date|
+			string=date.strftime(format)
+			string.gsub!(/(^|\.)0/, '\1') if strip_leading_zeros
+			string
+		}
+	end
 end
 

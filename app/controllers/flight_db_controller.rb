@@ -12,31 +12,21 @@ class FlightDbController < ApplicationController
 	end
 
 	def show
-		date=params['date']
-		first_time, last_time=time_range(date)
-
-		# TODO this has a lot of code duplication with plane_log_controller
-
-		condition="(startzeit>=:first_time AND startzeit<:last_time) OR (landezeit>=:first_time AND landezeit<:last_time)"
-		condition_values={ :first_time=>first_time, :last_time=>last_time }
-		@flights=Flight.all(:readonly=>true, :conditions => [condition, condition_values]).sort_by { |flight| flight.effective_time }
-		# TODO filter out flights that have not started/landed (that is, there
-		# is a time, but the corresponding flags are not set), or where the
-		# launch/landing time is not valid (due to flight mode)
-
 		format=params['format'] || @default_format
 
-		@date=date
+		@date_range=date_range(params['date'])
+		# TODO have to sort?
+		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true})#.sort_by { |flight| flight.effective_time }
 
 		@table=make_table(@flights)
 
 		respond_to do |format|
-			format.html { render 'flight_db'        ; set_filename "flugdatenbank_#{date}.html" }
-			#format.pdf  { render_pdf 'flight_db.tex'; set_filename "flugdatenbank_#{date}.pdf"  }
-			#format.tex  { render 'flight_db'        ; set_filename "flugdatenbank_#{date}.tex"  }
-			format.csv  { render 'flight_db'        ; set_filename "flugdatenbank_#{date}.csv"  }
-			#format.xml  { render :xml => @flights   ; set_filename "flugdatenbank_#{date}.xml"  }
-			#format.json { render :json => @flights  ; set_filename "flugdatenbank_#{date}.json" }
+			format.html { render 'flight_db'        ; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.html" }
+			#format.pdf  { render_pdf 'flight_db.tex'; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.pdf"  }
+			#format.tex  { render 'flight_db'        ; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.tex"  }
+			format.csv  { render 'flight_db'        ; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.csv"  }
+			#format.xml  { render :xml => @flights   ; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.xml"  }
+			#format.json { render :json => @flights  ; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.json" }
 		end
 	end
 
