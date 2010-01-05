@@ -9,6 +9,8 @@ table.list tr.header { background-color: #666; color: #FFF }
 table.list tr.data0 { background-color: #EEE }
 table.list tr.data1 { background-color: #CCC }
 
+table.form td,th { vertical-align: top; }
+
 th {
 	text-align: left;
 }

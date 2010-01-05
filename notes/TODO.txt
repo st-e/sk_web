@@ -1,9 +1,8 @@
 Critical (before release):
+* flight_db: separate towflights; format plugins
 * Add: import master data
 * Only allow operations with appropriate permissions
 * Session store in database? Key in SVN?
-* flight_db: separate towflights; format plugins
-* pilot log: flight instructor mode
 * login when no user exists
   - allow login with sk_admin credentials
   - create user with sk_admin credentials if none exists

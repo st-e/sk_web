@@ -4,6 +4,7 @@ require 'tmpdir'
 class PilotLogController < ApplicationController
 	def initialize
 		@default_format="html"
+		@default_flight_instructor_mode="no"
 	end
 
 	def index
@@ -18,7 +19,8 @@ class PilotLogController < ApplicationController
 		end
 
 		@format=params['format'] || @default_format
-		redirect_to_with_date :action=>'show', :format=>@format
+		@flight_instructor_mode=params['flight_instructor_mode'] unless params['flight_instructor_mode']==@default_flight_instructor_mode
+		redirect_to_with_date :action=>'show', :format=>@format, :flight_instructor_mode=>@flight_instructor_mode
 	end
 
 	def show
@@ -34,8 +36,21 @@ class PilotLogController < ApplicationController
 		end
 
 		@date_range=date_range(params['date'])
+
+		condition=case params['flight_instructor_mode']
+			when 'strict' then
+				"pilot=:person OR (begleiter=:person AND typ=:type)"
+			when 'loose' then
+				"pilot=:person OR begleiter=:person"
+			else
+				"pilot=:person"
+		end
+		condition_values={:person=>@person.id, :type=>Flight.training2_flight_type}
+
 		# TODO have to sort?
-		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true}, ["pilot=:person", {:person=>@person.id}])#.sort_by { |flight| flight.effective_time }
+		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true}, [condition, condition_values])#.sort_by { |flight| flight.effective_time }
+
+
 
 		format=params['format'] || @default_format
 

@@ -1,7 +1,7 @@
 <%= page_title "Startkladde Web-Zugriff: Flugdatenbank" %>
 
 <% form_tag do %>
-	<table>
+	<table class="form">
 		<%= render :partial=>'partials/date_fields', :locals=>{ :enable_range=>true } %>
 		<%# TODO format plugin %>
 		<%# TODO separate towflights %>

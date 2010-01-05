@@ -4,24 +4,18 @@
 %>
 <tr>
 	<td>Datum:</td>
-	<td><%= radio_button_tag('date', 'today', true) %>Heute</td>
-</tr>
-<tr>
-	<td></td>
-	<td><%= radio_button_tag('date', 'yesterday', false) %>Gestern</td>
-</tr>
-<tr>
-	<td></td>
-	<td><%= radio_button_tag('date', 'single', false) %>Anderes Datum: <%= text_field_tag 'single_date', date_formatter(german_format, true).call(today), :size=>10, :maxlength=>10 %></td>
-</tr>
-<% if local_assigns[:enable_range] %>
-<tr>
-	<td></td>
 	<td>
+		<%= radio_button_tag('date', 'today', true) %>Heute
+		<br/>
+		<%= radio_button_tag('date', 'yesterday', false) %>Gestern
+		<br/>
+		<%= radio_button_tag('date', 'single', false) %>Anderes Datum: <%= text_field_tag 'single_date', date_formatter(german_format, true).call(today), :size=>10, :maxlength=>10 %>
+<% if local_assigns[:enable_range] %>
+		<br/>
 		<%= radio_button_tag('date', 'range', false) %>Bereich:
 		<%= text_field_tag 'first_date', date_formatter(german_format, true).call(first_date), :size=>10, :maxlength=>10 %> bis
 		<%= text_field_tag 'last_date' , date_formatter(german_format, true).call(today     ), :size=>10, :maxlength=>10 %>
+<% end %>
 	</td>
 </tr>
-<% end %>
 

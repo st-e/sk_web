@@ -73,6 +73,10 @@ class Flight < ActiveRecord::Base
 		end
 	end
 
+	def self.training2_flight_type
+		3
+	end
+
 	def flight_type_text
 		Flight.flight_type_text(typ)
 	end
