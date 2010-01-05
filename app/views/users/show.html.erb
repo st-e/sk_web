@@ -23,11 +23,11 @@
 	</tr>
 	<tr>
 		<th>Vereinsadministrator:</th>
-		<td><%= h (@user.perm_club_admin)?"Ja":"Nein" %></td>
+		<td><%= h yesno(@user.perm_club_admin) %></td>
 	</tr>
 	<tr>
 		<th>Flugdatenbank lesen:</th>
-		<td><%= h (@user.perm_read_flight_db)?"Ja":"Nein" %></td>
+		<td><%= h yesno(@user.perm_read_flight_db) %></td>
 	</tr>
 </table>
 

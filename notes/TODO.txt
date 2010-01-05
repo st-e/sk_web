@@ -12,11 +12,9 @@ Critical (before release):
 Major (important changes):
 * paginated tables for resource lists and person selection
 * layout for tex
-* use yesno
-* delete confirmation without javascript
-* make class DateRange
 
 Minor (less important changes or much work):
+* make class DateRange
 * When overwriting a person, display their number of flights
 * route /person/1/overwrite/2
 * "Create user" for person if there is none yet
@@ -27,6 +25,7 @@ Minor (less important changes or much work):
 * order of file formats
 * better error reporting with latex files
 * use :readonly=>true for all queries where applicable
+* delete confirmation without javascript
 
 Nice to have:
 * define human_attribute_name instead of manual text specification
