@@ -1,7 +1,3 @@
-// Add towplane registration as comment if not known from launch type
-
-Create person: club id unique
-
 Delete user: not self, own club
 
 // Import master data:

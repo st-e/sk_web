@@ -13,6 +13,7 @@ Major (important changes):
 * consider towflights for pilot log
 * make it not break on flights with NULL date (Flight.new.save)
 * Flight.<=> (and use sort instead of sort_by)
+* Add towplane registration as comment if not known from launch type
 
 Minor (less important changes or much work):
 * make class DateRange

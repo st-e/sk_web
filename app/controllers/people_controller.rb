@@ -29,14 +29,29 @@ class PeopleController < ApplicationController
 	def create
 		@person=Person.new(params[:person])
 
-		respond_to do |format|
-			if @person.save
-				flash[:notice] = 'Person was successfully created.'
-				format.html { redirect_to(@person) }
-				#format.xml  { render :xml => @person, :status => :created, :location => @person }
-			else
-				format.html { render :action => "new" }
-				#format.xml  { render :xml => @person.errors, :status => :unprocessable_entity }
+		# If a club and a club ID are given, the club ID must be uniqe within
+		# the club.
+		# TODO validations?
+		# TODO also for editing
+		club=params['person']['club']
+		club_id=params['person']['vereins_id']
+
+		if !club.blank? && !club_id.blank? &&
+			duplicate=Person.first(:conditions => {:verein=>club, :vereins_id=>club_id})
+
+			flash[:error]="Die Vereins-ID muss eindeutig oder leer sein. Die angegebene Vereins-ID ist schon für #{duplicate.full_name} vergeben."
+			render :action => "new"
+		else
+			respond_to do |format|
+				if @person.save
+					# TODO back to origin
+					flash[:notice] = 'Person wurde angelegt'
+					format.html { redirect_to(@person) }
+					#format.xml  { render :xml => @person, :status => :created, :location => @person }
+				else
+					format.html { render :action => "new" }
+					#format.xml  { render :xml => @person.errors, :status => :unprocessable_entity }
+				end
 			end
 		end
 	end
@@ -48,14 +63,26 @@ class PeopleController < ApplicationController
 	def update
 		@person = Person.find(params[:id])
 
-		respond_to do |format|
-			if @person.update_attributes(params[:person])
-				flash[:notice] = 'Person was successfully updated.'
-				format.html { redirect_to(@person) }
-				#format.xml  { head :ok }
-			else
-				format.html { render :action => "edit" }
-				#format.xml  { render :xml => @person.errors, :status => :unprocessable_entity }
+		club=params['person']['verein']
+		club_id=params['person']['vereins_id']
+
+		if !club.blank? && !club_id.blank? &&
+			duplicate=Person.all(:conditions => {:verein=>club, :vereins_id=>club_id}).
+				find { |p| p.id!=@person.id }
+
+			flash[:error]="Die Vereins-ID muss eindeutig oder leer sein. Die angegebene Vereins-ID ist schon für #{duplicate.full_name} vergeben."
+			@person.attributes=params['person']
+			render :action => "edit"
+		else
+			respond_to do |format|
+				if @person.update_attributes(params[:person])
+					flash[:notice] = 'Person was successfully updated.'
+					format.html { redirect_to(@person) }
+					#format.xml  { head :ok }
+				else
+					format.html { render :action => "edit" }
+					#format.xml  { render :xml => @person.errors, :status => :unprocessable_entity }
+				end
 			end
 		end
 	end

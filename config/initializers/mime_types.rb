@@ -6,6 +6,6 @@
 
 Mime::Type.register "application/pdf", :pdf
 Mime::Type.register "application/x-latex", :tex
-Mime::Type.register "text/comma-separated-values", :csv
+#Mime::Type.register "text/comma-separated-values", :csv
 
 

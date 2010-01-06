@@ -30,6 +30,7 @@ class UsersController < ApplicationController
 			flash.now[:error] = 'Benutzername darf nicht leer sein'
 			render :action => "new"
 		elsif !(username =~ /^[a-zA-Z0-9_.-]*$/)
+			# TODO use validations?
 			flash.now[:error] = 'Benutzername enthält ungültige Zeichen'
 			render :action => "new"
 		elsif User.exists?(username)
