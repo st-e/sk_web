@@ -146,6 +146,18 @@ protected
 		redirect_to redirect_options.merge({ :date=>ds })
 	end
 
+	# TODO: if multiple (user) edit windows are opened, all of them will
+	# redirect back to the origin of the last one
+	def redirect_to_origin(*default_args)
+		if session[:origin]
+			redirect_to session[:origin]
+			session[:origin]=nil
+		else
+			redirect_to(*default_args)
+		end
+	end
+
+
 private
 	def require_login
 		unless logged_in?

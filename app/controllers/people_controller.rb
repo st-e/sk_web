@@ -90,6 +90,7 @@ class PeopleController < ApplicationController
 	def destroy
 		@person=Person.find(params[:id])
 
+		# TODO use a callback for this
 		if @person.used?
 			flash[:error]="Die Person #{@person.full_name} kann nicht gelöscht werden, da sie in Benutzung ist."
 		else

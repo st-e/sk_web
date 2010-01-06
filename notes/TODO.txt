@@ -4,8 +4,10 @@ Critical (before release):
 * Session store in database? Key in SVN?
 * login when no user exists
   - allow login with sk_admin credentials
-  - create user with sk_admin credentials if none exists
-  - create any user on first connect
+  - create user with sk_admin credentials if none exists => not usable for recovery
+  - create any user on first connect => not usable for recovery
+* Validation errors: correct field names (cf. human_attribute_name/humanize)
+* Validations for all models
 
 Major (important changes):
 * paginated tables for resource lists and person selection
@@ -28,6 +30,7 @@ Minor (less important changes or much work):
 * better error reporting with latex files
 * use :readonly=>true for all queries where applicable
 * delete confirmation without javascript
+* how to make sure not passwords are displayed? clear in view?
 
 Nice to have:
 * define human_attribute_name instead of manual text specification

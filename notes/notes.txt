@@ -11,4 +11,5 @@ Tests:
   - towflight extra works for other and unknown towplane
   - incomplete towpilot name
   - LSV plugin
+  - passwords not logged
 

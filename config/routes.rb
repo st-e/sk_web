@@ -16,6 +16,7 @@ ActionController::Routing::Routes.draw do |map|
   #map.resources :flights # Not available
   #map.resources :planes
   map.resources :people, :member => { :overwrite => [:get, :post] }
+
   
   # Flight list, plane log, pilot log and flight log accept a date specification
   map.flightlist 'flightlist/:date.:format', :controller => 'flightlist', :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ }
@@ -23,9 +24,11 @@ ActionController::Routing::Routes.draw do |map|
   map.pilot_log  'pilot_log/:date.:format' , :controller => 'pilot_log' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d|\d\d\d\d-\d\d-\d\d_\d\d\d\d-\d\d-\d\d)/ }
   map.flight_db  'flight_db/:date.:format' , :controller => 'flight_db' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d|\d\d\d\d-\d\d-\d\d_\d\d\d\d-\d\d-\d\d)/ }
 
+
   # Session control
-  map.login  'login',  :controller => 'session', :action => 'login'
-  map.logout 'logout', :controller => 'session', :action => 'logout'
+  map.login           'login',  :controller => 'session', :action => 'login'
+  map.logout          'logout', :controller => 'session', :action => 'logout'
+  map.change_password 'change_password', :controller => 'users', :action => 'change_own_password'
 
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should

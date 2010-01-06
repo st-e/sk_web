@@ -3,6 +3,9 @@ class Person < ActiveRecord::Base
 	 
 	has_one :user, :foreign_key => 'person'
 
+	# TODO:
+	#validates_uniqueness_of :club_id, :scope => :club
+
 	# TODO replace all
 	alias_attribute :last_name , :nachname
 	alias_attribute :first_name, :vorname
