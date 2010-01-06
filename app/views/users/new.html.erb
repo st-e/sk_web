@@ -1,5 +1,6 @@
 <%= page_title "Benutzer anlegen" %>
 
+<% @user.clear_passwords %>
 <% form_for(@user) do |f| %>
 	<%= f.error_messages \
 		:header_message => "Fehlerhafte Angaben", # 1 error prohibited this user from being saved

@@ -1,6 +1,7 @@
 body { background-color: #fff; color: #333; }
 
 .nobreak { white-space:nowrap; }
+.invisible { display:none; }
 
 table.list { border-collapse: collapse }
 table.list td,th { padding: 2px 10px 2px 5px } /* top, right, bottom, left */

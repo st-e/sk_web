@@ -27,8 +27,6 @@ class UsersController < ApplicationController
 			flash[:notice] = 'Benutzer wurde angelegt'
 			redirect_to @user
 		else
-			# Do not include the clear text password in the HTML file
-			@user.password=@user.password_confirmation=nil
 			render :action => "new"
 		end
 	end
@@ -83,21 +81,13 @@ class UsersController < ApplicationController
 			if @user.save
 				flash[:notice] = 'Passwort wurde geändert'
 				redirect_to @user
-			else
-				# Do not include the clear text password in the HTML file
-				@user.clear_passwords
-				render
 			end
-		else
-			# Do not include the hashed password in the HTML file
-			@user.clear_passwords
-			render
 		end
+
+		# default: render
 	end
 
 	def change_own_password
-		template='change_password'
-
 		@user=current_user
 		@display_current_password_field=true
 
@@ -108,22 +98,13 @@ class UsersController < ApplicationController
 				if @user.save
 					flash[:notice] = 'Passwort wurde geändert'
 					redirect_to root_path
-				else
-					# Do not include the clear text password in the HTML file
-					@user.clear_passwords
-					render template
 				end
 			else
 				@user.errors.add(:current_password, "ist nicht korrekt")
-				@user.clear_passwords
-				render template
 			end
-
-		else
-			# Do not include the hashed password in the HTML file
-			@user.clear_passwords
-			render template
 		end
+
+		render 'change_password' if !performed?
 	end
 end
 

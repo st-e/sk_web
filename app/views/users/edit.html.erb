@@ -4,7 +4,7 @@
 	<% person=@user.associated_person %>
 	<%= f.error_messages %>
 
-	<%# TODO default button with <div style="display:none;"> %>
+	<div style="display:none;"><%= f.submit 'Speichern' %></div>
 
 	<table>
 		<tr>
