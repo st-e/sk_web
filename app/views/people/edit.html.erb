@@ -4,6 +4,7 @@
 	<%= f.error_messages %>
 
 	<table>
+		<%# TODO nobr in table cells %>
 		<tr>
 			<th><%= f.label :vorname %>:</th>
 			<td><%= f.text_field :vorname %></td>
@@ -26,9 +27,9 @@
 		</tr>
 	</table>
 
-	<p><%= f.submit 'Update' %></p>
+	<p><%= f.submit 'Speichern' %></p>
 <% end %>
 
-<%= link_to 'Show', @person %> |
-<%= link_to 'Back', people_path %>
+<%= link_to 'Anzeigen', @person %> |
+<%= link_to 'Personenliste', people_path %>
 

@@ -29,29 +29,15 @@ class PeopleController < ApplicationController
 	def create
 		@person=Person.new(params[:person])
 
-		# If a club and a club ID are given, the club ID must be uniqe within
-		# the club.
-		# TODO validations?
-		# TODO also for editing
-		club=params['person']['club']
-		club_id=params['person']['vereins_id']
-
-		if !club.blank? && !club_id.blank? &&
-			duplicate=Person.first(:conditions => {:verein=>club, :vereins_id=>club_id})
-
-			flash[:error]="Die Vereins-ID muss eindeutig oder leer sein. Die angegebene Vereins-ID ist schon für #{duplicate.full_name} vergeben."
-			render :action => "new"
-		else
-			respond_to do |format|
-				if @person.save
-					# TODO back to origin
-					flash[:notice] = 'Person wurde angelegt'
-					format.html { redirect_to(@person) }
-					#format.xml  { render :xml => @person, :status => :created, :location => @person }
-				else
-					format.html { render :action => "new" }
-					#format.xml  { render :xml => @person.errors, :status => :unprocessable_entity }
-				end
+		respond_to do |format|
+			if @person.save
+				# TODO back to origin
+				flash[:notice] = 'Person wurde angelegt'
+				format.html { redirect_to(@person) }
+				#format.xml  { render :xml => @person, :status => :created, :location => @person }
+			else
+				format.html { render :action => "new" }
+				#format.xml  { render :xml => @person.errors, :status => :unprocessable_entity }
 			end
 		end
 	end
@@ -63,26 +49,14 @@ class PeopleController < ApplicationController
 	def update
 		@person = Person.find(params[:id])
 
-		club=params['person']['verein']
-		club_id=params['person']['vereins_id']
-
-		if !club.blank? && !club_id.blank? &&
-			duplicate=Person.all(:conditions => {:verein=>club, :vereins_id=>club_id}).
-				find { |p| p.id!=@person.id }
-
-			flash[:error]="Die Vereins-ID muss eindeutig oder leer sein. Die angegebene Vereins-ID ist schon für #{duplicate.full_name} vergeben."
-			@person.attributes=params['person']
-			render :action => "edit"
-		else
-			respond_to do |format|
-				if @person.update_attributes(params[:person])
-					flash[:notice] = 'Person was successfully updated.'
-					format.html { redirect_to(@person) }
-					#format.xml  { head :ok }
-				else
-					format.html { render :action => "edit" }
-					#format.xml  { render :xml => @person.errors, :status => :unprocessable_entity }
-				end
+		respond_to do |format|
+			if @person.update_attributes(params[:person])
+				flash[:notice] = 'Person was successfully updated.'
+				format.html { redirect_to(@person) }
+				#format.xml  { head :ok }
+			else
+				format.html { render :action => "edit" }
+				#format.xml  { render :xml => @person.errors, :status => :unprocessable_entity }
 			end
 		end
 	end
@@ -90,7 +64,8 @@ class PeopleController < ApplicationController
 	def destroy
 		@person=Person.find(params[:id])
 
-		# TODO use a callback for this
+		# We still have to use a flash message despite the before_destroy
+		# callback because the person's errors are not displayed anywhere.
 		if @person.used?
 			flash[:error]="Die Person #{@person.full_name} kann nicht gelöscht werden, da sie in Benutzung ist."
 		else
@@ -107,10 +82,10 @@ class PeopleController < ApplicationController
 		wrong_person_id=   params[:id]
 		correct_person_id= params[:correct_person_id]
 
-		# Retrieve the wrong person
+		# Retrieve the "wrong" person
 		@wrong_person=Person.find(wrong_person_id)
 
-		# Check if a correct person has been selected
+		# 1. select a "correct" person
 		if !correct_person_id
 			# No "correct" person is selected yet
 
@@ -125,7 +100,7 @@ class PeopleController < ApplicationController
 		# Retrieve the correct person
 		@correct_person=Person.find(correct_person_id)
 
-		# Check if the correct person has been confirmed
+		# 2. confirm the operation
 		if !params[:confirm].to_b
 			# A "correct" person has been selected, but not confirmed yet
 
@@ -133,7 +108,7 @@ class PeopleController < ApplicationController
 			render 'overwrite_confirm' and return
 		end
 
-		# The wrong person has been selected and confirmed.
+		# 3. perform the operation
 
 		# Update users and flights
 		User  .all(:conditions => { :person     => wrong_person_id }).each { |user|   user.person=      correct_person_id; user  .save }
@@ -147,7 +122,7 @@ class PeopleController < ApplicationController
 		flash[:error]="Nach dem Überschreiben existiert noch ein Flug, der auf die Person verweist"     and redirect_to and return if Flight.exists? :begleiter =>wrong_person_id
 		flash[:error]="Nach dem Überschreiben existiert noch ein Flug, der auf die Person verweist"     and redirect_to and return if Flight.exists? :towpilot  =>wrong_person_id
 
-		# Once again for safety
+		# Once again for safety, as this is really important
 		flash[:error]="Nach dem Überschreiben ist die Person noch in Benutzung" and redirect_to and return if @wrong_person.used?
 
 		# Delete the person

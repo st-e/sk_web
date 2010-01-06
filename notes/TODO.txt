@@ -6,8 +6,6 @@ Critical (before release):
   - allow login with sk_admin credentials
   - create user with sk_admin credentials if none exists => not usable for recovery
   - create any user on first connect => not usable for recovery
-* Validation errors: correct field names (cf. human_attribute_name/humanize)
-* Validations for all models
 
 Major (important changes):
 * paginated tables for resource lists and person selection
@@ -16,6 +14,7 @@ Major (important changes):
 * make it not break on flights with NULL date (Flight.new.save)
 * Flight.<=> (and use sort instead of sort_by)
 * Add towplane registration as comment if not known from launch type
+* Can the _temp table duplication be supported through :finder_sql?
 
 Minor (less important changes or much work):
 * make class DateRange
@@ -29,13 +28,14 @@ Minor (less important changes or much work):
 * order of file formats
 * better error reporting with latex files
 * use :readonly=>true for all queries where applicable
-* delete confirmation without javascript
+* delete confirmation without javascript (http://brandonaaron.net/blog/2009/02/25/unobtrusive-destroy-links-in-rails-using-jquery)
 * how to make sure not passwords are displayed? clear in view?
 
 Nice to have:
-* define human_attribute_name instead of manual text specification
 * date in local format
 * consolidate tabel partial and table_for
 * create/edit planes
 * create/edit flights
+* form error messages for individual inputs
+
 

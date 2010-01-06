@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+	# Table settings
 	set_table_name "user" 
 	set_primary_key "username"
 
