@@ -32,7 +32,8 @@ class UsersController < ApplicationController
 	end
 
 	def edit
-		session[:origin]=request.referer
+		# Store the location we came from, so we can return there after editing
+		store_origin
 		@user = User.find(params[:id])
 
 		# If a user parameter is given, we've probably returned from a subpage.
@@ -53,7 +54,7 @@ class UsersController < ApplicationController
 				flash[:notice] = 'Benutzer wurde gespeichert'
 
 				# TODO: doesn't work after person selection
-				redirect_to_origin(@user)
+				redirect_to_origin(default=@user)
 			else
 				render :action => "edit"
 			end

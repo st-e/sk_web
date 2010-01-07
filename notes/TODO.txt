@@ -14,7 +14,7 @@ Major (important changes):
 * make it not break on flights with NULL date (Flight.new.save)
 * Flight.<=> (and use sort instead of sort_by)
 * Add towplane registration as comment if not known from launch type
-* Can the _temp table duplication be supported through :finder_sql?
+* Can the _temp table duplication be supported through something like :finder_sql?
 
 Minor (less important changes or much work):
 * make class DateRange
@@ -30,6 +30,7 @@ Minor (less important changes or much work):
 * use :readonly=>true for all queries where applicable
 * delete confirmation without javascript (http://brandonaaron.net/blog/2009/02/25/unobtrusive-destroy-links-in-rails-using-jquery)
 * how to make sure not passwords are displayed? clear in view?
+* look into fastercsv
 
 Nice to have:
 * date in local format

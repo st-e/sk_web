@@ -43,6 +43,7 @@ class PeopleController < ApplicationController
 	end
 
 	def edit
+		store_origin
 		@person=Person.find(params[:id])
 	end
 
@@ -52,7 +53,7 @@ class PeopleController < ApplicationController
 		respond_to do |format|
 			if @person.update_attributes(params[:person])
 				flash[:notice] = 'Person was successfully updated.'
-				format.html { redirect_to(@person) }
+				format.html { redirect_to_origin(default=@person) }
 				#format.xml  { head :ok }
 			else
 				format.html { render :action => "edit" }

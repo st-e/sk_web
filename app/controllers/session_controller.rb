@@ -6,6 +6,8 @@ class SessionController < ApplicationController
 	filter_parameter_logging :current_password, :password, :password_confirmation
 
 	def login
+		# TODO require post, see akaportal:portal_controller
+
 		username=params[:username]
 		password=params[:password]
 
@@ -16,12 +18,8 @@ class SessionController < ApplicationController
 
 				flash[:notice]="Angemeldet als #{username}"
 
-				if session[:origin]
-					redirect_to session[:origin]
-					session[:origin]=nil
-				else
-					redirect_to root_path
-				end
+				# The page we tried to access is stored as the origin
+				redirect_to_origin(default=root_path)
 			else
 				flash[:error]="Anmeldedaten ungültig"
 				@username=username

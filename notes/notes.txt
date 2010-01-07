@@ -13,3 +13,18 @@ Tests:
   - LSV plugin
   - passwords not logged
 
+Permission system:
+  - Two criteria: (a) login required no/non-local/always, (b) user's permissions
+  - akaportal permission specification:
+    - p1|(p2&p3)
+	- resource:right (from database), resource.method?(user)
+	  allows rights to resource classes and instances
+  - akaportal permission usage:
+    - In controller: permit 'spec', args, :only/except=>...
+	  - permit x; permit y; => both required
+	  - permit (w/o argument): actually a restriction (login required)
+    - In action: permit 'spec', args do ... end
+  - desired functionality:
+    - determine whether action can be performed
+	- no permissions set for action => disallow
+

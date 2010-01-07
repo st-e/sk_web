@@ -5,10 +5,17 @@ class ApplicationController < ActionController::Base
 	helper :all # include all helpers, all the time
 	protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
+	filter_parameter_logging :password, :password_confirmation, :current_password
+
+	# By default, all actions of all controllers reqire a user to be logged in.
+	# Individual controllers or actions can be set up to be allowed without
+	# login, potentially only from local addresses. See allow_public and
+	# allow_local.
 	before_filter :require_login
 
-	# Scrub sensitive parameters from your log
-	# filter_parameter_logging :password
+	# TODO
+	#before_filter :check_permissions
+
 
 protected
 	def generate_pdf(template)
@@ -50,15 +57,17 @@ protected
 		response.headers["Content-Disposition"] = "inline; filename=#{filename}"
 	end
 
-	# Allow access to an action without being logged in
+	# Allows access without login
 	def self.allow_public(*options)
+		# The :require_login before filter is installed by default
 		skip_before_filter :require_login, options
 	end
 
-	# Allow access to an action without being logged in from a local host
+	# Allow access without login from a local host
 	def self.allow_local(*options)
+		# The :require_login before filter is installed by default
 		skip_before_filter :require_login, options
-		before_filter :require_local_or_logged_in, options
+		before_filter :require_local_or_login, options
 	end
 
 	def current_username
@@ -146,6 +155,11 @@ protected
 		redirect_to redirect_options.merge({ :date=>ds })
 	end
 
+	def store_origin(origin=nil)
+		origin=request.referer if !origin
+		session[:origin]=origin
+	end
+
 	# TODO: if multiple (user) edit windows are opened, all of them will
 	# redirect back to the origin of the last one
 	def redirect_to_origin(*default_args)
@@ -159,27 +173,37 @@ protected
 
 
 private
+	# This filter requires a user to be logged in.
 	def require_login
 		unless logged_in?
 			flash[:error] = "Anmeldung erforderlich"
-			session[:origin]=request.url
+			store_origin request.url
 			redirect_to login_path
 		end
 	end
 
-	def require_local_or_logged_in
+	# This filter required a user to be logged in unless the connection is made
+	# from a local address (see the local? method), in which case no login is
+	# required (but doesn't hurt either).
+	def require_local_or_login
 		unless local? || logged_in?
 			flash[:error] = "Anmeldung erforderlich, da der Zugang von einer nicht-lokalen Adresse erfolgt"
-			session[:origin]=request.url
+			store_origin request.url
 			redirect_to login_path
 		end
 	end
+
+	# TODO
+	#def check_permissions
+	#	render :text => "Insufficient permissions"
+	#end
 	
 	def logged_in?
 		!!session[:username]
 	end
 
 	def local?
+		# TODO read from configuration file
 		request.remote_ip == "127.0.0.1"
 	end
 end
