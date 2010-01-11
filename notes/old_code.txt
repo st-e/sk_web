@@ -12,7 +12,7 @@ Permissions:
 edit_person, delete_person, create_person, merge_person: club_admin
 user_list: club_admin
 user_delete, user_edit: matching_club_admin, not_self
-user_create/usre_edit grant permissions: sk_admin
+user_create/user_edit grant permissions: sk_admin
 user_change_password: matching_club_admin
 import_master_data: club_admin (& sk_user, for club)
 flight_db: read_flight_db

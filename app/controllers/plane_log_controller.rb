@@ -2,7 +2,7 @@ require 'date'
 require 'tmpdir'
 
 class PlaneLogController < ApplicationController
-	allow_local :only => [:index, :show]
+	allow_local :index, :show
 
 	def initialize
 		@default_format="html"

@@ -2,6 +2,8 @@ require 'date'
 require 'tmpdir'
 
 class PilotLogController < ApplicationController
+	require_login :index, :show
+
 	def initialize
 		@default_format="html"
 		@default_flight_instructor_mode="no"

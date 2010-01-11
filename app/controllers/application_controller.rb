@@ -2,73 +2,17 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+	include Rendering
+	include DateHandling
+
 	helper :all # include all helpers, all the time
 	protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
-	filter_parameter_logging :password, :password_confirmation, :current_password
+	# Note that multiple filter_parameter_logging will override earlier ones.
+	filter_parameter_logging :password
 
-	# By default, all actions of all controllers reqire a user to be logged in.
-	# Individual controllers or actions can be set up to be allowed without
-	# login, potentially only from local addresses. See allow_public and
-	# allow_local.
-	before_filter :require_login
+	before_filter :check_permissions
 
-	# TODO
-	#before_filter :check_permissions
-
-
-protected
-	def generate_pdf(template)
-		Dir.mktmpdir { |dir|
-			texfile="#{dir}/file.tex"
-			dvifile="#{dir}/file.dvi"
-			psfile="#{dir}/file.ps"
-			pdffile="#{dir}/file.pdf"
-
-			File.open(texfile, "w") { |file|
-				file.write render_to_string(template)
-			}
-
-			# TODO error handling, for example: pstricks not installed
-			# TODO option for calling latex 1/2/3 times
-			latexcommand="latex -interaction=nonstopmode -output-directory=#{dir} #{texfile}"
-			dvipscommand="dvips -o #{psfile} #{dvifile}"
-			pstopdfcommand="ps2pdf -sOutputFile=#{pdffile} #{psfile}"
-
-			# We need to call LaTeX twice for lastpage to work. Twice is
-			# sufficient because we're not displaying a TOC.
-			system latexcommand
-			system latexcommand
-			system dvipscommand
-			system pstopdfcommand
-
-			# Note that we cannot use send_file here to send the PDF file
-			# because it will be deleted after this method returns (render
-			# seems to work, but is not what we want).
-			File.read(pdffile)
-		}
-	end
-
-	def render_pdf(template, options={})
-		send_data generate_pdf(template), { :type => 'application/pdf', :disposition => 'inline' }.merge(options)
-	end
-
-	def set_filename(filename)
-		response.headers["Content-Disposition"] = "inline; filename=#{filename}"
-	end
-
-	# Allows access without login
-	def self.allow_public(*options)
-		# The :require_login before filter is installed by default
-		skip_before_filter :require_login, options
-	end
-
-	# Allow access without login from a local host
-	def self.allow_local(*options)
-		# The :require_login before filter is installed by default
-		skip_before_filter :require_login, options
-		before_filter :require_local_or_login, options
-	end
 
 	def current_username
 		session[:username]
@@ -79,124 +23,110 @@ protected
 		User.find(session[:username])
 	end
 
-	# A date specification is a string describing a date or a date range. The
-	# kind of date specification is determined from he 'date' parameter. And
-	# potentially other parameters.
-	#
-	# date param |date specification    |other params
-	# -----------+----------------------+---------------------
-	# today      |'today'               |
-	# yesterday  |'yesterday'           |
-	# single     |xxxx-xx-xx            |single_date
-	# range      |xxxx-xx-xx_xxxx-xx-xx |first_date, last_date
-	def date_spec
-		case params['date']
-			when 'today'     then 'today'
-			when 'yesterday' then 'yesterday'
-			when 'single'    then
-				single=params['single_date']
-				Date.parse(single).to_s
-			when 'range'     then
-				first =params['first_date' ]
-				last  =params['last_date'  ]
-				"#{Date.parse(first)}_#{Date.parse(last)}"
-			else nil
-		end
+
+protected
+	def self.inherited(subclass)
+		subclass.instance_variable_set :@public_actions, []
+		subclass.instance_variable_set :@local_actions, []
+		subclass.instance_variable_set :@required_permissions, {}
+		super
 	end
 
-	# Constructs a range of dates from a date specification
-	def date_range(date_spec)
-		# Note that in the case of 'today' and 'yesterday', we store the date
-		# in a temporary variable in order to avoid race conditions
-
-		if date_spec=='today'
-			date=Date.today
-			date..date
-		elsif date_spec=='yesterday'
-			date=Date.today-1
-			date..date
-		elsif date_spec =~ /^\d\d\d\d-\d\d-\d\d$/
-			date=Date.parse(date_spec)
-			date..date
-		elsif date_spec =~ /^(\d\d\d\d-\d\d-\d\d)_(\d\d\d\d-\d\d-\d\d)$/
-			first_date=Date.parse($1)
-			last_date =Date.parse($2)
-			first_date..last_date
-		else
-			raise ArgumentError, "Invalid date specification"
-		end
+	# The specified actions can be accessed without logging in, or regardless
+	# of the user's permissions if a user is logged in. This overrides any
+	# require_login or require_permissions specifications.
+	def self.allow_public(*actions)
+		@public_actions += actions.map { |action| action.to_sym }
 	end
 
-	def date_range_filename(date_range)
-		first=date_range.begin
-		last=date_range.end
-		last=last-1 if date_range.exclude_end?
-
-		if first==last
-			first.to_s
-		else
-			"#{first}_#{last}"
-		end
+	# The specified actions can be accessed without being logged in if the
+	# connection is made from a local host, or regardless of the user's
+	# permissions if a user is logged in. This overrides any require_login or
+	# require_permission specifications.
+	def self.allow_local(*actions)
+		@local_actions += actions.map { |action| action.to_sym }
 	end
 
-	# Will redirect with the given options and :date=>date_spec
-	# All variables needed by the template have to be set
-	def redirect_to_with_date(redirect_options)
-		# If no date is given, render the date selection form
-		# TODO rename template to index and get rid of template parameter
-		render and return if !params['date']
-
-		# If no date specification could be constructed (invalid date type, for
-		# example 'tomorrow'), redirect back
-		ds=date_spec
-		redirect_to and return if !ds
-
-		# Redirect to the show action with the date specification
-		redirect_to redirect_options.merge({ :date=>ds })
+	# The specified actions can be accessed regardless of the user's
+	# permissions, but require a user to be logged in.
+	def self.require_login(*actions)
+		actions.each { |action|
+			@required_permissions[action.to_sym] ||= []
+		}
 	end
 
-	def store_origin(origin=nil)
-		origin=request.referer if !origin
-		session[:origin]=origin
-	end
-
-	# TODO: if multiple (user) edit windows are opened, all of them will
-	# redirect back to the origin of the last one
-	def redirect_to_origin(*default_args)
-		if session[:origin]
-			redirect_to session[:origin]
-			session[:origin]=nil
-		else
-			redirect_to(*default_args)
-		end
+	# The specified actions require the specified permission. If there are
+	# multiple require_permission statements, all permissions are required.
+	# Note that if no access specification (allow_public, allow_local,
+	# require_login or require_permission) is given for an action, an error
+	# message is rendered if the method is accessed.
+	def self.require_permission(permission, *actions)
+		actions.each { |action|
+			@required_permissions[action.to_sym] ||= []
+			@required_permissions[action.to_sym] << permission.to_sym if permission
+		}
 	end
 
 
 private
-	# This filter requires a user to be logged in.
-	def require_login
+	def self.public_action?(action)
+		@public_actions.include? action
+	end
+
+	def self.local_action?(action)
+		@local_actions.include? action
+	end
+
+	def self.required_permissions_for(action)
+		@required_permissions[action]
+	end
+
+
+
+	def check_permissions
+		action=params['action'].to_sym
+
+		# Public actions are allowed unconditionally
+		return if self.class.public_action? action
+
+		# Local actions are allowed for local or logged-in users
+		if self.class.local_action?(action)
+			# Allow without permission check if we are local or logged in
+			return if local? || logged_in?
+
+			# Have to log in
+			# TODO function
+			flash[:error]="Anmeldung erforderlich, da der Zugang nicht aus dem lokalen Netz erfolgt"
+			store_origin request.url
+			redirect_to login_path
+			return
+		end
+
+		# Complain if no permissions have been set
+		permissions=self.class.required_permissions_for action
+		if !permissions
+			render :text => "Für diese Aktion wurden keine Zugriffsrechte gesetzt"
+			return
+		end
+
+		# Other actions require login
 		unless logged_in?
-			flash[:error] = "Anmeldung erforderlich"
+			flash[:error]="Anmeldung erforderlich"
 			store_origin request.url
 			redirect_to login_path
+			return
 		end
+
+		# Check permissions
+		permissions.each { |permission|
+			unless current_user.has_permission? permission
+				flash.now[:error]="Zugriff verweigert"
+				render :text=>"", :layout=>true
+			end
+		}
 	end
 
-	# This filter required a user to be logged in unless the connection is made
-	# from a local address (see the local? method), in which case no login is
-	# required (but doesn't hurt either).
-	def require_local_or_login
-		unless local? || logged_in?
-			flash[:error] = "Anmeldung erforderlich, da der Zugang von einer nicht-lokalen Adresse erfolgt"
-			store_origin request.url
-			redirect_to login_path
-		end
-	end
 
-	# TODO
-	#def check_permissions
-	#	render :text => "Insufficient permissions"
-	#end
 	
 	def logged_in?
 		!!session[:username]

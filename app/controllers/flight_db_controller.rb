@@ -2,6 +2,8 @@ require 'date'
 require 'tmpdir'
 
 class FlightDbController < ApplicationController
+	require_permission :read_flight_db, :index, :show
+
 	def initialize
 		@default_format="html"
 		@default_data_format="default"

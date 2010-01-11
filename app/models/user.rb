@@ -53,6 +53,11 @@ class User < ActiveRecord::Base
 		self.current_password=nil
 	end
 
+	def has_permission?(permission)
+		send "perm_#{permission}"
+		
+	end
+
 protected
 	def hash_password!
 		self.password = mysql_password_hash(self.password)

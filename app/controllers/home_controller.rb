@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-	allow_public :only => [:index]
+	allow_public :index
 
 	def index
 	end

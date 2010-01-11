@@ -1,6 +1,5 @@
 Critical (before release):
 * Add: import master data
-* Only allow operations with appropriate permissions
 * Session store in database? Key in SVN?
 * login when no user exists
   - allow login with sk_admin credentials
@@ -8,6 +7,7 @@ Critical (before release):
   - create any user on first connect => not usable for recovery
 
 Major (important changes):
+* Menu entries only for available actions
 * paginated tables for resource lists and person selection
 * layout for tex
 * consider towflights for pilot log
@@ -15,6 +15,11 @@ Major (important changes):
 * Flight.<=> (and use sort instead of sort_by)
 * Add towplane registration as comment if not known from launch type
 * Can the _temp table duplication be supported through something like :finder_sql?
+* Permissions: specify for all actions of a controller
+* Permissions: allow exceptions to a permission for all actions of a controller
+  (e. g. change own password)
+* Permissions: make "require_login" override "require_permission" and rename it
+* Permissions: require_permission: require "perm, a" or "perm, [a, b, ...]"
 
 Minor (less important changes or much work):
 * make class DateRange

@@ -27,4 +27,6 @@ Permission system:
   - desired functionality:
     - determine whether action can be performed
 	- no permissions set for action => disallow
+  - if skip_filter :only is used more than once, the first is ineffective
+
 

@@ -1,7 +1,7 @@
 require 'util'
 
 class SessionController < ApplicationController
-	allow_public :only => [:login, :logout]
+	allow_public :login, :logout
 
 	filter_parameter_logging :current_password, :password, :password_confirmation
 

@@ -1,4 +1,6 @@
 class PeopleController < ApplicationController
+	require_permission :club_admin, :index, :show, :new, :create, :edit, :update, :destroy, :overwrite
+
 	def index
 		@people=Person.all(:order => "nachname, vorname")
 
