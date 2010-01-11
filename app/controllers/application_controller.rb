@@ -95,34 +95,19 @@ private
 			return if local? || logged_in?
 
 			# Have to log in
-			# TODO function
-			flash[:error]="Anmeldung erforderlich, da der Zugang nicht aus dem lokalen Netz erfolgt"
-			store_origin request.url
-			redirect_to login_path
-			return
+			redirect_to_login "Anmeldung erforderlich, da der Zugang nicht aus dem lokalen Netz erfolgt"  and return
 		end
 
 		# Complain if no permissions have been set
 		permissions=self.class.required_permissions_for action
-		if !permissions
-			render :text => "Für diese Aktion wurden keine Zugriffsrechte gesetzt"
-			return
-		end
+		render_error ("Für diese Aktion wurden keine Zugriffsrechte gesetzt") and return if !permissions
 
 		# Other actions require login
-		unless logged_in?
-			flash[:error]="Anmeldung erforderlich"
-			store_origin request.url
-			redirect_to login_path
-			return
-		end
+		redirect_to_login and return unless logged_in?
 
 		# Check permissions
 		permissions.each { |permission|
-			unless current_user.has_permission? permission
-				flash.now[:error]="Zugriff verweigert"
-				render :text=>"", :layout=>true
-			end
+			render_error("Zugriff verweigert") unless current_user.has_permission? permission
 		}
 	end
 

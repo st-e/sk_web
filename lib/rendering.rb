@@ -1,7 +1,7 @@
 module Rendering
-	def render_error(text)
+	def render_error(message)
 		# TODO better not use flash here, and make a template that has a title
-		flash.now[:error]=text
+		flash.now[:error]=message
 		render :text=>"", :layout=>true
 	end
 
@@ -58,6 +58,12 @@ module Rendering
 		else
 			redirect_to(*default_args)
 		end
+	end
+
+	def redirect_to_login(message="Anmeldung erforderlich")
+		flash[:error]="Anmeldung erforderlich"
+		store_origin request.url
+		redirect_to login_path
 	end
 
 end

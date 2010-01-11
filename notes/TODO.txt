@@ -18,7 +18,7 @@ Major (important changes):
 * Permissions: specify for all actions of a controller
 * Permissions: allow exceptions to a permission for all actions of a controller
   (e. g. change own password)
-* Permissions: make "require_login" override "require_permission" and rename it
+* Permissions: make "require_login" override "require_permission" (?) and rename it
 * Permissions: require_permission: require "perm, a" or "perm, [a, b, ...]"
 
 Minor (less important changes or much work):

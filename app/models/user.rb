@@ -55,7 +55,6 @@ class User < ActiveRecord::Base
 
 	def has_permission?(permission)
 		send "perm_#{permission}"
-		
 	end
 
 protected
