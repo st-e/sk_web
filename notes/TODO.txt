@@ -1,5 +1,4 @@
 Critical (before release):
-* Add: import master data
 * Session store in database? Key in SVN?
 * login when no user exists
   - allow login with sk_admin credentials
@@ -47,6 +46,7 @@ Minor (less important changes or much work):
 * Import: let the use uncheck people
 * Import: errors: don't display symmetric errors twice
 * Import: errors: highlight erroneous fields
+* Redirect back after login doeesn't work for debug on/off
 
 Nice to have:
 * date in local format

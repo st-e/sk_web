@@ -1,5 +1,6 @@
 class PeopleController < ApplicationController
-	require_permission :club_admin, :index, :show, :new, :create, :edit, :update, :destroy, :overwrite, :import
+	# TODO remove delete_unused
+	require_permission :club_admin, :index, :show, :new, :create, :edit, :update, :destroy, :overwrite, :import, :delete_unused
 
 	def index
 		@people=Person.all(:order => "nachname, vorname")
@@ -54,7 +55,7 @@ class PeopleController < ApplicationController
 
 		respond_to do |format|
 			if @person.update_attributes(params[:person])
-				flash[:notice] = 'Person was successfully updated.'
+				flash[:notice] = 'Person wurde aktualisiert'
 				format.html { redirect_to_origin(default=@person) }
 				#format.xml  { head :ok }
 			else
@@ -79,6 +80,20 @@ class PeopleController < ApplicationController
 			format.html { redirect_to(people_url) }
 			format.xml  { head :ok }
 		end
+	end
+
+	def delete_unused
+		num_deleted=0
+		Person.all.each { |person|
+			if !person.used?
+				person.destroy
+				num_deleted += 1
+			end
+		}
+
+		flash[:notice]="#{num_deleted} Personen gelöscht"
+
+		redirect_to :action=>'index'
 	end
 
 	def overwrite
@@ -136,48 +151,206 @@ class PeopleController < ApplicationController
 		redirect_to :action=>'index'
 	end
 
-	def import
-		file=params[:file]
+	# Contrary to Ruby's Tempfile, this file will not be deleted automatically;
+	# the name of the file is returned. Also, it is not thread safe, although
+	# it does guarantee that no two threads or processes will try to create the
+	# same file when using this method.
+	# TODO move to file
+	def write_temporary_file(prefix, extension='', tmpdir=Dir::tmpdir)
+		max_tries=10
 
-		# 1. upload a file
-		if !file
-			@club=current_user.club.strip
-			render 'import_select' and return
+		failure=0
+		begin
+			# Make a filename which does not yet exist
+			n=0
+			begin
+				t=Time.now.strftime("%Y%m%d")
+				filename="#{prefix}-#{t}-#{$$}-#{rand(0x100000000).to_s(36)}-#{n}#{extension}"
+				tmpname=File.join(tmpdir, filename)
+
+				lock=tmpname+'.lock'
+				n+=1
+			end while File.exist?(lock) or File.exist?(tmpname)
+
+			Dir.mkdir(lock)
+		rescue => ex
+			failure+=1
+			retry if failure < max_tries
+			raise "Cannot generate tempfile: #{ex}"
 		end
 
-		# 2. examine the file and store the data
-		# file.read, file.original_filename
-		# File.open("/tmp/xxx", "w") { |tempfile| tempfile.write(@file.read) }
 
-		csv=file.read
-		import_data=Person::ImportData.new(csv)
+		begin
+			tmpfile=File.open(tmpname, File::RDWR|File::CREAT|File::EXCL, 0600)
+			Dir.rmdir(lock)
 
-		# Check for file (formal) errors
-		# TODO redirect_to instead
-		render_error "Die folgenden Spalten fehlen in der CSV-Datei: #{import_data.missing_columns.join(', ')}" and return if !import_data.missing_columns.empty?
-		render_error "Die Datei enthält keine Personendatensätze" and return if import_data.entries.empty?
+			yield(tmpfile)
+		ensure
+			tmpfile.close
+		end
 
-		# Check for data errors
-		@errors=import_data.check_errors
-		render 'import_errors' and return if !@errors.empty?
-
-		# Find the IDs of the people in the database
-		@errors=import_data.identify_entries(@club)
-		render 'import_errors' and return if !@errors.empty?
-
-		#   - "Die folgenden Personen wurden aus #{filename} gelesen. Bitte überprüfen:"
-		#   - buttons "OK", "Zurück"
-
-		#   - temporarily store the file
-		#   - write the people to the database
-		#   - display "n people imported" message
-		#render :text => Marshal.dump(import_data) and return
-		#File.open(Rails.root.join('public', 'uploads',
-		#						  uploaded_io.original_filename), 'w') do
-		#	|file| file.write(uploaded_io.read)  end 
-
-
-		render :text => "filename: #{file.original_filename}, contents: #{file.read}"
+		tmpname
 	end
+
+	def import
+		# TODO undefinedness if the database is modified between identify and perform
+
+		# cancel |file upload |datafile |confirm ||action                         |render                    |description
+		# -------+------------+---------+--------++-------------------------------+--------------------------+-----------------
+		# yes    |-           |-        |-       ||delete                         |redirect_to               |0: cancel
+		# no     |no          |no       |-       ||select                         |import_select             |1: select
+		# no     |yes         |-        |-       ||delete, check, identify, store |redirect_to/import_errors |2: upload+analyze (no store on error)
+		# no     |no          |yes      |no      ||load, review                   |import_review             |3: review
+		# no     |no          |yes      |yes     ||load, perform, delete          |redirect_to index         |4: perform
+		#
+		# Import data is only stored when there are no errors.
+
+		file             =params[:file   ]
+		cancel           =params[:cancel ]
+		confirm          =params[:confirm].to_b
+		have_import_data =have_import_data?
+
+		# 0: Cancel
+		if cancel
+			cleanup_import_data
+			redirect_to
+			return
+		end
+
+		# 1. select a file
+		if !have_import_data && !file
+			@club=current_user.club.strip
+			render 'import_select'
+			return
+		end
+
+		# 2. file upload - analyze+store (don't store on error)
+		if file
+			# Clean up any stored import data, it's overridden by the new file
+			cleanup_import_data
+			
+			# Analyze the uploaded file
+			csv=file.read
+			@club=params['club']
+			@import_data=Person::ImportData.new(csv, @filename, @club)
+
+			# Check for file (formal) errors
+			render_error "Die folgenden Spalten fehlen in der CSV-Datei: #{@import_data.missing_columns.join(', ')}" and return if !@import_data.missing_columns.empty?
+			render_error "Die Datei enthält keine Personendatensätze" and return if @import_data.entries.empty?
+
+			# Check for data errors
+			@errors=@import_data.check_errors
+			render 'import_errors' and return if !@errors.empty?
+
+			# Find the IDs of the people in the database
+			@errors=@import_data.identify_entries
+			render 'import_errors' and return if !@errors.empty?
+
+			# The import data is OK, store it and redirect
+			write_import_data @import_data
+			redirect_to
+			return
+		end
+
+		# 3. review
+		if !confirm
+			# TODO unmodified people in CSV file
+
+			# Read the stored import data
+			@import_data=read_import_data
+			@import_data_filename=import_data_filename
+			render 'import_review'
+			return
+		end
+
+		# 4. perform
+		if confirm
+			# Read the stored import data
+			@import_data=read_import_data
+
+			# If the filename changed, we have to reconfirm (go back to 3)
+			if import_data_filename!=params[:import_data_filename]
+				flash[:error]="Die Daten haben sich in der Zwischenzeit geändert. Bitte nochmals überprüfen."
+				redirect_to
+				return
+			end
+
+			# Actually perform
+			num_created=0
+			num_updated=0
+
+			Person.transaction {
+				@import_data.entries.each { |entry|
+					if entry.new?
+						person=Person.new(entry.attribute_hash)
+						person.save
+						num_created+=1
+					else
+						person=Person.find(entry.id)
+						person.attributes=entry.attribute_hash
+						person.save
+						num_updated+=1
+					end
+				}
+
+				cleanup_import_data
+			}
+
+			flash[:notice]="#{num_created} Personen angelegt, #{num_updated} aktualisiert"
+			redirect_to :action=>'index'
+			return
+		end
+
+		# Fallthrough, should not happen
+		raise "Unbehandelter Fall in PeopleController::import"
+		redirect_to
+	end
+
+protected
+	def import_data_filename
+		session[:people_import_data_filename]
+	end
+
+	def import_data_filename=(filename)
+		session[:people_import_data_filename]=filename
+	end
+
+	def write_import_data(import_data)
+		raise "Vor dem Speichern sind noch fehlerhafte Personen vorhanden" if !import_data.ok?
+		filename=write_temporary_file('people_import_data') { |file|
+			Marshal.dump import_data, file
+		}
+		session[:people_import_data_filename]=filename
+	end
+
+	def have_import_data?
+		filename=import_data_filename
+		return false if !filename
+		return true if File.exist? filename
+		session[:people_import_data_filename]=nil
+		false
+	end
+	
+	def read_import_data
+		Person # load Person so we can unmarshal Person::ImportData
+		filename=import_data_filename
+		import_data=nil
+		File.open(filename) { |file|
+			import_data=Marshal.load file
+		}
+		raise "Nach dem Laden sind noch fehlerhafte Personen vorhanden" if !import_data.ok?
+		import_data
+	end
+
+	def cleanup_import_data
+		filename=import_data_filename
+		if filename
+			if File.exist? filename
+				File.delete filename
+			end
+			import_data_filename=nil
+		end
+	end
+
 end
 

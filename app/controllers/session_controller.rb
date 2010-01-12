@@ -2,6 +2,7 @@ require 'util'
 
 class SessionController < ApplicationController
 	allow_public :login, :logout
+	require_login :settings
 
 	filter_parameter_logging :current_password, :password, :password_confirmation
 
@@ -36,6 +37,12 @@ class SessionController < ApplicationController
 
 		flash[:notice]="Abgemeldet"
 		redirect_to root_path
+	end
+
+	def settings
+		session[:debug]=params[:debug].to_b
+
+		redirect_to :back
 	end
 end
 

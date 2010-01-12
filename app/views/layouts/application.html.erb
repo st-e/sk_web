@@ -28,6 +28,12 @@
 			<%= h version_string %>
 		</div>
 
+		<% if session[:debug] %>
+			<hr/>
+			<div>params=<%= params.inspect %></div>
+			<div>session=<%= session.inspect %></div>
+		<% end %>
+
 	</body>
 </html>
 

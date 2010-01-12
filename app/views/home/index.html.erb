@@ -13,7 +13,7 @@
     <ul>
       <li><%= link_to "Personenliste", people_path %></li>
       <li><%= link_to "Neue Person anlegen", new_person_path %></li>
-	  <li><%= link_to "Stammdaten einspielen", :controller => 'people', :action => 'import' %></li>
+	  <li><%= link_to "Personen importieren", :controller => 'people', :action => 'import' %></li>
     </ul>
   </li>
   <li>Benutzer
@@ -22,9 +22,18 @@
       <li><%= link_to "Neuen Benutzer anlegen", new_user_path %></li>
     </ul>
   </li>
-  <li>Account
+  <li>Sitzung
     <ul>
 		<li><%= link_to "Passwort ändern", :controller => 'users', :action => 'change_own_password' %></li>
+    </ul>
+    <ul>
+		<% if session[:debug] %>
+			<li><%= link_to "Diagnose deaktivieren", :controller=>'session', :action=>'settings', :debug=>'false' %></li>
+		<% else %>
+			<li><%= link_to "Diagnose aktivieren", :controller=>'session', :action=>'settings', :debug=>'true' %></li>
+		<% end %>
+    </ul>
+    <ul>
 		<% if session[:username] %>
 			<li><%= link_to "Abmelden", logout_path %></li>
 		<% else %>

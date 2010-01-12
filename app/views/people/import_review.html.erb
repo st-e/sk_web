@@ -1,0 +1,98 @@
+<%= page_title "Personen importieren" %>
+
+<%
+	new_people_entries     =@import_data.entries.select { |entry| entry.id==0 }
+	changed_people_entries =@import_data.entries.select { |entry| entry.id!=0 }
+%>
+
+<p>Es wurden <%= h @import_data.entries.size %> Personen aus der Datei <%=
+@import_data.original_filename %> gelesen. Bitte die Personen überprüfen:</p>
+
+<p>Verein: <%= h @club %></p>
+
+<% unless new_people_entries.empty? %>
+	<h2>Neue Personen</h2>
+
+	<p>Die folgenden Personen werden neu angelegt:</p>
+
+	<p>
+		<%# Note that for new people, the old club ID is always blank %>
+		<% table_for(new_people_entries) { |table| %>
+			<% table.header_row { |header| %>
+				<%= header.text "Nachname"        %>
+				<%= header.text "Vorname"         %>
+				<%= header.text "Verein"          %>
+				<%= header.text "Bemerkung"       %>
+				<%= header.text "Vereins-ID"      %>
+			<% } %>
+
+			<% table.body { |body, entry| %>
+				<%= body.text entry.last_name   %>
+				<%= body.text entry.first_name  %>
+				<%= body.text entry.club        %>
+				<%= body.text entry.comments    %>
+				<%= body.text entry.club_id     %>
+			<% } %>
+		<% } %>
+	</p>
+<% end %>
+
+<% unless changed_people_entries.empty? %>
+	<h2>Geänderte Personen</h2>
+
+	<p>Die folgenden Personen werden geändert:</p>
+
+	<p>
+		<%# Note that for new people, the old club ID is always blank %>
+		<% table_for(changed_people_entries) { |table| %>
+			<% table.header_row { |header| %>
+				<%= header.text "Neu", :colspan=>4 %>
+				<%= header.text "Alt", :colspan=>5 %>
+			<% } %>
+
+			<% table.header_row { |header| %>
+				<%= header.text "Nachname"        %>
+				<%= header.text "Vorname"         %>
+				<%= header.text "Bemerkung"       %>
+				<%= header.text "Vereins-ID"      %>
+
+				<%= header.text "ID"              %>
+				<%= header.text "Nachname"        %>
+				<%= header.text "Vorname"         %>
+				<%= header.text "Bemerkung"       %>
+				<%= header.text "Vereins-ID"      %>
+
+				<%= header.text "Verein"          %>
+			<% } %>
+
+			<% table.body { |body, entry| %>
+				<% person=Person.find(entry.id) %>
+
+				<%= body.text entry.last_name   %>
+				<%= body.text entry.first_name  %>
+				<%= body.text entry.comments    %>
+				<%= body.text entry.club_id     %>
+
+				<%= body.text person.id          %>
+				<%= body.text person.last_name   %>
+				<%= body.text person.first_name  %>
+				<%= body.text person.comments    %>
+				<%= body.text person.club_id     %>
+
+				<%= body.text person.club        %>
+			<% } %>
+		<% } %>
+	</p>
+<% end %>
+
+<h2>OK?</h2>
+
+<% form_tag 'import' do %>
+	<%= hidden_field_tag 'confirm', 'true' %>
+	<%= hidden_field_tag 'import_data_filename', @import_data_filename %>
+	<p>
+		<%= submit_tag "OK" %>
+		<%= submit_tag "Abbrechen", :name=>'cancel' %>
+	</p>
+<% end %>
+

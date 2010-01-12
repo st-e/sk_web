@@ -64,7 +64,7 @@ class Person < ActiveRecord::Base
 	class ImportData
 		# Don't use Person here because it needs to be Marshalled
 		class Entry
-			attr_accessor :last_name, :first_name, :comments, :club_id, :old_club_id
+			attr_accessor :last_name, :first_name, :comments, :club_id, :old_club_id, :club
 			attr_accessor :id, :error_message
 
 			# Identifies a person, that is, determines the ID of the person in
@@ -94,14 +94,14 @@ class Person < ActiveRecord::Base
 			#     This is because for multiple people with the same name, it
 			#     would be ambiguous which one should overwrite the person in
 			#     the database.
-			def identify(club)
+			def identify
 				# TODO generally, is there a difference between nil (not
 				# present in the file) and blank (empty field in the file)?
 				# No, because "" means "not present for that person"?
 
 				if !@old_club_id.blank?
 					# Identify by old club ID
-					candidates=Person.all(:conditions => { :verein => club, :vereins_id => @old_club_id })
+					candidates=Person.all(:conditions => { :verein => @club, :vereins_id => @old_club_id })
 					case candidates.size
 					when 0: @id=nil; @error_message="Keine Person mit der angegebenen alten Vereins-ID gefunden"
 					when 1: @id=candidates[0].id
@@ -109,19 +109,21 @@ class Person < ActiveRecord::Base
 					end
 				elsif !@club_id.blank?
 					# Identify by club ID
-					candidates=Person.all(:conditions => { :verein => club, :vereins_id => @club_id })
+					candidates=Person.all(:conditions => { :verein => @club, :vereins_id => @club_id })
 					case candidates.size
 					when 0: @id=0 # Not found - create new
 					when 1: @id=candidates[0].id
 					else    @id=nil; @error_message="Mehrere Personen mit der angegebenen Vereins-ID gefunden"
 					end
 				else
+					puts "identify by name"
 					# Identify by name
 					# club_id must also be empty (to remove a club ID, we have
 					# to select the person by old club ID)
 					# TODO what about NULL club ID in database?
 					# TODO does the club ID really have to be empty?
-					candidates=Person.all(:conditions => { :verein => club, :vereins_id => "", :nachname => @last_name, :vorname => @first_name })
+					candidates=Person.all(:conditions => { :verein => @club, :vereins_id => "", :nachname => @last_name, :vorname => @first_name })
+					puts "#{candidates.size} candidates"
 					case candidates.size
 					when 0: @id=0 # Not found - create new
 					when 1: @id=candidates[0].id
@@ -129,14 +131,31 @@ class Person < ActiveRecord::Base
 					end
 				end
 			end
+
+			def new?
+				@id==0
+			end
+
+			def attribute_hash
+				result={}
+				result['vorname'   ]=@first_name if @first_name
+				result['nachname'  ]=@last_name  if @last_name
+				result['verein'    ]=@club       if @club
+				result['vereins_id']=@club_id    if @club_id
+				result['bemerkung' ]=@comments   if @comments
+				result
+			end
 		end
 
 		attr_reader :missing_columns, :entries
+		attr_reader :creation_time, :original_filename
 
-		def initialize(csv)
-			reader=CSV::Reader.create(csv)
+		def initialize(csv, original_filename, club)
+			@creation_time=Time.now
+			@original_filename=original_filename
 
 			# Parse the header (an empty file will yield [])
+			reader=CSV::Reader.create(csv)
 			header_row=reader.shift
 
 			# Build the column index hash
@@ -173,6 +192,7 @@ class Person < ActiveRecord::Base
 				entry.comments    =(row[columns[:comments   ]] || "").strip
 				entry.club_id     =(row[columns[:club_id    ]] || "").strip
 				entry.old_club_id =(row[columns[:old_club_id]] || "").strip
+				entry.club=club
 
 				@entries << entry
 			}
@@ -180,6 +200,8 @@ class Person < ActiveRecord::Base
 
 		def check_errors
 			errors=[]
+
+			# FIXME: club_id already taken is not checked
 
 			# Note that there are non-symmetric error relations: for example,
 			# two people with the same name, only one of which has as club ID.
@@ -213,15 +235,21 @@ class Person < ActiveRecord::Base
 			errors
 		end
 
-		def identify_entries(club)
+		def identify_entries
 			errors=[]
 
 			entries.each { |entry|
-				entry.identify(club)
+				entry.identify
 				errors << { :message=>entry.error_message, :entries=>[entry] } if entry.id.nil?
 			}
 
 			errors
+		end
+
+		def ok?
+			!entries.any? {
+				|entry| entry.id.nil?
+			}
 		end
 	end
 

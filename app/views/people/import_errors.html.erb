@@ -7,6 +7,9 @@
 
 <p>Beim Importieren sind die folgenden Probleme aufgetreten:</p>
 
+<p>Verein: <%= h @club %></p>
+
+<%# TODO club in people tables %>
 <% if !single_person_errors.empty? %>
 	<p>
 		<% table_for(single_person_errors) { |table| %>
@@ -75,5 +78,4 @@
 		<% } %>
 	</p>
 <% end %>
-
 

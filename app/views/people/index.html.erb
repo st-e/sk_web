@@ -31,4 +31,6 @@
 <br />
 
 <%= link_to 'Person anlegen', new_person_path %>
+<%= link_to 'Personen importieren', import_people_path %>
+<%= link_to 'Unbenutzte löschen', delete_unused_people_path, :confirm => 'Echt jetzt?', :method => :post %>
 
