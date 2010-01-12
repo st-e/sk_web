@@ -351,6 +351,5 @@ protected
 			import_data_filename=nil
 		end
 	end
-
 end
 

@@ -1,3 +1,44 @@
+# A user which is not read from the database.
+# Implementations must set the variables @username and @password of the
+# subclass.
+class SpecialUser
+	# Class methods
+
+	class << self
+		attr_reader :username
+
+		def check_password(password)
+			@password && password==@password
+		end
+
+		protected
+		def credentials(username, password)
+			@username=username
+			@password=password
+		end
+	end
+
+	# Instance methods
+	def username; self.class.username; end
+	def has_permission?(permission); false; end
+	def person; 0; end
+	def associated_person; nil; end
+	def special?; true; end
+end
+
+# A special user using the database credentials. This is necessary for creating
+# a user account initially or resetting the admin's password.
+class DatabaseUser <SpecialUser
+	config=Rails::Configuration.new
+	credentials \
+		config.database_configuration[RAILS_ENV]["username"],
+		config.database_configuration[RAILS_ENV]["password"]
+
+	def has_permission?(permission)
+		true # :-)
+	end
+end
+
 class User < ActiveRecord::Base
 	# Table settings
 	set_table_name "user" 
@@ -18,7 +59,7 @@ class User < ActiveRecord::Base
 	validates_uniqueness_of :username, :case_sensitive => false,      :message   => "existiert schon"
 	validates_length_of     :username, :minimum => 2,                 :too_short => "muss mindestens {{count}} Zeichen lang sein"
 	validates_format_of     :username, :with => /^[a-zA-Z0-9_.-]*$/,  :message   => "Der Benutzername darf nur Buchstaben, Ziffern, _, . und - enthalten"
-	# TODO don't allow the name of the sk_admin
+	validates_exclusion_of  :username, :in => ['root', DatabaseUser.username], :message => "{{value}} ist reserviert"
 
 	# Password validation
 	# On creation, we always require a password to be present. Otherwise, we
@@ -44,7 +85,11 @@ class User < ActiveRecord::Base
 
 
 	def self.authenticate(username, password)
-		User.exists? 'username'=>username, 'password'=>mysql_password_hash(password)
+		if username==DatabaseUser.username
+			DatabaseUser.check_password password
+		else
+			User.exists? 'username'=>username, 'password'=>mysql_password_hash(password)
+		end
 	end
 
 	def clear_passwords
@@ -55,6 +100,18 @@ class User < ActiveRecord::Base
 
 	def has_permission?(permission)
 		send "perm_#{permission}"
+	end
+
+	def self.find(*args)
+		if args[0]==DatabaseUser.username
+			DatabaseUser.new
+		else
+			super(*args)
+		end
+	end
+
+	def special?
+		false
 	end
 
 protected

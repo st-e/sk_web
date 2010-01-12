@@ -13,6 +13,7 @@ class UsersController < ApplicationController
 
 	def show
 		@user = User.find(params[:id])
+		render_error "Der Benutzer #{@user.username} kann nicht angezeigt werden." and return if @user.special?
 		render "show"
 	end
 
@@ -38,6 +39,7 @@ class UsersController < ApplicationController
 		# Store the location we came from, so we can return there after editing
 		store_origin
 		@user = User.find(params[:id])
+		render_error "Der Benutzer #{@user.username} kann nicht editiert werden." and return if @user.special?
 
 		# If a user parameter is given, we've probably returned from a subpage.
 		@user.attributes=params[:user] if params[:user]
@@ -45,6 +47,7 @@ class UsersController < ApplicationController
 
 	def update
 		@user = User.find(params[:id])
+		render_error "Der Benutzer #{@user.username} kann nicht gelöscht werden." and return if @user.special?
 
 		if params['commit']
 			# Store the user
@@ -71,6 +74,8 @@ class UsersController < ApplicationController
 
 	def destroy
 		@user = User.find(params[:id])
+		render_error "Der Benutzer #{@user.username} kann nicht gelöscht werden." and return if @user.special?
+
 		@user.destroy
 
 		redirect_to(users_url)
@@ -79,6 +84,8 @@ class UsersController < ApplicationController
 	def change_password
 		@user = User.find(params[:id])
 		@display_old_password_field=false
+
+		render_error "Das Passwort des Benutzers #{@user.username} kann nicht geändert werden." and return if @user.special?
 
 		if params[:user]
 			@user.attributes=params[:user]
@@ -94,6 +101,8 @@ class UsersController < ApplicationController
 	def change_own_password
 		@user=current_user
 		@display_current_password_field=true
+
+		render_error "Das Passwort des Benutzers #{@user.username} kann nicht geändert werden." and return if @user.special?
 
 		if params[:user]
 			if User.authenticate(@user.username, params[:user][:current_password])
