@@ -1,3 +1,7 @@
-<%= table[:columns].map { |column| c column[:title] }.join(',') %>
-<% table[:rows].each { |row| %><%= row.map { |data| c(data)}.join(',') %>
-<% } %>
+<%= make_csv { |csv|
+		csv << table[:columns].map { |column| column[:title] }
+		table[:rows].each { |row|
+			csv << row
+		}
+	}
+%>

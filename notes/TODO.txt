@@ -7,6 +7,7 @@ Critical (before release):
   - create any user on first connect => not usable for recovery
 * Permissions: edit/create user grant permissions: sk_admin
 * Permissions: not delete self
+* Bug: today.csv
 
 Major (important changes):
 * Menu entries only for available actions
