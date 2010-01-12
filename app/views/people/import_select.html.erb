@@ -1,0 +1,19 @@
+<%= page_title "Person importieren" %>
+
+<%# TODO describe file format %>
+
+<% form_tag 'import', :multipart => true do %>
+	<table>
+		<tr>
+			<th>Verein:</th>
+			<td><%= text_field_tag 'club', @club %></td>
+		</tr>
+		<tr>
+			<th>Dateiname:</th>
+			<td><%= file_field_tag 'file' %></td>
+		</tr>
+	</table>
+
+	<p><%= submit_tag "Hochladen" %></p>
+<% end %>
+

@@ -1,5 +1,5 @@
 class PeopleController < ApplicationController
-	require_permission :club_admin, :index, :show, :new, :create, :edit, :update, :destroy, :overwrite
+	require_permission :club_admin, :index, :show, :new, :create, :edit, :update, :destroy, :overwrite, :import
 
 	def index
 		@people=Person.all(:order => "nachname, vorname")
@@ -134,6 +134,66 @@ class PeopleController < ApplicationController
 		
 		flash[:notice]="#{wrong_person_name} wurde durch #{@correct_person.full_name} ersetzt."
 		redirect_to :action=>'index'
+	end
+
+	def import
+		file=params[:file]
+
+		# 1. upload a file
+		if !file
+			@club=current_user.club.strip
+			render 'import_select' and return
+		end
+
+		# 2. examine the file and store the data
+		# file.read, file.original_filename
+		# File.open("/tmp/xxx", "w") { |tempfile| tempfile.write(@file.read) }
+
+
+
+		# TODO:
+		#   - format of csv
+		#   - temporarily store the file
+		#   - fields: Nachname, Vorname, Vereins-ID, [Bemerkungen], Vereins-ID_alt
+
+		# Steps:
+		#   - create people from CSV file (make sure they cannot be saved - or
+		#     use different class)
+		#   - message if file erroneous
+		#   - message if no people in file
+		#	- db.import_check (persons, messages);
+		#     - Single people: first name and last name not empty
+		#     - Pairs: non-unique club ID, non-unique name w/o club id
+		#     - Don't start at p1 here because there may be error relations
+		#       which are not symmetric: for example, two persons with the same
+		#       name only one of which has a club ID. This is an error for the
+		#       person without, but not for the one with club ID.
+		#	- db.import_identify (persons, messages);
+		#     - find the IDs of the people
+		#   - fatal messages => error
+		#   - display (non-fatal) messages to user
+		#   - "Die folgenden Personen wurden aus #{filename} gelesen. Bitte überprüfen:"
+		#   - buttons "OK", "Zurück"
+		#   - write the people to the database
+		#   - display "n people imported" message
+
+		# Import messages (fatal=true):
+		# imt_first_name_missing,
+		# imt_last_name_missing,
+		# imt_duplicate_club_id,
+		# imt_duplicate_name_without_club_id,
+		# imt_club_id_not_found,
+		# imt_club_id_old_not_found,
+		# imt_club_id_not_unique,
+		# imt_multiple_own_persons_name,
+		# imt_multiple_own_editable_persons_name,
+		# imt_multiple_editable_persons_name,
+		# imt_club_mismatch (false)
+
+		render :text => "filename: #{file.original_filename}, contents: #{file.read}"
+		#File.open(Rails.root.join('public', 'uploads',
+		#						  uploaded_io.original_filename), 'w') do
+		#	|file| file.write(uploaded_io.read)  end 
 	end
 end
 

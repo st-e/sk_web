@@ -13,7 +13,7 @@
     <ul>
       <li><%= link_to "Personenliste", people_path %></li>
       <li><%= link_to "Neue Person anlegen", new_person_path %></li>
-      <li><%= link_to "Stammdaten einspielen", '' %></li>
+	  <li><%= link_to "Stammdaten einspielen", :controller => 'people', :action => 'import' %></li>
     </ul>
   </li>
   <li>Benutzer

@@ -40,32 +40,6 @@ module ApplicationHelper
 
 	alias_method :l, :latex_escape
 
-	def csv_escape(value)
-		# Rules for OpenOffice:
-		#   - enclosing double quotes are removed
-		#   - after that, doubled double quotes at the beginning and at the end
-		#     (not in the middle) are replaced by a single double quote
-		# TODO determine rules for MS Excel
-
-		return nil if !value
-
-		value=value.to_s
-
-		# Replace double quotes at the beginning or at the end with two double quotes
-		# Don't use gsub! becaus that will change the original string
-		value=value \
-			.gsub(/^"/, '""') \
-			.gsub(/"$/, '""')
-
-		# If the value contains a comma or begins or ends with a double quote,
-		# enclose it in double quotes
-		value="\"#{value}\"" if (value =~ /,/ || value =~ /^"/ || value =~ /"$/)
-
-		value
-	end
-
-	alias_method :c, :csv_escape
-
 	def version_string
 		ruby="Ruby #{RUBY_VERSION}"
 		rails="Rails #{Rails::VERSION::STRING}"

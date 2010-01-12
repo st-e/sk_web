@@ -15,7 +15,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users, :member => { :edit => :post, :change_password => [:get, :post] }
   #map.resources :flights # Not available
   #map.resources :planes
-  map.resources :people, :member => { :overwrite => [:get, :post] }
+  map.resources :people, :member => { :overwrite => [:get, :post] }, :collection => { :import => [:get, :post] }
 
   
   # Flight list, plane log, pilot log and flight log accept a date specification

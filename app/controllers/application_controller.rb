@@ -81,8 +81,6 @@ private
 		@required_permissions[action]
 	end
 
-
-
 	def check_permissions
 		action=params['action'].to_sym
 
