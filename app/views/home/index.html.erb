@@ -28,9 +28,9 @@
     </ul>
     <ul>
 		<% if session[:debug] %>
-			<li><%= link_to "Diagnose deaktivieren", :controller=>'session', :action=>'settings', :debug=>'false' %></li>
+			<li><%= link_to "Diagnosefunktionen deaktivieren", :controller=>'session', :action=>'settings', :debug=>'false' %></li>
 		<% else %>
-			<li><%= link_to "Diagnose aktivieren", :controller=>'session', :action=>'settings', :debug=>'true' %></li>
+			<li><%= link_to "Diagnosefunktionen aktivieren", :controller=>'session', :action=>'settings', :debug=>'true' %></li>
 		<% end %>
     </ul>
     <ul>

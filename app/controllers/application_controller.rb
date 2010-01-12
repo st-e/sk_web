@@ -67,6 +67,15 @@ protected
 		}
 	end
 
+	def redirect_to_full_url(url, status)
+		if session[:debug]
+			@target_url=url
+			@status=status
+			render 'debug/redirect'
+		else
+			super url, status
+		end
+	end
 
 private
 	def self.public_action?(action)

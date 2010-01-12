@@ -42,6 +42,8 @@ class SessionController < ApplicationController
 	def settings
 		session[:debug]=params[:debug].to_b
 
+		flash[:notice]="Diagnosefunktionen #{(session[:debug])?"aktiviert":"deaktiviert"}"
+
 		redirect_to :back
 	end
 end
