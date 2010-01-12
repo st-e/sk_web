@@ -1,0 +1,79 @@
+<%= page_title "Personen importieren - Fehler" %>
+
+<%
+	single_person_errors=@errors.select { |error| error[:entries].size==1 }
+	two_person_errors   =@errors.select { |error| error[:entries].size==2 }
+%>
+
+<p>Beim Importieren sind die folgenden Probleme aufgetreten:</p>
+
+<% if !single_person_errors.empty? %>
+	<p>
+		<% table_for(single_person_errors) { |table| %>
+			<% table.header_row { |header| %>
+				<%= header.hidden                     %>
+				<%= header.text "Person", :colspan=>5 %>
+			<% } %>
+
+			<% table.header_row { |header| %>
+				<%= header.text "Fehlermeldung"   %>
+				<%= header.text "Nachname"        %>
+				<%= header.text "Vorname"         %>
+				<%= header.text "Bemerkung"       %>
+				<%= header.text "Vereins-ID"      %>
+				<%= header.text "Alte Vereins-ID" %>
+			<% } %>
+
+			<% table.body { |body, error| %>
+				<%= body.text error[:message]                , :class=>'error_message' %>
+				<%= body.text error[:entries][0].last_name   %>
+				<%= body.text error[:entries][0].first_name  %>
+				<%= body.text error[:entries][0].comments    %>
+				<%= body.text error[:entries][0].club_id     %>
+				<%= body.text error[:entries][0].old_club_id %>
+			<% } %>
+		<% } %>
+	</p>
+<% end %>
+
+<% if !two_person_errors.empty? %>
+	<p>
+		<% table_for(two_person_errors) { |table| %>
+			<% table.header_row { |header| %>
+				<%= header.hidden                            %>
+				<%= header.text "Person"       , :colspan=>5 %>
+				<%= header.text "Andere Person", :colspan=>5 %>
+			<% } %>
+
+			<% table.header_row { |header| %>
+				<%= header.text "Fehlermeldung"   %>
+				<%= header.text "Nachname"        %>
+				<%= header.text "Vorname"         %>
+				<%= header.text "Bemerkung"       %>
+				<%= header.text "Vereins-ID"      %>
+				<%= header.text "Alte Vereins-ID" %>
+				<%= header.text "Nachname"        %>
+				<%= header.text "Vorname"         %>
+				<%= header.text "Bemerkung"       %>
+				<%= header.text "Vereins-ID"      %>
+				<%= header.text "Alte Vereins-ID" %>
+			<% } %>
+
+			<% table.body { |body, error| %>
+				<%= body.text error[:message]                , :class=>'error_message' %>
+				<%= body.text error[:entries][0].last_name   %>
+				<%= body.text error[:entries][0].first_name  %>
+				<%= body.text error[:entries][0].comments    %>
+				<%= body.text error[:entries][0].club_id     %>
+				<%= body.text error[:entries][0].old_club_id %>
+				<%= body.text error[:entries][1].last_name   %>
+				<%= body.text error[:entries][1].first_name  %>
+				<%= body.text error[:entries][1].comments    %>
+				<%= body.text error[:entries][1].club_id     %>
+				<%= body.text error[:entries][1].old_club_id %>
+			<% } %>
+		<% } %>
+	</p>
+<% end %>
+
+

@@ -12,6 +12,7 @@ Tests:
   - incomplete towpilot name
   - LSV plugin
   - passwords not logged
+  - import: if column not present, values not changed
 
 Permission system:
   - Two criteria: (a) login required no/non-local/always, (b) user's permissions

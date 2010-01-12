@@ -61,6 +61,172 @@ class Person < ActiveRecord::Base
 		!club.blank? and !club_id.blank?
 	end
 
+	class ImportData
+		# Don't use Person here because it needs to be Marshalled
+		class Entry
+			attr_accessor :last_name, :first_name, :comments, :club_id, :old_club_id
+			attr_accessor :id, :error_message
+
+			# Identifies a person, that is, determines the ID of the person in
+			# the database that matches this record. Identification works as
+			# follows (the first applicable option is used):
+			#   - If an old club ID is given, the club ID of the person must
+			#     match that club ID. If no person is found, this is an error.
+			#     This can be used for changing club IDs.
+			#   - If a club ID is given, the club ID of the person must match
+			#     that club ID. If no person is found, a new person will be
+			#     created. This can be used for changing the name of a person.
+			#   - Otherwise, the last name and the first name of the person
+			#     must match the given values. If no person is found, a new
+			#     person will be created.
+			# In any case, the club of a person must match the given club
+			# (people with a different club are not considered) and the person
+			# must be unique. A non-unique person is an error.
+			# If a new person is to be created, the ID is set to 0. On error,
+			# the ID is set to nil and error_message is set.
+			# Notes:
+			#   - If a club ID is given, but not found, identification by name
+			#     (which could be used for adding a club ID to a person) is not
+			#     attempted because this would pose problems when two people
+			#     with the same name (but different club IDs) are in the file,
+			#     one of which is already in the database (without club ID)
+			#   - It is not possible to add a club ID to a person via import.
+			#     This is because for multiple people with the same name, it
+			#     would be ambiguous which one should overwrite the person in
+			#     the database.
+			def identify(club)
+				# TODO generally, is there a difference between nil (not
+				# present in the file) and blank (empty field in the file)?
+				# No, because "" means "not present for that person"?
+
+				if !@old_club_id.blank?
+					# Identify by old club ID
+					candidates=Person.all(:conditions => { :verein => club, :vereins_id => @old_club_id })
+					case candidates.size
+					when 0: @id=nil; @error_message="Keine Person mit der angegebenen alten Vereins-ID gefunden"
+					when 1: @id=candidates[0].id
+					else    @id=nil; @error_message="Mehrere Personen mit der angegebenen alten Vereins-ID gefunden"
+					end
+				elsif !@club_id.blank?
+					# Identify by club ID
+					candidates=Person.all(:conditions => { :verein => club, :vereins_id => @club_id })
+					case candidates.size
+					when 0: @id=0 # Not found - create new
+					when 1: @id=candidates[0].id
+					else    @id=nil; @error_message="Mehrere Personen mit der angegebenen Vereins-ID gefunden"
+					end
+				else
+					# Identify by name
+					# club_id must also be empty (to remove a club ID, we have
+					# to select the person by old club ID)
+					# TODO what about NULL club ID in database?
+					# TODO does the club ID really have to be empty?
+					candidates=Person.all(:conditions => { :verein => club, :vereins_id => "", :nachname => @last_name, :vorname => @first_name })
+					case candidates.size
+					when 0: @id=0 # Not found - create new
+					when 1: @id=candidates[0].id
+					else    @id=nil; @error_message="Mehrere Personen mit dem angegebenen Namen gefunden"; return
+					end
+				end
+			end
+		end
+
+		attr_reader :missing_columns, :entries
+
+		def initialize(csv)
+			reader=CSV::Reader.create(csv)
+
+			# Parse the header (an empty file will yield [])
+			header_row=reader.shift
+
+			# Build the column index hash
+			columns={}
+			header_row.each_with_index { |column, index|
+				case column.strip
+				when /^nachname$/i      : columns[:last_name  ]=index
+				when /^vorname$/i       : columns[:first_name ]=index
+				when /^bemerkungen$/i   : columns[:comments   ]=index
+				when /^vereins-id$/i    : columns[:club_id    ]=index
+				when /^vereins-id_alt$/i: columns[:old_club_id]=index
+				end
+			}
+
+			# Make sure that all required columns are present
+			@missing_columns=[]
+			@missing_columns << "Nachname" if !columns.has_key? :last_name
+			@missing_columns << "Vorname"  if !columns.has_key? :first_name
+			return unless @missing_columns.empty?
+
+			# Build the entry list
+			@entries=[]
+			reader.each { |row|
+				next if row.empty? || row==[nil]
+
+				def row.[](index)
+					(index.nil?)? nil : super(index)
+				end
+
+				entry=Entry.new
+
+				entry.last_name   =(row[columns[:last_name  ]] || "").strip
+				entry.first_name  =(row[columns[:first_name ]] || "").strip
+				entry.comments    =(row[columns[:comments   ]] || "").strip
+				entry.club_id     =(row[columns[:club_id    ]] || "").strip
+				entry.old_club_id =(row[columns[:old_club_id]] || "").strip
+
+				@entries << entry
+			}
+		end
+
+		def check_errors
+			errors=[]
+
+			# Note that there are non-symmetric error relations: for example,
+			# two people with the same name, only one of which has as club ID.
+			# This is an error for the person without, but not for the one with
+			# a club ID. Thus we have check all people against all others, even
+			# if we already checked the reverse.
+			@entries.each { |entry|
+				# First name or last name empty
+				errors << { :message=>"Vorname ist leer" , :entries=>[entry] } if entry.first_name.blank?
+				errors << { :message=>"Nachname ist leer", :entries=>[entry] } if entry.last_name .blank?
+
+				@entries.each { |other_entry|
+					if !other_entry.equal? entry
+						# Non-unique club ID
+						if !entry.club_id.blank? &&
+							entry.club_id == other_entry.club_id
+							errors << { :message=>"Doppelte Vereins-ID", :entries=>[entry, other_entry] }
+						end
+
+						# Non-unique name without club id
+						if entry.club_id.blank? &&
+							entry.first_name == other_entry.first_name &&
+							entry.last_name  == other_entry.last_name
+
+							errors << { :message=>"Doppelter Name ohne Vereins-ID", :entries=>[entry, other_entry] }
+						end
+					end
+				}
+			}
+
+			errors
+		end
+
+		def identify_entries(club)
+			errors=[]
+
+			entries.each { |entry|
+				entry.identify(club)
+				errors << { :message=>entry.error_message, :entries=>[entry] } if entry.id.nil?
+			}
+
+			errors
+		end
+	end
+
+
+
 protected
 	def ensure_not_used
 		if used?

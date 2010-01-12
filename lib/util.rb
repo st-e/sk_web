@@ -1,6 +1,14 @@
 require 'date'
 require 'digest/sha1'
 
+# This breaks the server
+#class Array
+#	def [](index)
+#		return nil if index.nil?
+#		super(index)
+#	end
+#end
+
 class Time
 	def date
 		Date.new(year, month, day)

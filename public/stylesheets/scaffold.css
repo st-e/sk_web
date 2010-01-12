@@ -2,13 +2,19 @@ body { background-color: #fff; color: #333; }
 
 .nobreak { white-space:nowrap; }
 .invisible { display:none; }
+/*.invisible { visibility:hidden; }*/
+
+.transparent { background-color: transparent; }
 
 table.list { border-collapse: collapse }
 table.list td,th { padding: 2px 10px 2px 5px } /* top, right, bottom, left */
+/* TODO: background should be transparent? */
 table.list td,th { border: solid white; border-width: 1px }
-table.list tr.header { background-color: #666; color: #FFF }
-table.list tr.data0 { background-color: #EEE }
-table.list tr.data1 { background-color: #CCC }
+table.list tr.header th { background-color: #666; color: #FFF }
+table.list tr.data0  td { background-color: #EEE }
+table.list tr.data1  td { background-color: #CCC }
+
+table.list tr td.error_message { color: red }
 
 table.form td,th { vertical-align: top; }
 

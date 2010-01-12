@@ -149,51 +149,35 @@ class PeopleController < ApplicationController
 		# file.read, file.original_filename
 		# File.open("/tmp/xxx", "w") { |tempfile| tempfile.write(@file.read) }
 
+		csv=file.read
+		import_data=Person::ImportData.new(csv)
 
+		# Check for file (formal) errors
+		# TODO redirect_to instead
+		render_error "Die folgenden Spalten fehlen in der CSV-Datei: #{import_data.missing_columns.join(', ')}" and return if !import_data.missing_columns.empty?
+		render_error "Die Datei enthält keine Personendatensätze" and return if import_data.entries.empty?
 
-		# TODO:
-		#   - format of csv
-		#   - temporarily store the file
-		#   - fields: Nachname, Vorname, Vereins-ID, [Bemerkungen], Vereins-ID_alt
+		# Check for data errors
+		@errors=import_data.check_errors
+		render 'import_errors' and return if !@errors.empty?
 
-		# Steps:
-		#   - create people from CSV file (make sure they cannot be saved - or
-		#     use different class)
-		#   - message if file erroneous
-		#   - message if no people in file
-		#	- db.import_check (persons, messages);
-		#     - Single people: first name and last name not empty
-		#     - Pairs: non-unique club ID, non-unique name w/o club id
-		#     - Don't start at p1 here because there may be error relations
-		#       which are not symmetric: for example, two persons with the same
-		#       name only one of which has a club ID. This is an error for the
-		#       person without, but not for the one with club ID.
-		#	- db.import_identify (persons, messages);
-		#     - find the IDs of the people
-		#   - fatal messages => error
-		#   - display (non-fatal) messages to user
+		# Find the IDs of the people in the database
+		@errors=import_data.identify_entries(@club)
+		render 'import_errors' and return if !@errors.empty?
+
 		#   - "Die folgenden Personen wurden aus #{filename} gelesen. Bitte überprüfen:"
 		#   - buttons "OK", "Zurück"
+
+		#   - temporarily store the file
 		#   - write the people to the database
 		#   - display "n people imported" message
-
-		# Import messages (fatal=true):
-		# imt_first_name_missing,
-		# imt_last_name_missing,
-		# imt_duplicate_club_id,
-		# imt_duplicate_name_without_club_id,
-		# imt_club_id_not_found,
-		# imt_club_id_old_not_found,
-		# imt_club_id_not_unique,
-		# imt_multiple_own_persons_name,
-		# imt_multiple_own_editable_persons_name,
-		# imt_multiple_editable_persons_name,
-		# imt_club_mismatch (false)
-
-		render :text => "filename: #{file.original_filename}, contents: #{file.read}"
+		#render :text => Marshal.dump(import_data) and return
 		#File.open(Rails.root.join('public', 'uploads',
 		#						  uploaded_io.original_filename), 'w') do
 		#	|file| file.write(uploaded_io.read)  end 
+
+
+		render :text => "filename: #{file.original_filename}, contents: #{file.read}"
 	end
 end
 

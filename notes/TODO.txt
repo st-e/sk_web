@@ -40,6 +40,13 @@ Minor (less important changes or much work):
 * how to make sure not passwords are displayed? clear in view?
 * look into fastercsv
 * Download people CSV in format for import
+* Allow per-person club specification when importing
+* Import: in unclear cases, let the user select candidates
+* Import: if there are people with the same club or in another club: suggest
+  :merge (for misspelled clubs)
+* Import: let the use uncheck people
+* Import: errors: don't display symmetric errors twice
+* Import: errors: highlight erroneous fields
 
 Nice to have:
 * date in local format

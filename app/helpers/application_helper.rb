@@ -68,8 +68,10 @@ module ApplicationHelper
 			if contents.is_a? Array
 				contents.map { |element| cell element }
 			else
-				colspan=" colspan=#{options[:colspan]}" if options[:colspan]
-				"<#{@tag}#{colspan}>#{contents.to_s}</#{@tag}>"
+				colspan=" colspan=\"#{options[:colspan]}\"" if options[:colspan]
+				klass  =  " class=\"#{options[:class  ]}\"" if options[:class]
+				style  =  " style=\"#{options[:style  ]}\"" if options[:style]
+				"<#{@tag}#{colspan}#{klass}#{style}>#{contents.to_s}</#{@tag}>"
 			end
 		end
 
@@ -79,6 +81,12 @@ module ApplicationHelper
 			else
 				cell(h(contents), options)
 			end
+		end
+
+		def hidden(options={})
+			options=options.dup
+			options[:style]="visibility:hidden; #{options[:style]}"
+			cell("", options)
 		end
 	end
 
