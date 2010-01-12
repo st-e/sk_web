@@ -1,7 +1,7 @@
 Critical (before release):
 * Session store in database? Key in SVN?
-* Permissions: not delete self
-* Bug: today.csv
+* What happens if a user is deleted while logged in?
+* Disallow deleting self
 
 Major (important changes):
 * Menu entries only for available actions
@@ -18,6 +18,7 @@ Major (important changes):
 * Permissions: make "require_login" override "require_permission" (?) and rename it
 * Permissions: require_permission: require "perm, a" or "perm, [a, b, ...]"
 * Permissions: permission for granting permissions on edit and create user
+* Text formatting for tables
 
 Minor (less important changes or much work):
 * make class DateRange
@@ -44,6 +45,7 @@ Minor (less important changes or much work):
 * Import: errors: highlight erroneous fields
 * Redirect back after login doeesn't work for debug on/off
 * Add display of host/database
+* Turn of debug: wrong redirect target?
 
 Nice to have:
 * date in local format

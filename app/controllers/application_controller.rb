@@ -71,7 +71,13 @@ protected
 		if session[:debug]
 			@target_url=url
 			@status=status
-			render 'debug/redirect'
+
+			# If there is a format parameter, the layout is not used, even when
+			# :layout=>true is specified.
+			params['original_format']=params[:format]
+			params.delete :format
+
+			render 'debug/redirect.html', :layout=>true
 		else
 			super url, status
 		end
