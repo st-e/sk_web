@@ -30,8 +30,8 @@
 
 		<% if session[:debug] %>
 			<hr/>
-			<div>params=<%= params.inspect %></div>
-			<div>session=<%= session.inspect %></div>
+			<div>params=<%= h params.inspect %></div>
+			<div>session=<%= h session.inspect %></div>
 		<% end %>
 
 	</body>

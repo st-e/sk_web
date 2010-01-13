@@ -31,7 +31,9 @@
 	</tr>
 </table>
 
-<%= link_to 'Editieren', edit_user_path(@user) %> |
-<%= link_to 'Passwort ändern', :action => 'change_password', :id => @user.username %> |
-<%= link_to 'Benutzerliste', users_path %>
+<p>
+	<%= link_to 'Editieren', edit_user_path(@user) %> |
+	<%= link_to 'Passwort ändern', :action => 'change_password', :id => @user.username %> |
+	<%= link_to 'Benutzerliste', users_path %>
+</p>
 

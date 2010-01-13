@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 
 	def show
 		@user = User.find(params[:id])
-		render_error "Der Benutzer #{@user.username} kann nicht angezeigt werden." and return if @user.special?
+		render_error "Der Spezialbenutzer #{@user.username} kann nicht angezeigt werden." and return if @user.special?
 		render "show"
 	end
 
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 		@user.username=params[:user][:username]
 
 		if @user.save
-			flash[:notice] = 'Benutzer wurde angelegt'
+			flash[:notice] = "Der Benutzer #{@user.username} wurde angelegt."
 			redirect_to @user
 		else
 			render :action => "new"
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
 		# Store the location we came from, so we can return there after editing
 		store_origin
 		@user = User.find(params[:id])
-		render_error "Der Benutzer #{@user.username} kann nicht editiert werden." and return if @user.special?
+		render_error "Der Spezialbenutzer #{@user.username} kann nicht editiert werden." and return if @user.special?
 
 		# If a user parameter is given, we've probably returned from a subpage.
 		@user.attributes=params[:user] if params[:user]
@@ -47,7 +47,7 @@ class UsersController < ApplicationController
 
 	def update
 		@user = User.find(params[:id])
-		render_error "Der Benutzer #{@user.username} kann nicht gelöscht werden." and return if @user.special?
+		render_error "Der Spezialbenutzer #{@user.username} kann nicht gelöscht werden." and return if @user.special?
 
 		if params['commit']
 			# Store the user
@@ -57,7 +57,7 @@ class UsersController < ApplicationController
 			# remove them from the params hash.
 
 			if @user.update_attributes(params[:user])
-				flash[:notice] = 'Benutzer wurde gespeichert'
+				flash[:notice] = "Der Benutzer #{@user.username} wurde gespeichert."
 
 				# TODO: doesn't work after person selection
 				redirect_to_origin(default=@user)
@@ -75,8 +75,8 @@ class UsersController < ApplicationController
 	def destroy
 		username=params[:id]
 		@user = User.find(username)
-		render_error "Der Benutzer #{@user.username} kann nicht gelöscht werden." and return if @user.special?
-		render_error "Man kann sich nicht selbst löschen." and return if @user.username==current_username
+		render_error "Der Spezialbenutzer #{@user.username} kann nicht gelöscht werden." and return if @user.special?
+		render_error "Der Benutzer #{current_username} kann sich nicht selbst löschen." and return if @user.username==current_username
 
 		@user.destroy
 
@@ -88,12 +88,12 @@ class UsersController < ApplicationController
 		@user = User.find(params[:id])
 		@display_old_password_field=false
 
-		render_error "Das Passwort des Benutzers #{@user.username} kann nicht geändert werden." and return if @user.special?
+		render_error "Das Passwort des Spezialbenutzers #{@user.username} kann nicht geändert werden." and return if @user.special?
 
 		if params[:user]
 			@user.attributes=params[:user]
 			if @user.save
-				flash[:notice] = 'Passwort wurde geändert'
+				flash[:notice] = "Der Passwort des Benutzers #{@user.username} wurde geändert"
 				redirect_to @user
 			end
 		end
@@ -105,14 +105,14 @@ class UsersController < ApplicationController
 		@user=current_user
 		@display_current_password_field=true
 
-		render_error "Das Passwort des Benutzers #{@user.username} kann nicht geändert werden." and return if @user.special?
+		render_error "Das Passwort des Spezialbenutzers #{@user.username} kann nicht geändert werden." and return if @user.special?
 
 		if params[:user]
 			if User.authenticate(@user.username, params[:user][:current_password])
 				@user.attributes=params[:user]
 
 				if @user.save
-					flash[:notice] = 'Passwort wurde geändert'
+					flash[:notice] = 'Passwort geändert'
 					redirect_to root_path
 				end
 			else

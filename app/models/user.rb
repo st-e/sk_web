@@ -59,7 +59,8 @@ class User < ActiveRecord::Base
 	end
 
 	def has_permission?(permission)
-		send "perm_#{permission}"
+		permission_method="perm_#{permission}"
+		respond_to?(permission_method) && send(permission_method)
 	end
 
 	def self.find(*args)

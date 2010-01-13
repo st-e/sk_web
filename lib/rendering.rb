@@ -60,8 +60,8 @@ module Rendering
 		end
 	end
 
-	def redirect_to_login(message="Anmeldung erforderlich")
-		flash[:error]="Anmeldung erforderlich"
+	def redirect_to_login(message="Für diese Aktion ist eine Anmeldung erforderlich.")
+		flash[:error]=message
 		store_origin request.url
 		redirect_to login_path
 	end

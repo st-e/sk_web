@@ -1,8 +1,7 @@
 require 'util'
 
 class SessionController < ApplicationController
-	allow_public :login, :logout
-	require_login :settings
+	allow_public :login, :logout, :settings
 
 	filter_parameter_logging :current_password, :password, :password_confirmation
 
@@ -22,7 +21,7 @@ class SessionController < ApplicationController
 				# The page we tried to access is stored as the origin
 				redirect_to_origin(default=root_path)
 			else
-				flash[:error]="Anmeldedaten ungültig"
+				flash[:error]="Die angegebenen Anmeldedaten sind nicht korrekt."
 				@username=username
 				render
 			end
@@ -42,9 +41,15 @@ class SessionController < ApplicationController
 	def settings
 		session[:debug]=params[:debug].to_b
 
-		flash[:notice]="Diagnosefunktionen #{(session[:debug])?"aktiviert":"deaktiviert"}"
+		flash[:notice]="Die Diagnosefunktionen wurden #{(session[:debug])?"aktiviert":"deaktiviert"}."
 
-		redirect_to :back
+		# It's hard to get the redirect right, especially if we're deactivating
+		# the debug functions from the redirect page after activating them - it
+		# will redirect :back to activate them.
+		# TODO make better, so turning it off from the redirect page does not
+		# redirect to root
+		#redirect_to :back
+		redirect_to root_path
 	end
 end
 

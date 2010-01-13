@@ -103,9 +103,9 @@ class Person < ActiveRecord::Base
 					# Identify by old club ID
 					candidates=Person.all(:conditions => { :verein => @club, :vereins_id => @old_club_id })
 					case candidates.size
-					when 0: @id=nil; @error_message="Keine Person mit der angegebenen alten Vereins-ID gefunden"
+					when 0: @id=nil; @error_message="Keine Person mit der angegebenen alten Vereins-ID im Verein \"#{@club}\" gefunden"
 					when 1: @id=candidates[0].id
-					else    @id=nil; @error_message="Mehrere Personen mit der angegebenen alten Vereins-ID gefunden"
+					else    @id=nil; @error_message="Mehrere Personen mit der angegebenen alten Vereins-ID im Verein \"#{@club}\" gefunden"
 					end
 				elsif !@club_id.blank?
 					# Identify by club ID
@@ -113,7 +113,7 @@ class Person < ActiveRecord::Base
 					case candidates.size
 					when 0: @id=0 # Not found - create new
 					when 1: @id=candidates[0].id
-					else    @id=nil; @error_message="Mehrere Personen mit der angegebenen Vereins-ID gefunden"
+					else    @id=nil; @error_message="Mehrere Personen mit der angegebenen Vereins-ID im Verein \"#{@club}\" gefunden"
 					end
 				else
 					puts "identify by name"
@@ -127,7 +127,7 @@ class Person < ActiveRecord::Base
 					case candidates.size
 					when 0: @id=0 # Not found - create new
 					when 1: @id=candidates[0].id
-					else    @id=nil; @error_message="Mehrere Personen mit dem angegebenen Namen gefunden"; return
+					else    @id=nil; @error_message="Mehrere Personen mit dem angegebenen Namen im Verein \"#{@club}\" gefunden"; return
 					end
 				end
 			end
@@ -200,8 +200,6 @@ class Person < ActiveRecord::Base
 
 		def check_errors
 			errors=[]
-
-			# FIXME: club_id already taken is not checked
 
 			# Note that there are non-symmetric error relations: for example,
 			# two people with the same name, only one of which has as club ID.

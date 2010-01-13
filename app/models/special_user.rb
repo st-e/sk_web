@@ -44,6 +44,7 @@ class SpecialUser
 	def person; 0; end
 	def associated_person; nil; end
 	def special?; true; end
+	def club; ""; end
 end
 
 # An almighty special user using the database credentials. This is necessary

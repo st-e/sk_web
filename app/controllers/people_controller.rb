@@ -1,6 +1,7 @@
 class PeopleController < ApplicationController
 	# TODO remove delete_unused
-	require_permission :club_admin, :index, :show, :new, :create, :edit, :update, :destroy, :overwrite, :import, :delete_unused
+	require_permission :club_admin, :index, :show, :new, :create, :edit, :update, :destroy, :overwrite, :import
+	require_permission :sk_admin, :delete_unused
 
 	def index
 		@people=Person.all(:order => "nachname, vorname")
@@ -35,7 +36,7 @@ class PeopleController < ApplicationController
 		respond_to do |format|
 			if @person.save
 				# TODO back to origin
-				flash[:notice] = 'Person wurde angelegt'
+				flash[:notice] = "Die Person #{@person.full_name} wurde angelegt."
 				format.html { redirect_to(@person) }
 				#format.xml  { render :xml => @person, :status => :created, :location => @person }
 			else
@@ -55,7 +56,7 @@ class PeopleController < ApplicationController
 
 		respond_to do |format|
 			if @person.update_attributes(params[:person])
-				flash[:notice] = 'Person wurde aktualisiert'
+				flash[:notice] = "Die Person #{@person.full_name} wurde aktualisiert."
 				format.html { redirect_to_origin(default=@person) }
 				#format.xml  { head :ok }
 			else
@@ -91,7 +92,11 @@ class PeopleController < ApplicationController
 			end
 		}
 
-		flash[:notice]="#{num_deleted} Personen gelöscht"
+		flash[:notice]=case num_deleted
+		when 0: "Es wurden keine Personen gelöscht."
+		when 1: "1 Person wurde gelöscht."
+		else    "#{num_deleted} Personen wurden gelöscht."
+		end
 
 		redirect_to :action=>'index'
 	end
@@ -135,13 +140,13 @@ class PeopleController < ApplicationController
 		Flight.all(:conditions => { :towpilot   => wrong_person_id }).each { |flight| flight.towpilot=  correct_person_id; flight.save }
 
 		# Check that the person has no flights or users any more
-		flash[:error]="Nach dem Überschreiben existiert noch ein Benutzer, der auf die Person verweist" and redirect_to and return if User  .exists? :person    =>wrong_person_id
-		flash[:error]="Nach dem Überschreiben existiert noch ein Flug, der auf die Person verweist"     and redirect_to and return if Flight.exists? :pilot     =>wrong_person_id
-		flash[:error]="Nach dem Überschreiben existiert noch ein Flug, der auf die Person verweist"     and redirect_to and return if Flight.exists? :begleiter =>wrong_person_id
-		flash[:error]="Nach dem Überschreiben existiert noch ein Flug, der auf die Person verweist"     and redirect_to and return if Flight.exists? :towpilot  =>wrong_person_id
+		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Benutzer, der auf die Person verweist." and redirect_to and return if User  .exists? :person    =>wrong_person_id
+		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Flug, der auf die Person verweist."     and redirect_to and return if Flight.exists? :pilot     =>wrong_person_id
+		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Flug, der auf die Person verweist."     and redirect_to and return if Flight.exists? :begleiter =>wrong_person_id
+		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Flug, der auf die Person verweist."     and redirect_to and return if Flight.exists? :towpilot  =>wrong_person_id
 
 		# Once again for safety, as this is really important
-		flash[:error]="Nach dem Überschreiben ist die Person noch in Benutzung" and redirect_to and return if @wrong_person.used?
+		flash[:error]="Fehler: Nach dem Überschreiben ist die Person noch in Benutzung." and redirect_to and return if @wrong_person.used?
 
 		# Delete the person
 		wrong_person_name=@wrong_person.full_name
@@ -236,7 +241,7 @@ class PeopleController < ApplicationController
 
 			# Check for file (formal) errors
 			render_error "Die folgenden Spalten fehlen in der CSV-Datei: #{@import_data.missing_columns.join(', ')}" and return if !@import_data.missing_columns.empty?
-			render_error "Die Datei enthält keine Personendatensätze" and return if @import_data.entries.empty?
+			render_error "Die CSV-Datei enthält keine Personendatensätze." and return if @import_data.entries.empty?
 
 			# Check for data errors
 			@errors=@import_data.check_errors
@@ -270,7 +275,7 @@ class PeopleController < ApplicationController
 
 			# If the filename changed, we have to reconfirm (go back to 3)
 			if import_data_filename!=params[:import_data_filename]
-				flash[:error]="Die Daten haben sich in der Zwischenzeit geändert. Bitte nochmals überprüfen."
+				flash[:error]="Seit diese Seite abgerufen wurde, wurde eine neue Datei hochgelanden. Bitte die Daten nochmals überprüfen."
 				redirect_to
 				return
 			end
@@ -296,7 +301,7 @@ class PeopleController < ApplicationController
 				cleanup_import_data
 			}
 
-			flash[:notice]="#{num_created} Personen angelegt, #{num_updated} aktualisiert"
+			flash[:notice]="Es wurden #{num_created} Personen angelegt und #{num_updated} aktualisiert."
 			redirect_to :action=>'index'
 			return
 		end

@@ -113,14 +113,14 @@ private
 
 		# Complain if no permissions have been set
 		permissions=self.class.required_permissions_for action
-		render_error ("Für diese Aktion wurden keine Zugriffsrechte gesetzt") and return if !permissions
+		render_error ("Fehler: Für diese Aktion wurden keine Zugriffsrechte gesetzt.") and return if !permissions
 
 		# Other actions require login
 		redirect_to_login and return unless logged_in?
 
 		# Check permissions
 		permissions.each { |permission|
-			render_error("Zugriff verweigert") unless current_user.has_permission? permission
+			render_error("Der Benutzer #{current_user.username} verfügt nicht über die Berechtigung \"#{permission}\", die für diese Aktion erforderlich ist.") and return unless current_user.has_permission? permission
 		}
 	end
 

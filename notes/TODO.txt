@@ -1,7 +1,8 @@
 Critical (before release):
+* Menu entries only for available actions
+* Test with real database
 
 Major (important changes):
-* Menu entries only for available actions
 * paginated tables for resource lists and person selection
 * layout for tex
 * consider towflights for pilot log
@@ -16,6 +17,7 @@ Major (important changes):
 * Permissions: require_permission: require "perm, a" or "perm, [a, b, ...]"
 * Permissions: permission for granting permissions on edit and create user
 * Text formatting for tables
+* Import: all clubs and values tested should be stripped
 
 Minor (less important changes or much work):
 * make class DateRange
@@ -44,6 +46,7 @@ Minor (less important changes or much work):
 * Add display of host/database
 * Turn of debug: wrong redirect target?
 * What happens if a user is deleted while logged in?
+* Import person success message: pluralization
 
 Nice to have:
 * date in local format

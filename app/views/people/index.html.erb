@@ -22,15 +22,16 @@
 		<%= body.text person.bemerkung                                %>
 		<%= body.cell((user)?link_to(user.username, user):h("-"))     %>
 		<%#= body.text yesno(person.used?)     %>
-		<%= body.cell link_to('Editieren',     edit_person_path(      person))                    %>
-		<%= body.cell link_to('Löschen', person, :confirm => 'Are you sure?', :method => :delete) %>
-		<%= body.cell link_to('Überschreiben', overwrite_person_path( person))                    %>
+		<%= body.cell link_to('Editieren',     edit_person_path(      person)) %>
+		<%= body.cell link_to('Löschen',       person, :method => :delete,
+			:confirm => "Person #{person.full_name} wirklich löschen?"       ) %>
+		<%= body.cell link_to('Überschreiben', overwrite_person_path( person)) %>
 	<% } %>
 <% } %>
 
-<br />
-
-<%= link_to 'Person anlegen', new_person_path %>
-<%= link_to 'Personen importieren', import_people_path %>
-<%= link_to 'Unbenutzte löschen', delete_unused_people_path, :confirm => 'Echt jetzt?', :method => :post %>
+<p>
+	<%= link_to 'Person anlegen', new_person_path %>
+	<%= link_to 'Personen importieren', import_people_path %>
+	<%#= link_to 'Unbenutzte Personen löschen', delete_unused_people_path, :confirm => 'Wirklich alle unbenutzten Personen löschen?', :method => :post %>
+</p>
 

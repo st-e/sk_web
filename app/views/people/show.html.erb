@@ -4,6 +4,8 @@
 
 <%= render :partial => 'person', :locals => { :person=>@person } %>
 
-<%= link_to 'Editieren', edit_person_path(@person) %> |
-<%= link_to 'Personenliste', people_path %>
+<p>
+	<%= link_to 'Editieren', edit_person_path(@person) %> |
+	<%= link_to 'Personenliste', people_path %>
+</p>
 
