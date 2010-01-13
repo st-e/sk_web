@@ -317,7 +317,7 @@ protected
 
 	def write_import_data(import_data)
 		raise "Vor dem Speichern sind noch fehlerhafte Personen vorhanden" if !import_data.ok?
-		filename=write_temporary_file('people_import_data') { |file|
+		filename=write_temporary_file('sk_web-people-import_data') { |file|
 			Marshal.dump import_data, file
 		}
 		session[:people_import_data_filename]=filename

@@ -1,7 +1,4 @@
 Critical (before release):
-* Session store in database? Key in SVN?
-* What happens if a user is deleted while logged in?
-* Disallow deleting self
 
 Major (important changes):
 * Menu entries only for available actions
@@ -46,6 +43,7 @@ Minor (less important changes or much work):
 * Redirect back after login doeesn't work for debug on/off
 * Add display of host/database
 * Turn of debug: wrong redirect target?
+* What happens if a user is deleted while logged in?
 
 Nice to have:
 * date in local format

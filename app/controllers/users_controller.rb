@@ -73,11 +73,14 @@ class UsersController < ApplicationController
 	end
 
 	def destroy
-		@user = User.find(params[:id])
+		username=params[:id]
+		@user = User.find(username)
 		render_error "Der Benutzer #{@user.username} kann nicht gelöscht werden." and return if @user.special?
+		render_error "Man kann sich nicht selbst löschen." and return if @user.username==current_username
 
 		@user.destroy
 
+		flash[:notice]="Der Benutzer #{username} wurde gelöscht."
 		redirect_to(users_url)
 	end
 
