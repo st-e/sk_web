@@ -6,7 +6,7 @@ class Settings
 	attr_reader :location, :launch_types
 
 	def local_config_filename
-		"#{ENV['PWD']}/startkladde.conf"
+		"#{RAILS_ROOT}/config/startkladde.conf"
 	end
 
 	def home_config_filename

@@ -1,4 +1,5 @@
 Critical (before release):
+* puts
 * SSL
 * Menu entries only for available actions
 * Test with real database
@@ -12,9 +13,12 @@ Critical (before release):
 * style: non-breaking header cells in form tables
 * file format description on import_select
 * Person selection on create user
+* Add environment indicator to layout
+* automatic relative_url_root
 
 
 Major (important changes):
+* make it work in userdir
 * style: table border transparent instead of white
 * better redirect to origin - if multiple user edit windows are open, all of
   them will redirect back to the last one
