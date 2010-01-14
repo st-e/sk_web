@@ -16,6 +16,8 @@ Tests:
   - LSV plugin
   - passwords not logged
   - import: if column not present, values not changed
+  - Flight db: effective date
+  - PDF: `',<>
 
 Permission system:
   - Two criteria: (a) login required no/non-local/always, (b) user's permissions

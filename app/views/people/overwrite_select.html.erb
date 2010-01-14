@@ -1,4 +1,4 @@
-<%= page_title "Person #{@wrong_person.full_name} überschreiben" %>
+<%= page_title "Person #{h @wrong_person.full_name} überschreiben" %>
 
 <h2>Falsche Person</h2>
 
@@ -13,7 +13,6 @@
 <% form_tag do %>
 	<%= hidden_field_tag 'id', @wrong_person.id %>
 	
-	<%# TODO partial %>
 	<% table_for(@people) { |table| %>
 		<% table.header_row { |header| %>
 			<%= header.text nil          %>
@@ -39,4 +38,7 @@
 	<p><%= submit_tag 'Auswählen' %></p>
 <% end %>
 
+<p>
+	<%= link_to 'Personenliste', people_path %>
+</p>
 

@@ -30,13 +30,14 @@ module ApplicationHelper
 			.gsub('^', '\\textasciicircum{}') \
 			.gsub('~', '\\textasciitilde{}') \
 			.gsub('"', '\\textquotedbl{}') \
-			.gsub('-', '{-}') # - can have a special meaning, for example in ---
+			.gsub('-', '{-}') \
+			.gsub(',', '{,}') \
+			.gsub('`', '{`}') \
+			.gsub("'", "{'}")
+			# [-,`'] can have special meanings (---, ,,, ``, '')
 			# Seems like guilsingl{left,right} don't work properly
 			# .gsub('<', '\\guilsinglleft{}')
 			# .gsub('>', '\\guilsinglright{}')
-
-			# TODO: " shoud be ,,/``
-			# TODO: , and ` must be escaped (because of ,, and ``; what about ''?)
 	end
 
 	alias_method :l, :latex_escape
@@ -49,6 +50,7 @@ module ApplicationHelper
 		# RUBY_RELEASE_DATE
 	end
 
+	# The argument will not be HTML escaped!
 	def page_title(title)
 		content_for :title do
 			title

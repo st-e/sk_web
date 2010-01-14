@@ -19,17 +19,11 @@ class Settings
 		nil
 	end
 
-	# TODO more settings:
-	# local_hosts 127.0.0.1
-	# plugin_path plugins/data_format/lsv_albgau/
-	# plugin_data_format format_lsv_albgau
-	
 	def initialize
 		@location="???"
 		@launch_types=[]
 
 		puts "Reading configuration from #{config_filename}"
-		# TODO error handling: config file not found
 		File.new(config_filename).each_line { |line|
 			line.strip!
 

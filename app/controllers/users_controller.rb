@@ -58,8 +58,6 @@ class UsersController < ApplicationController
 
 			if @user.update_attributes(params[:user])
 				flash[:notice] = "Der Benutzer #{@user.username} wurde gespeichert."
-
-				# TODO: doesn't work after person selection
 				redirect_to_origin(default=@user)
 			else
 				render :action => "edit"

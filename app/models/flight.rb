@@ -12,7 +12,6 @@ class Flight < ActiveRecord::Base
 	belongs_to :the_plane  , :class_name => "Plane" , :foreign_key => "flugzeug" 
 	belongs_to :the_pilot  , :class_name => "Person", :foreign_key => "pilot"
 	belongs_to :the_copilot, :class_name => "Person", :foreign_key => "begleiter"
-	# TODO towplane, towpilot
 
 	def effective_pilot_name
 		# TODO handle incomplete names
@@ -126,12 +125,10 @@ class Flight < ActiveRecord::Base
 		self.status=s.to_s # the self. is important
 	end
 
-	# TODO rename to the_launch_type
 	def launch_type
 		LaunchType.find(startart)
 	end
 
-	# TODO rename to the_launch_type=
 	def launch_type=(lt)
 		if lt
 			self.startart=lt.id # self.!

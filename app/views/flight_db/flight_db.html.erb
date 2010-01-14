@@ -1,4 +1,4 @@
-<%= page_title "Flugdatenbank #{Settings.instance.location}" %>
+<%= page_title "Flugdatenbank für #{h Settings.instance.location}" %>
 
 <p>
 	<%= render :partial=>'partials/date_range', :locals=>{:date_range=>@date_range} %>

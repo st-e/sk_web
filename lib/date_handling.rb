@@ -63,7 +63,6 @@ module DateHandling
 	# All variables needed by the template have to be set
 	def redirect_to_with_date(redirect_options)
 		# If no date is given, render the date selection form
-		# TODO rename template to index and get rid of template parameter
 		render and return if !params['date']
 
 		# If no date specification could be constructed (invalid date type, for

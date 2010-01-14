@@ -92,7 +92,6 @@ protected
 		number=0
 
 		rows=flights.map { |flight|
-			# TODO works?
 			date=flight.effective_date
 			number=0 if last_date!=date
 			last_date=date

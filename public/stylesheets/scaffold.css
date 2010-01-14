@@ -8,7 +8,6 @@ body { background-color: #fff; color: #333; }
 
 table.list { border-collapse: collapse }
 table.list td,th { padding: 2px 10px 2px 5px } /* top, right, bottom, left */
-/* TODO: background should be transparent? */
 table.list td,th { border: solid white; border-width: 1px }
 table.list tr.header th { background-color: #666; color: #FFF }
 table.list tr.data0  td { background-color: #EEE }

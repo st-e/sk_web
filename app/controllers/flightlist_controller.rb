@@ -16,14 +16,11 @@ class FlightlistController < ApplicationController
 
 	def show
 		@date_range=date_range(params['date'])
-		# TODO have to sort?
-		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true})#.sort_by { |flight| flight.effective_time }
+		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true}).sort_by { |flight| flight.effective_time }
 
 		format=params['format'] || @default_format
-		# TODO ugly
-		@table=make_table(@flights, format=='tex' || format =='pdf')
+		@table=make_table(@flights, format=='tex' || format =='pdf') # Ugly
 
-		# TODO disallow all but PDF for non-privileged users
 		respond_to do |format|
 			format.html { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.html" }
 			format.pdf  { render_pdf 'flightlist.tex'; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }

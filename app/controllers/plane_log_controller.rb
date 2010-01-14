@@ -29,7 +29,6 @@ class PlaneLogController < ApplicationController
 			@tables[club]=make_table(entries)
 		}
 
-		# TODO disallow all but PDF for non-privileged users
 		respond_to do |format|
 			format.html { render 'plane_log'        ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.html" }
 			format.pdf  { render_pdf 'plane_log.tex'; set_filename "bordbuecher_#{date_range_filename(@date_range)}.pdf"  }

@@ -1,9 +1,8 @@
-<%= page_title "Startkladde Web-Zugriff: Flugbuch für #{@person.full_name}" %>
+<%= page_title "Flugbuch für #{h @person.full_name}" %>
 
 <% form_tag do %>
 	<table class="form">
 		<%= render :partial=>'partials/date_fields', :locals=>{ :enable_range=>true } %>
-		<%# TODO flight instructor mode %>
 		<tr>
 			<td>Format:</td>
 			<td><%= select_tag('format', options_for_select({"PDF"=>'pdf', "HTML"=>'html', "CSV"=>'csv', "LaTeX"=>'tex'}, @format)) %></td>

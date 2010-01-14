@@ -1,6 +1,3 @@
-<%# TODO: latex escaping everywhere %>
-<%# TODO: column widths %>
-<%# TODO: use UTF8 if possible; otherwise umlauts will mess up the erb renderer %>
 \documentclass[8pt,a4paper]{scrartcl}
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
@@ -22,7 +19,6 @@
 
 \newcommand{\cliptext}[2]{\psclip{\psframe[linestyle=none](-1,-1)(#1,2)}{\hbox{#2}}\endpsclip}
 
-<%# TODO configurable %>
 \cohead{Flugbuch für <%= l @person.full_name %>}
 \lohead{}
 \rohead{<%= render :partial=>'partials/date_range.tex', :locals=>{:date_range=>@date_range} %>}

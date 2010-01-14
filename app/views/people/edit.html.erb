@@ -1,10 +1,9 @@
-<%= page_title "Person #{@person.full_name} editieren" %>
+<%= page_title "Person #{h @person.full_name} editieren" %>
 
 <% form_for(@person) do |f| %>
 	<%= f.error_messages %>
 
 	<table>
-		<%# TODO nobr in table cells %>
 		<tr>
 			<th><%= f.label :nachname %>:</th>
 			<td><%= f.text_field :nachname %></td>

@@ -10,13 +10,12 @@ class PilotLogController < ApplicationController
 	end
 
 	def index
-		# TODO make function
-		user=User.find(session[:username])
+		user=current_user
 		@person=user.associated_person
 
 		if !@person
 			flash[:error]="Es kann kein Flugubch angezeigt werden, da dem Benutzer #{user.username} keine Person zugeordnet ist."
-			redirect_to :back # TODO or default
+			redirect_to :back
 			return
 		end
 
@@ -26,14 +25,12 @@ class PilotLogController < ApplicationController
 	end
 
 	def show
-		# TODO make function
-		user=User.find(session[:username])
-
+		user=current_user
 		@person=user.associated_person
 
 		if !@person
 			flash[:error]="Es kann kein Flugubch angezeigt werden, da dem Benutzer #{user.username} keine Person zugeordnet ist."
-			redirect_to :back # TODO or default
+			redirect_to :back
 			return
 		end
 
@@ -49,9 +46,7 @@ class PilotLogController < ApplicationController
 		end
 		condition_values={:person=>@person.id, :type=>Flight::TYPE_TRAINING_2}
 
-		# TODO have to sort?
-		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true}, [condition, condition_values])#.sort_by { |flight| flight.effective_time }
-
+		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true}, [condition, condition_values]).sort_by { |flight| flight.effective_time }
 
 
 		format=params['format'] || @default_format

@@ -1,6 +1,5 @@
 module Rendering
 	def render_error(message)
-		# TODO better not use flash here, and make a template that has a title
 		flash.now[:error]=message
 		render :text=>"", :layout=>true
 	end
@@ -49,8 +48,6 @@ module Rendering
 		session[:origin]=origin
 	end
 
-	# TODO: if multiple (user) edit windows are opened, all of them will
-	# redirect back to the origin of the last one
 	def redirect_to_origin(*default_args)
 		if session[:origin]
 			redirect_to session[:origin]

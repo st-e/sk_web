@@ -7,7 +7,6 @@ class User < ActiveRecord::Base
 	# It's called associated_person rather than person because the attribute
 	# name should be different from the foreign key. Otherwise, we could not
 	# distinguish between accesses to the attribute and to the key.
-	# TODO rename to the_person, consistent with Flight
 	belongs_to :associated_person, :class_name => "Person", :foreign_key => 'person'
 
 	# Additional (non-database) fields

@@ -131,7 +131,6 @@ private
 	end
 
 	def local?
-		# TODO read from configuration file
 		request.remote_ip == "127.0.0.1"
 	end
 end

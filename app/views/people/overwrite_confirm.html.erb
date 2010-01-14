@@ -1,4 +1,4 @@
-<%= page_title "Person #{@wrong_person.full_name} überschreiben" %>
+<%= page_title "Person #{h @wrong_person.full_name} überschreiben" %>
 
 <h2>Falsche Person</h2>
 
@@ -11,13 +11,18 @@
 <p>Die obige Person wird durch die folgende (korrekte) Person überschrieben:</p>
 <%= render :partial => 'person', :locals => { :person=>@correct_person } %>
 
+<h2>OK?</h2>
+
+<%# The table is required because the buttons are in different forms, but
+should be on the same line. %>
+
 <table><tr>
 <% form_tag do %>
 	<%= hidden_field_tag 'id'               , @wrong_person.id   %>
 	<%= hidden_field_tag 'correct_person_id', @correct_person.id %>
 	<%= hidden_field_tag 'confirm'          , 'true'             %>
 
-	<td>OK? <%= submit_tag 'Überschreiben' %></td>
+	<td><%= submit_tag 'Überschreiben' %></td>
 <% end %>
 
 <% form_tag do %>
@@ -27,5 +32,7 @@
 <% end %>
 </tr></table>
 
-<%# TODO neu auswählen, zur Personenliste %>
+<p>
+	<%= link_to 'Personenliste', people_path %>
+</p>
 

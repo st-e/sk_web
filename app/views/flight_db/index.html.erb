@@ -1,10 +1,8 @@
-<%= page_title "Startkladde Web-Zugriff: Flugdatenbank" %>
+<%= page_title "Flugdatenbank" %>
 
 <% form_tag do %>
 	<table class="form">
 		<%= render :partial=>'partials/date_fields', :locals=>{ :enable_range=>true } %>
-		<%# TODO format plugin %>
-		<%# TODO separate towflights %>
 		<tr>
 			<td>Schleppflüge einzeln:</td>
 			<td><%= check_box_tag 'towflights_extra', 'true' %></td>
@@ -15,8 +13,7 @@
 		</tr>
 		<tr>
 			<td>Format:</td>
-			<%# TODO use array form %>
-			<td><%= select_tag('format', options_for_select({"HTML"=>'html', "CSV"=>'csv'}, @format)) %></td>
+			<td><%= select_tag('format', options_for_select([["HTML", 'html'], ["CSV", 'csv']], @format)) %></td>
 		</tr>
 		<tr>
 			<td colspan="5">

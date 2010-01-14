@@ -1,8 +1,29 @@
 Critical (before release):
+* SSL
 * Menu entries only for available actions
 * Test with real database
+* Test CSV export with OpenOffice and Excel
+* Read local IPs from config file (ApplicationController)
+* Flightlist/plane log: only PDF for non-privileged users; proper format
+  management (also others)
+* Import people, review step: unmodified people
+* Test w/o referer
+* Error on config file not found
+* style: non-breaking header cells in form tables
+* file format description on import_select
+* Person selection on create user
+
 
 Major (important changes):
+* style: table border transparent instead of white
+* better redirect to origin - if multiple user edit windows are open, all of
+  them will redirect back to the last one
+* import errors: show club in tables
+* flight model: add towplane and towpilot associations
+* user model: rename to the_person
+* redirect to origin does not work after user udpate if person selection was
+  used
+* lib/ file inclusion
 * paginated tables for resource lists and person selection
 * layout for tex
 * consider towflights for pilot log
@@ -18,8 +39,16 @@ Major (important changes):
 * Permissions: permission for granting permissions on edit and create user
 * Text formatting for tables
 * Import: all clubs and values tested should be stripped
+* Create person/user: back to origin
+* import people: undefinedness if the database is modified between identify and perform
+* redirect_to :back: default values
 
 Minor (less important changes or much work):
+* Better error page (without flash)
+* Buttons in overwrite_confirm: same form? Then remove table
+* settings: plugin path
+* flight: rename to the_launch_type
+* delete uploaded import data on logout
 * make class DateRange
 * When overwriting a person, display their number of flights
 * route /person/1/overwrite/2
@@ -47,6 +76,9 @@ Minor (less important changes or much work):
 * Turn of debug: wrong redirect target?
 * What happens if a user is deleted while logged in?
 * Import person success message: pluralization
+* Improve redirect after session settings, so deactivating debug from redirect
+  page redirects back (but works correctly, even directly after activating)
+* Read config file in initializer?
 
 Nice to have:
 * date in local format
