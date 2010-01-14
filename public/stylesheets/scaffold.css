@@ -7,15 +7,18 @@ body { background-color: #fff; color: #333; }
 .transparent { background-color: transparent; }
 
 table.list { border-collapse: collapse }
-table.list td,th { padding: 2px 10px 2px 5px } /* top, right, bottom, left */
-table.list td,th { border: solid white; border-width: 1px }
+table.list td,table.list th { padding: 2px 10px 2px 5px } /* top, right, bottom, left */
+table.list td,table.list th { border: solid white; border-width: 1px }
 table.list tr.header th { background-color: #666; color: #FFF }
 table.list tr.data0  td { background-color: #EEE }
 table.list tr.data1  td { background-color: #CCC }
 
 table.list tr td.error_message { color: red }
 
-table.form td,th { vertical-align: top; }
+table.form th { white-space: nowrap }
+table.form td, table.form th  { vertical-align: top; }
+table.object (td,td) { vertical-align: top; }
+
 
 th {
 	text-align: left;
@@ -33,9 +36,9 @@ pre {
   font-size: 11px;
 }
 
-a { color: #000; }
+a         { color: #000; }
 a:visited { color: #666; }
-a:hover { color: #fff; background-color:#000; }
+a:hover   { color: #fff; background-color:#000; }
 
 .fieldWithErrors {
   padding: 2px;

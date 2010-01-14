@@ -5,11 +5,12 @@ class PlaneLogController < ApplicationController
 	allow_local :index, :show
 
 	def initialize
-		@default_format="html"
+		@default_format="pdf"
 	end
 
 	def index
 		@format=params['format'] || @default_format
+		@formats=formats
 		redirect_to_with_date :action=>'show', :format=>@format
 	end
 
@@ -40,6 +41,14 @@ class PlaneLogController < ApplicationController
 	end
 
 protected
+	def formats
+		[
+			['PDF'  , 'pdf'  ],
+			['HTML' , 'html' ],
+			['LaTeX', 'latex']
+		]
+	end
+
 	def make_table(entries)
 		columns = [
 			{ :title => 'Kennzeichen'      , :width => 17 },

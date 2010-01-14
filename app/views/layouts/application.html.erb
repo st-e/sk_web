@@ -24,8 +24,8 @@
 		</div>
 
 		<div style="font-size:x-small">
-			Hauptflugbuch <%= h Settings.instance.location %> |
-			<%= h version_string %>
+			Hauptflugbuch <%= h (Settings.instance.location || "") %> |
+			<%= h version_string %> in <%= h RAILS_ENV %> mode
 		</div>
 
 		<% if session[:debug] %>

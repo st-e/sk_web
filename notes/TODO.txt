@@ -1,23 +1,12 @@
 Critical (before release):
-* puts
-* SSL
-* Menu entries only for available actions
-* Test with real database
-* Test CSV export with OpenOffice and Excel
-* Read local IPs from config file (ApplicationController)
-* Flightlist/plane log: only PDF for non-privileged users; proper format
-  management (also others)
-* Import people, review step: unmodified people
-* Test w/o referer
-* Error on config file not found
-* style: non-breaking header cells in form tables
-* file format description on import_select
-* Person selection on create user
-* Add environment indicator to layout
 * automatic relative_url_root
+* SSL
 
 
 Major (important changes):
+* Menu entries only for available actions?
+* Person selection on create user
+* invalid date handling
 * make it work in userdir
 * style: table border transparent instead of white
 * better redirect to origin - if multiple user edit windows are open, all of
@@ -83,6 +72,8 @@ Minor (less important changes or much work):
 * Improve redirect after session settings, so deactivating debug from redirect
   page redirects back (but works correctly, even directly after activating)
 * Read config file in initializer?
+* error message when format does not possible
+* move local? to request
 
 Nice to have:
 * date in local format

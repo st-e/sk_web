@@ -1,7 +1,7 @@
 <%= page_title "Personen importieren" %>
 
 <% form_tag 'import', :multipart => true do %>
-	<table>
+	<table class="form">
 		<tr>
 			<th>Verein:</th>
 			<td><%= text_field_tag 'club', @club %></td>
@@ -12,10 +12,66 @@
 		</tr>
 	</table>
 
+	<p>
+		Nach dem Hochladen wird die Datei auf Fehler überprüft und eine Liste
+		der Änderungen zur Kontrolle angezeigt.
+	</p>
+
 	<p><%= submit_tag "Hochladen" %></p>
 <% end %>
 
 <p>
 	<%= link_to 'Personenliste', people_path %>
 </p>
+
+
+<h2>Dateiformat</h2>
+
+<p>
+	Die Datei ist eine CSV-Datei im UTF8-Zeichensatz mit mindestens den folgenden Spalten:
+	<ul>
+		<li>Nachname</li>
+		<li>Vorname</li>
+	</ul>
+</p>
+
+<p>
+	Außerdem kann die Datei noch die folgenden Spalten enthalten:
+	<ul>
+		<li>Bemerkungen: optional</li>
+		<li>
+			Vereins-ID: optional. Wenn vorhanden, wird die zu aktualisierende
+			Person anhand dieser Vereins-ID anstatt des Namens ausgewählt. Diese
+			Angabe ist nötig, um den Namen einer Person zu ändern. Die
+			Vereins-ID kann auch dazu dienen, zwei Personen gleichen Namens im
+			gleichen Verein zu unterscheiden. Die Vereins-ID muss, sofern sie
+			angegeben ist, vereinsweit eindeutig sein.
+		</li>
+		<li>
+			Vereins-ID_alt: optional. Wenn vorhanden, wird die zu aktualisierende
+			Person anhand dieser Angabe anstatt des Namens oder der ebenfalls
+			angegebenen Vereins-ID ausgewählt. Diese Angabe ist nötig, um die
+			Vereins-ID einer Person zu ändern.
+		</li>
+	</ul>
+</p>
+
+<p>
+	Die Reihenfolge der Spalten ist beliebig. Üblicherweise wird eine CSV-Datei
+	die Spalten Nachname, Vorname, Bemerkungen und ggf. Vereins-ID enthalten.
+</p>
+
+<p>
+	Ein Beispiel (die Vereins-ID ist hier zum Beispiel die Mitgliedsnummer):
+</p>
+
+<pre>
+Nachname,Vorname,Bemerkungen,Vereins-ID
+Müller,Andreas,,84
+Schmitt,Eva,,92
+Schneider,Claudia,,17
+Fischer,Oliver,,12
+Weber,Günther,Fluglehrer,35
+Meier,Rita,,27
+</pre>
 

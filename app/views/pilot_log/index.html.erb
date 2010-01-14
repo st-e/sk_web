@@ -4,11 +4,11 @@
 	<table class="form">
 		<%= render :partial=>'partials/date_fields', :locals=>{ :enable_range=>true } %>
 		<tr>
-			<td>Format:</td>
-			<td><%= select_tag('format', options_for_select({"PDF"=>'pdf', "HTML"=>'html', "CSV"=>'csv', "LaTeX"=>'tex'}, @format)) %></td>
+			<th>Format:</th>
+			<td><%= select_tag('format', options_for_select(@formats, @format)) %></td>
 		</tr>
 		<tr>
-			<td>Fluglehrermodus:</td>
+			<th>Fluglehrermodus:</th>
 			<td>
 				<%= radio_button_tag 'flight_instructor_mode', 'no',    true %>Nein (Nur Flüge als Pilot anzeigen)<br/>
 				<%= radio_button_tag 'flight_instructor_mode', 'strict'      %>Streng (Auch Schulflüge als Passagier anzeigen)<br/>

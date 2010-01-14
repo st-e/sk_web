@@ -4,16 +4,16 @@
 	<table class="form">
 		<%= render :partial=>'partials/date_fields', :locals=>{ :enable_range=>true } %>
 		<tr>
-			<td>Schleppflüge einzeln:</td>
+			<th>Schleppflüge einzeln:</th>
 			<td><%= check_box_tag 'towflights_extra', 'true' %></td>
 		</tr>
 		<tr>
-			<td>Datenformat:</td>
+			<th>Datenformat:</th>
 			<td><%= select_tag 'data_format', options_for_select(FlightDbController.data_format_options) %></td>
 		</tr>
 		<tr>
-			<td>Format:</td>
-			<td><%= select_tag('format', options_for_select([["HTML", 'html'], ["CSV", 'csv']], @format)) %></td>
+			<th>Format:</th>
+			<td><%= select_tag('format', options_for_select(@formats, @format)) %></td>
 		</tr>
 		<tr>
 			<td colspan="5">

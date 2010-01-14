@@ -5,12 +5,12 @@ class FlightlistController < ApplicationController
 	allow_local :index, :show
 
 	def initialize
-		@default_format="html"
+		@default_format="pdf"
 	end
 
-	# GET /flightList
 	def index
 		@format=params['format'] || @default_format
+		@formats=available_formats
 		redirect_to_with_date :action=>'show', :format=>@format
 	end
 
@@ -20,6 +20,8 @@ class FlightlistController < ApplicationController
 
 		format=params['format'] || @default_format
 		@table=make_table(@flights, format=='tex' || format =='pdf') # Ugly
+
+		render_permission_denied and return if !format_available? format
 
 		respond_to do |format|
 			format.html { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.html" }
@@ -32,6 +34,29 @@ class FlightlistController < ApplicationController
 	end
 
 protected
+	def available_formats
+		formats.select { |format| format_available? format[1] }
+	end
+
+	def formats
+		[
+			['PDF'  , 'pdf'  ],
+			['HTML' , 'html' ],
+			['CSV'  , 'csv'  ],
+			['LaTeX', 'latex']
+		]
+	end
+
+	def format_available?(format)
+		case format
+		when 'pdf'  : true
+		when 'html' : current_user && current_user.has_permission?(:read_flight_db)
+		when 'csv'  : current_user && current_user.has_permission?(:read_flight_db)
+		when 'latex': current_user && current_user.has_permission?(:read_flight_db)
+		else false
+		end
+	end
+
 	def make_table(flights, short=false)
 		columns = [
 			{ :title => (short)?'Nr.'        :'Nr.'                   , :width =>  5 },

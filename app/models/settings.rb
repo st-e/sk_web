@@ -5,30 +5,28 @@ class Settings
 	
 	attr_reader :location, :launch_types
 
-	def local_config_filename
-		"#{RAILS_ROOT}/config/startkladde.conf"
-	end
-
-	def home_config_filename
-		"#{ENV['HOME']}/.startkladde.conf"
-	end
-
 	def config_filename
-		return home_config_filename if File.exist? home_config_filename
-		return local_config_filename if File.exist? local_config_filename
-		nil
+		[
+			"#{RAILS_ROOT}/config/startkladde.conf",
+			"#{ENV['HOME']}/.startkladde.conf"
+		].find { |file| File.exist? file }
 	end
+			
 
 	def initialize
 		@location="???"
 		@launch_types=[]
+		@local_addresses=[]
 
-		puts "Reading configuration from #{config_filename}"
-		File.new(config_filename).each_line { |line|
+		filename=config_filename
+		raise "Konfigurationsdatei nicht gefunden" if filename.nil?
+
+		puts "Reading configuration from #{filename}"
+		File.new(filename).each_line { |line|
 			line.strip!
 
 			if !(line =~ /^#/) && !line.blank?
-				if (line =~ /^startart (.*), (.*), (.*), (.*), (.*), (.*), (.*), (.*)/)
+				if (line =~ /^startart (.*), (.*), (.*), (.*), (.*), (.*), (.*), (.*)/i)
 					id                   =$1.strip.to_i
 					type                 =$2.strip
 					registration         =$3.strip # winch, airtow, self, other
@@ -40,11 +38,24 @@ class Settings
 
 					launch_type=LaunchType.new(id, type, registration, name, short_name, keyboard_shortcut, pilot_log_designator, person_required)
 					@launch_types << launch_type
-					#puts launch_type
-				elsif (line =~ /ort (.*)/)
+				elsif (line =~ /ort (.*)/i)
 					@location=$1.strip
+				elsif (line =~ /local_hosts (.*)/i)
+					@local_addresses=$1.split(',').map { |address| address.strip.split('.') }
+					p @local_addresses
 				end
 			end
 		}
 	end
+
+	# address is an array of 4 strings
+	def address_matches(spec, address)
+		(0..3).all? { |i| spec[i]=='*' || spec[i]==address[i] }
+	end
+
+	# address is a string
+	def address_is_local?(address)
+		@local_addresses.any? { |spec| address_matches spec, address.strip.split('.') }
+	end
 end
+

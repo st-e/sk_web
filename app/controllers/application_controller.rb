@@ -12,6 +12,9 @@ class ApplicationController < ActionController::Base
 	filter_parameter_logging :password
 
 	before_filter :check_permissions
+	#before_filter :require_ssl # TODO
+
+	
 
 
 	def current_username
@@ -23,6 +26,7 @@ class ApplicationController < ActionController::Base
 		User.find(session[:username])
 	end
 
+	
 
 protected
 	def self.inherited(subclass)
@@ -120,10 +124,28 @@ private
 
 		# Check permissions
 		permissions.each { |permission|
-			render_error("Der Benutzer #{current_user.username} verfügt nicht über die Berechtigung \"#{permission}\", die für diese Aktion erforderlich ist.") and return unless current_user.has_permission? permission
+			require_permission permission
 		}
 	end
 
+	def require_permission(permission)
+		if current_user.has_permission? permission
+			yield if block_given?
+		else
+			render_error("Der Benutzer #{current_user.username} verfügt nicht über die Berechtigung \"#{permission}\", die für diese Aktion erforderlich ist.")
+		end
+	end
+
+	def render_permission_denied
+		render_error "Zugriff verweigert"
+	end
+
+	# Filter that redirects to SSL unless the request comes from a local address
+	def require_ssl
+		redirect_to :protocol => "https://" and flash.keep unless (request.ssl? or local_request?)
+		#redirect_to url_for params.merge({:protocol => 'https://'})
+		#redirect_to "https://" + request.host + request.request_uri
+	end
 
 	
 	def logged_in?
@@ -131,7 +153,7 @@ private
 	end
 
 	def local?
-		request.remote_ip == "127.0.0.1"
+		Settings.instance.address_is_local? request.remote_ip
 	end
 end
 

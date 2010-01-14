@@ -33,7 +33,6 @@ class LaunchType
 	end
 
 	def LaunchType.self_launch
-		puts Settings.instance.launch_types.map { |lt| lt.inspect }
 		Settings.instance.launch_types.find { |launch_type| launch_type.type=='self' }
 	end
 end

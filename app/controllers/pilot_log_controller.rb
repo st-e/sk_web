@@ -20,6 +20,7 @@ class PilotLogController < ApplicationController
 		end
 
 		@format=params['format'] || @default_format
+		@formats=formats
 		@flight_instructor_mode=params['flight_instructor_mode'] unless params['flight_instructor_mode']==@default_flight_instructor_mode
 		redirect_to_with_date :action=>'show', :format=>@format, :flight_instructor_mode=>@flight_instructor_mode
 	end
@@ -64,6 +65,15 @@ class PilotLogController < ApplicationController
 	end
 
 protected
+	def formats
+		[
+			['HTML' , 'html' ],
+			['CSV'  , 'csv'  ],
+			['PDF'  , 'pdf'  ],
+			['LaTeX', 'latex']
+		]
+	end
+
 	def make_table(flights, short=false)
 		columns = [
 			{ :title => 'Datum'           , :width => 14 },

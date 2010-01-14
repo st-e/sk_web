@@ -10,7 +10,7 @@ Notes:
 	if in database.yml the database encoding is set to utf8, but not when it is
 	set to latin1?
 
-Tests:
+Tests (all with real database):
   - towflight extra works for other and unknown towplane
   - incomplete towpilot name
   - LSV plugin
@@ -18,6 +18,8 @@ Tests:
   - import: if column not present, values not changed
   - Flight db: effective date
   - PDF: `',<>
+  - CSV export with OpenOffice and Excel
+  - without referer
 
 Permission system:
   - Two criteria: (a) login required no/non-local/always, (b) user's permissions

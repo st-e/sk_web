@@ -58,6 +58,8 @@ class User < ActiveRecord::Base
 	end
 
 	def has_permission?(permission)
+		return true if permission.nil?
+
 		permission_method="perm_#{permission}"
 		respond_to?(permission_method) && send(permission_method)
 	end

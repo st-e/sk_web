@@ -118,14 +118,12 @@ class Person < ActiveRecord::Base
 					else    @id=nil; @error_message="Mehrere Personen mit der angegebenen Vereins-ID im Verein \"#{@club}\" gefunden"
 					end
 				else
-					puts "identify by name"
 					# Identify by name
 					# club_id must also be empty (to remove a club ID, we have
 					# to select the person by old club ID)
 					# TODO what about NULL club ID in database?
 					# TODO does the club ID really have to be empty?
 					candidates=Person.all(:conditions => { :verein => @club, :vereins_id => "", :nachname => @last_name, :vorname => @first_name })
-					puts "#{candidates.size} candidates"
 					case candidates.size
 					when 0: @id=0 # Not found - create new
 					when 1: @id=candidates[0].id
@@ -134,8 +132,24 @@ class Person < ActiveRecord::Base
 				end
 			end
 
+			def identified?
+				!@id.nil?
+			end
+
 			def new?
 				@id==0
+			end
+
+			def changed?
+				return false if new?
+				return false if !identified?
+				
+				person=Person.find(@id)
+				old_attributes=person.attributes
+
+				person.attributes=attribute_hash
+
+				person.attributes!=old_attributes
 			end
 
 			def attribute_hash
@@ -208,6 +222,7 @@ class Person < ActiveRecord::Base
 			# This is an error for the person without, but not for the one with
 			# a club ID. Thus we have check all people against all others, even
 			# if we already checked the reverse.
+			# TODO when an old club ID is given, a club ID must also be given
 			@entries.each { |entry|
 				# First name or last name empty
 				errors << { :message=>"Vorname ist leer" , :entries=>[entry] } if entry.first_name.blank?
@@ -247,9 +262,7 @@ class Person < ActiveRecord::Base
 		end
 
 		def ok?
-			!entries.any? {
-				|entry| entry.id.nil?
-			}
+			entries.all? { |entry| entry.identified?  }
 		end
 	end
 

@@ -238,26 +238,35 @@ class PeopleController < ApplicationController
 
 			# Actually perform
 			num_created=0
-			num_updated=0
+			num_changed=0
+			num_unchanged=0
 
 			Person.transaction {
 				@import_data.entries.each { |entry|
 					if entry.new?
 						person=Person.new(entry.attribute_hash)
 						person.save
+
 						num_created+=1
 					else
 						person=Person.find(entry.id)
+						old_attributes=person.attributes
+
 						person.attributes=entry.attribute_hash
-						person.save
-						num_updated+=1
+
+						if person.attributes==old_attributes
+							num_unchanged+=1
+						else
+							person.save
+							num_changed+=1
+						end
 					end
 				}
 
 				cleanup_import_data
 			}
 
-			flash[:notice]="Es wurden #{num_created} Personen angelegt und #{num_updated} aktualisiert."
+			flash[:notice]="Es wurden #{num_created} Personen angelegt, #{num_changed} aktualisiert und #{num_unchanged} nicht geändert."
 			redirect_to :action=>'index'
 			return
 		end

@@ -16,7 +16,7 @@
 <%# The table is required because the buttons are in different forms, but
 should be on the same line. %>
 
-<table><tr>
+<table class="form"><tr>
 <% form_tag do %>
 	<%= hidden_field_tag 'id'               , @wrong_person.id   %>
 	<%= hidden_field_tag 'correct_person_id', @correct_person.id %>

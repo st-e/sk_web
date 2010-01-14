@@ -1,8 +1,11 @@
 <%= page_title "Personen importieren" %>
 
 <%
-	new_people_entries     =@import_data.entries.select { |entry| entry.id==0 }
-	changed_people_entries =@import_data.entries.select { |entry| entry.id!=0 }
+	new_people_entries       =@import_data.entries.select { |entry| entry.new? }
+	updated_people_entries   =@import_data.entries-new_people_entries
+
+	changed_people_entries   =updated_people_entries.select { |entry| entry.changed? }
+	unchanged_people_entries =updated_people_entries-changed_people_entries
 %>
 
 <p>Es wurden <%= h @import_data.entries.size %> Personen aus der Datei <%=
@@ -41,7 +44,6 @@
 	<p>Die folgenden Personen werden geändert:</p>
 
 	<p>
-		<%# Note that for new people, the old club ID is always blank %>
 		<% table_for(changed_people_entries) { |table| %>
 			<% table.header_row { |header| %>
 				<%= header.text "Neu", :colspan=>4 %>
@@ -70,6 +72,38 @@
 				<%= body.text entry.first_name  %>
 				<%= body.text entry.comments    %>
 				<%= body.text entry.club_id     %>
+
+				<%= body.text person.id          %>
+				<%= body.text person.last_name   %>
+				<%= body.text person.first_name  %>
+				<%= body.text person.comments    %>
+				<%= body.text person.club_id     %>
+
+				<%= body.text person.club        %>
+			<% } %>
+		<% } %>
+	</p>
+<% end %>
+
+<% unless unchanged_people_entries.empty? %>
+	<h2>Unveränderte Personen</h2>
+
+	<p>Die folgenden Personen werden nicht geändert:</p>
+
+	<p>
+		<% table_for(unchanged_people_entries) { |table| %>
+			<% table.header_row { |header| %>
+				<%= header.text "ID"              %>
+				<%= header.text "Nachname"        %>
+				<%= header.text "Vorname"         %>
+				<%= header.text "Bemerkung"       %>
+				<%= header.text "Vereins-ID"      %>
+
+				<%= header.text "Verein"          %>
+			<% } %>
+
+			<% table.body { |body, entry| %>
+				<% person=Person.find(entry.id) %>
 
 				<%= body.text person.id          %>
 				<%= body.text person.last_name   %>

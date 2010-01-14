@@ -3,10 +3,14 @@
 <% form_tag do %>
 	<table class="form">
 		<%= render :partial=>'partials/date_fields' %>
-		<tr>
-			<td>Format:</td>
-			<td><%= select_tag('format', options_for_select({"PDF"=>'pdf', "HTML"=>'html', "CSV"=>'csv', "LaTeX"=>'tex'}, @format)) %></td>
-		</tr>
+		<% if @formats.size>1 %>
+			<tr>
+				<th>Format:</th>
+				<td><%= select_tag('format', options_for_select(@formats, @format)) %></td>
+			</tr>
+		<% else %>
+			<%= hidden_field_tag 'format', @format %>
+		<% end %>
 		<tr>
 			<td colspan="5">
 			  <%= submit_tag 'Abrufen' %>

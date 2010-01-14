@@ -11,6 +11,7 @@ class FlightDbController < ApplicationController
 
 	def index
 		@format=params['format'] || @default_format
+		@formats=formats
 		parameters={}
 		parameters[:format]=@format
 		parameters[:towflights_extra]='true' if params['towflights_extra'].to_b
@@ -55,6 +56,14 @@ class FlightDbController < ApplicationController
 	end
 
 protected
+	def formats
+		[
+			['HTML' , 'html' ],
+			['CSV'  , 'csv'  ]
+		]
+	end
+
+
 	def make_table(flights)
 		columns = [
 			{ :title => 'Datum'                       },

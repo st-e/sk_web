@@ -5,7 +5,7 @@
 		<% } %>
 	</tr>
 	<% table[:rows].each_with_index { |row, index| %>
-		<tr class="<%= (index%2==0)?"data0":"data1" %>">
+		<tr class="<%= "data#{index%2}" %>">
 			<% row.each { |column| %>
 				<td><nobr><%= h (column || "-") %></nobr></td>
 			<% } %>
