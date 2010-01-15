@@ -16,7 +16,7 @@ class PlaneLogController < ApplicationController
 
 	def show
 		@date_range=date_range(params['date'])
-		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true})
+		@flights=Flight.find_by_date_range(@date_range, :readonly=>true)
 
 		format=params['format'] || @default_format
 

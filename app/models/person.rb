@@ -97,7 +97,7 @@ class Person < ActiveRecord::Base
 			def identify
 				if !@old_club_id.blank?
 					# Old club ID given - identify by old club ID
-					candidates=Person.all(:conditions => { :verein => @club, :vereins_id => @old_club_id })
+					candidates=Person.all(:conditions => { :verein => @club, :vereins_id => @old_club_id }, :readonly=>true)
 					case candidates.size
 					when 0: @id=nil; @error_message="Keine Person mit der angegebenen alten Vereins-ID im Verein \"#{@club}\" gefunden"
 					when 1: @id=candidates[0].id
@@ -105,7 +105,7 @@ class Person < ActiveRecord::Base
 					end
 				elsif !@club_id.blank?
 					# Club ID given - identify by club ID
-					candidates=Person.all(:conditions => { :verein => @club, :vereins_id => @club_id })
+					candidates=Person.all(:conditions => { :verein => @club, :vereins_id => @club_id }, :readonly=>true)
 					case candidates.size
 					when 0: @id=0 # Not found - create new
 					when 1: @id=candidates[0].id
@@ -113,7 +113,7 @@ class Person < ActiveRecord::Base
 					end
 				else
 					# Neither old nor current club ID given - identify by name
-					candidates=Person.all(:conditions => { :verein => @club, :nachname => @last_name, :vorname => @first_name })
+					candidates=Person.all(:conditions => { :verein => @club, :nachname => @last_name, :vorname => @first_name }, :readonly=>true)
 					case candidates.size
 					when 0: @id=0 # Not found - create new
 					when 1: @id=candidates[0].id

@@ -17,11 +17,11 @@ Tests (all with real database):
   - passwords not logged
   - import: if column not present, values not changed
   - import: Club ID not unique after change
+  - import: null club ID in database
   - Flight db: effective date
   - PDF: `',<>
   - CSV export with OpenOffice and Excel
   - without referer
-  - import: null club ID in database
 
 Permission system:
   - Two criteria: (a) login required no/non-local/always, (b) user's permissions

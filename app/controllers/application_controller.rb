@@ -21,9 +21,9 @@ class ApplicationController < ActionController::Base
 		session[:username]
 	end
 
-	def current_user
+	def current_user(readonly=true)
 		return nil if !session[:username]
-		User.find(session[:username])
+		User.find(session[:username], :readonly=>readonly)
 	end
 
 	

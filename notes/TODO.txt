@@ -2,7 +2,6 @@ Critical (before release):
 
 Major (important changes):
 * unit tests for import
-* use :readonly=>true for all queries where applicable
 * Error handling in generate_pdf, for example: pstricks not installed
 * Flight model: has_many :flights, :foreign_key => 'pilot' (and begleiter and
   towpilot); then use flights.count in Person.used?
@@ -84,5 +83,8 @@ Nice to have:
 * create/edit planes
 * create/edit flights
 * form error messages for individual inputs
+
+After launch types in database:
+* :readonly=>true in lauch type queries
 
 

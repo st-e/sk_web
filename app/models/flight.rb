@@ -228,7 +228,7 @@ class Flight < ActiveRecord::Base
 
 		if lt.towplane_known?
 			# The registration of the towplane is known from the launch type
-			plane=Plane.first(:conditions => {:kennzeichen=>lt.registration})
+			plane=Plane.first(:conditions => {:kennzeichen=>lt.registration}, :readonly=>true)
 			return 0 if !plane
 			plane.id
 		else

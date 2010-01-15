@@ -6,7 +6,7 @@ class PeopleController < ApplicationController
 	require_permission :sk_admin, :delete_unused
 
 	def index
-		@people=Person.all(:order => "nachname, vorname")
+		@people=Person.all(:order => "nachname, vorname", :readonly=>true)
 
 		respond_to do |format|
 			format.html
@@ -15,7 +15,7 @@ class PeopleController < ApplicationController
 	end
 
 	def show
-		@person=Person.find(params[:id])
+		@person=Person.find(params[:id], :readonly=>true)
 
 		respond_to do |format|
 			format.html # show.html.erb
@@ -49,7 +49,7 @@ class PeopleController < ApplicationController
 
 	def edit
 		store_origin
-		@person=Person.find(params[:id])
+		@person=Person.find(params[:id], :readonly=>true)
 	end
 
 	def update
@@ -117,12 +117,12 @@ class PeopleController < ApplicationController
 			redirect_to and return if request.method==:post
 
 			# Let the user select a person
-			@people=Person.all.reject { |person| person.id==@wrong_person.id }
+			@people=Person.all(:readonly=>true).reject { |person| person.id==@wrong_person.id }
 			render 'overwrite_select' and return
 		end
 
 		# Retrieve the correct person
-		@correct_person=Person.find(correct_person_id)
+		@correct_person=Person.find(correct_person_id, :readonly=>true)
 
 		# 2. confirm the operation
 		if !params[:confirm].to_b

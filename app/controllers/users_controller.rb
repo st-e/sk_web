@@ -7,12 +7,12 @@ class UsersController < ApplicationController
 	require_login :change_own_password
 
 	def index
-		@users = User.all(:order => "username")
+		@users = User.all(:order => "username", :readonly=>true)
 		render "index"
 	end
 
 	def show
-		@user = User.find(params[:id])
+		@user = User.find(params[:id], :readonly=>true)
 		render_error "Der Spezialbenutzer #{@user.username} kann nicht angezeigt werden." and return if @user.special?
 		render "show"
 	end
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
 	def edit
 		# Store the location we came from, so we can return there after editing
 		store_origin
-		@user = User.find(params[:id])
+		@user = User.find(params[:id], :readonly=>true)
 		render_error "Der Spezialbenutzer #{@user.username} kann nicht editiert werden." and return if @user.special?
 
 		# If a user parameter is given, we've probably returned from a subpage.
@@ -65,7 +65,7 @@ class UsersController < ApplicationController
 		elsif params['select_person']
 			# Go to the "select person" page
 			@user.attributes=params[:user]
-			@people = Person.all(:order => "nachname, vorname")
+			@people = Person.all(:order => "nachname, vorname", :readonly=>true)
 			render 'select_person'
 		end
 	end
@@ -100,7 +100,7 @@ class UsersController < ApplicationController
 	end
 
 	def change_own_password
-		@user=current_user
+		@user=current_user(readonly=false)
 		@display_current_password_field=true
 
 		render_error "Das Passwort des Spezialbenutzers #{@user.username} kann nicht geändert werden." and return if @user.special?

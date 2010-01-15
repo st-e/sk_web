@@ -16,7 +16,7 @@ class FlightlistController < ApplicationController
 
 	def show
 		@date_range=date_range(params['date'])
-		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true}).sort_by { |flight| flight.effective_time }
+		@flights=Flight.find_by_date_range(@date_range, :readonly=>true).sort_by { |flight| flight.effective_time }
 
 		format=params['format'] || @default_format
 		@table=make_table(@flights, format=='tex' || format =='pdf') # Ugly
