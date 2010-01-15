@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 	filter_parameter_logging :password
 
 	before_filter :check_permissions
-	#before_filter :require_ssl # TODO
+	before_filter :require_ssl
 
 	
 

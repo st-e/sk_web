@@ -1,6 +1,5 @@
 Critical (before release):
-* automatic relative_url_root
-* SSL
+* Correct environment
 
 
 Major (important changes):
@@ -35,6 +34,7 @@ Major (important changes):
 * Create person/user: back to origin
 * import people: undefinedness if the database is modified between identify and perform
 * redirect_to :back: default values
+* Allow non-SSL connections in development mode (after production mode works correctly)
 
 Minor (less important changes or much work):
 * Better error page (without flash)
