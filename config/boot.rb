@@ -106,5 +106,10 @@ module Rails
   end
 end
 
+# Default to production mode. This can be overridden by the environment
+# variable RAILS_ENV; ./script/server will also override it to development, if
+# RAILS_ENV is not set.
+ENV['RAILS_ENV'] ||= 'production'
+
 # All that for this:
 Rails.boot!

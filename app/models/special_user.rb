@@ -19,7 +19,6 @@ class SpecialUser
 
 		def inherited(subclass)
 			@subclasses<<subclass
-			p @subclasses
 		end
 
 		def usernames

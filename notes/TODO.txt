@@ -1,6 +1,4 @@
 Critical (before release):
-* Correct environment
-
 
 Major (important changes):
 * Menu entries only for available actions?
