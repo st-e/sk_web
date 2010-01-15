@@ -1,6 +1,9 @@
 Critical (before release):
 
 Major (important changes):
+* Error handling in generate_pdf, for example: pstricks not installed
+* Flight model: has_many :flights, :foreign_key => 'pilot' (and begleiter and
+  towpilot); then use flights.count in Person.used?
 * Menu entries only for available actions?
 * Person selection on create user
 * invalid date handling
@@ -32,7 +35,8 @@ Major (important changes):
 * Create person/user: back to origin
 * import people: undefinedness if the database is modified between identify and perform
 * redirect_to :back: default values
-* Allow non-SSL connections in development mode (after production mode works correctly)
+* PlaneLogEntry.create_merged: add "Towflight" or "Towflights" to comments list
+* generate_pdf: option for calling LaTeX 1/2/3 times
 
 Minor (less important changes or much work):
 * Better error page (without flash)
@@ -71,7 +75,7 @@ Minor (less important changes or much work):
   page redirects back (but works correctly, even directly after activating)
 * Read config file in initializer?
 * error message when format does not possible
-* move local? to request
+* move local_network? to request
 
 Nice to have:
 * date in local format

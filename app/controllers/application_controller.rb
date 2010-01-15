@@ -109,7 +109,7 @@ private
 		# Local actions are allowed for local or logged-in users
 		if self.class.local_action?(action)
 			# Allow without permission check if we are local or logged in
-			return if local? || logged_in?
+			return if local_network? || logged_in?
 
 			# Have to log in
 			redirect_to_login "Anmeldung erforderlich, da der Zugang nicht aus dem lokalen Netz erfolgt"  and return
@@ -142,9 +142,10 @@ private
 
 	# Filter that redirects to SSL unless the request comes from a local address
 	def require_ssl
-		redirect_to :protocol => "https://" and flash.keep unless (request.ssl? or local_request?)
-		#redirect_to url_for params.merge({:protocol => 'https://'})
-		#redirect_to "https://" + request.host + request.request_uri
+		return if local_request? # Don't require SSL from localhost
+		return if RAILS_ENV=='development' # Don't require SSL in development mode
+
+		redirect_to :protocol => "https://" and flash.keep unless request.ssl?
 	end
 
 	
@@ -152,7 +153,10 @@ private
 		!!session[:username]
 	end
 
-	def local?
+	# Note that this is different from local_request: this denotes "local
+	# networks", as in "no login required from here". local_request? denotes
+	# localhost, as in "no SSL required from here".
+	def local_network?
 		Settings.instance.address_is_local? request.remote_ip
 	end
 end

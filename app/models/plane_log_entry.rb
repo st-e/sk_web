@@ -107,8 +107,5 @@ class PlaneLogEntry
 			flights.inject(0) { |sum, flight| sum+flight.anzahl_landungen },
 			flights.inject(0) { |sum, flight| sum+flight.duration },
 			flights.map { |flight| flight.bemerkung }.reject { |comment| comment.blank? }.join('; '))
-
-		# TODO count the number of towflights; add "Schleppflug" or
-		# "Schleppflüge" to the comments list
 	end
 end

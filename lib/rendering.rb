@@ -15,8 +15,6 @@ module Rendering
 				file.write render_to_string(template)
 			}
 
-			# TODO error handling, for example: pstricks not installed
-			# TODO option for calling latex 1/2/3 times
 			latexcommand="latex -interaction=nonstopmode -output-directory=#{dir} #{texfile}"
 			dvipscommand="dvips -o #{psfile} #{dvifile}"
 			pstopdfcommand="ps2pdf -sOutputFile=#{pdffile} #{psfile}"

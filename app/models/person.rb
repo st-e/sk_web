@@ -4,8 +4,6 @@ class Person < ActiveRecord::Base
 	 
 	# Associations
 	has_one :user, :foreign_key => 'person'
-	# TODO has_many :flights, :foreign_key => 'pilot' and also begleiter und
-	# towpilot, then use flights.count in used?
 
 	# Attribute aliases
 	alias_attribute :last_name , :nachname
