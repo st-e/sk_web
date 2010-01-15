@@ -39,5 +39,6 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 
+  # Automatically set in config/initializers/!fix_relative_url_root.rb
   #config.action_controller.relative_url_root = "/startkladde"
 end

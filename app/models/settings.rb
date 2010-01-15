@@ -42,7 +42,6 @@ class Settings
 					@location=$1.strip
 				elsif (line =~ /local_hosts (.*)/i)
 					@local_addresses=$1.split(',').map { |address| address.strip.split('.') }
-					p @local_addresses
 				end
 			end
 		}

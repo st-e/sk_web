@@ -1,0 +1,23 @@
+SetEnv RAILS_ENV production
+
+# Rewrite everything to the public/ subdirectory, ugly solution.
+RewriteEngine On
+
+# Problem:
+#   - we need to use REQUEST_URI (b/c in userdir, we don't know the rewrite
+#     base and we don't want to specify it manually)
+#   - we don't know how many / components there are in the dir-local part
+#   - [E=...] does not seem to work (could potentially be used for a recursive
+#     solution)
+
+# Extend as required
+RewriteRule ^([^/]*)$                                                 %{REQUEST_URI}/../public/$1                         [L]
+RewriteRule ^([^/]*/[^/]*)$                                           %{REQUEST_URI}/../../public/$1                      [L]
+RewriteRule ^([^/]*/[^/]*/[^/]*)$                                     %{REQUEST_URI}/../../../public/$1                   [L]
+RewriteRule ^([^/]*/[^/]*/[^/]*/[^/]*)$                               %{REQUEST_URI}/../../../../public/$1                [L]
+RewriteRule ^([^/]*/[^/]*/[^/]*/[^/]*/[^/]*)$                         %{REQUEST_URI}/../../../../../public/$1             [L]
+RewriteRule ^([^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*)$                   %{REQUEST_URI}/../../../../../../public/$1          [L]
+RewriteRule ^([^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*)$             %{REQUEST_URI}/../../../../../../../public/$1       [L]
+RewriteRule ^([^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*)$       %{REQUEST_URI}/../../../../../../../../public/$1    [L]
+RewriteRule ^([^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*)$ %{REQUEST_URI}/../../../../../../../../../public/$1 [L]
+
