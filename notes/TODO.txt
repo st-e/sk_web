@@ -1,4 +1,5 @@
 Critical (before release):
+* people_list is very slow (36s vs. 8 with old sk_web)
 
 Major (important changes):
 * unit tests for import
@@ -38,6 +39,7 @@ Major (important changes):
 * PlaneLogEntry.create_merged: add "Towflight" or "Towflights" to comments list
 * generate_pdf: option for calling LaTeX 1/2/3 times
 * import review: show names of unknown columns
+* redirect back after edit with anchor
 
 Minor (less important changes or much work):
 * Better error page (without flash)
@@ -83,6 +85,7 @@ Nice to have:
 * create/edit planes
 * create/edit flights
 * form error messages for individual inputs
+* properly handle user disappeared
 
 After launch types in database:
 * :readonly=>true in lauch type queries

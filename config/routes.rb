@@ -12,9 +12,10 @@ ActionController::Routing::Routes.draw do |map|
 
 
   # Allow POST to edit for the "Select person" subpage
-  map.resources :users, :member => { :edit => :post, :change_password => [:get, :post] }
+  # Specify the requirements for the ID because periods will confuse routing otherwise
+  map.resources :users, :member => { :edit => :post, :change_password => [:get, :post] }, :requirements => { :id => /[a-zA-Z0-9_.-]+/ }
   #map.resources :flights # Not available
-  #map.resources :planes
+  #map.resources :planes # Not available
   map.resources :people, :member => { :overwrite => [:get, :post] }, :collection => { :import => [:get, :post], :delete_unused => [:post] }
 
   
@@ -23,6 +24,8 @@ ActionController::Routing::Routes.draw do |map|
   map.plane_log  'plane_log/:date.:format' , :controller => 'plane_log' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ }
   map.pilot_log  'pilot_log/:date.:format' , :controller => 'pilot_log' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d|\d\d\d\d-\d\d-\d\d_\d\d\d\d-\d\d-\d\d)/ }
   map.flight_db  'flight_db/:date.:format' , :controller => 'flight_db' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d|\d\d\d\d-\d\d-\d\d_\d\d\d\d-\d\d-\d\d)/ }
+
+#  map.connect '/usars/:id', :controller => 'users', :action => 'show'
 
 
   # Session control

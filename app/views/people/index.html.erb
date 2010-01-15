@@ -1,5 +1,7 @@
 <%= page_title "Personen" %>
 
+<p><%= h @people.size %> Personen</p>
+
 <% table_for(@people) { |table| %>
 	<% table.header_row { |header| %>
 		<%= header.text "ID"         %>
