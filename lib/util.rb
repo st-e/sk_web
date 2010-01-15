@@ -9,6 +9,12 @@ require 'digest/sha1'
 #	end
 #end
 
+class NilClass
+	def strip
+		self
+	end
+end
+
 class Time
 	def date
 		Date.new(year, month, day)

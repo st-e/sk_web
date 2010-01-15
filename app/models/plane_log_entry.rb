@@ -43,7 +43,7 @@ class PlaneLogEntry
 
 #	def initialize(flight)
 #		@registration=flight.the_plane.kennzeichen
-#		@date=flight.effective_time.date
+#		@date=flight.effective_date
 #		@pilot_name=flight.the_pilot.formal_name
 #		@min_passengers=@max_passengers=flight.num_people
 #		@departure_airfield=flight.startort
@@ -73,7 +73,7 @@ class PlaneLogEntry
 	def PlaneLogEntry.create(flight)
 		PlaneLogEntry.new(
 			flight.the_plane.kennzeichen,
-			flight.effective_time.date,
+			flight.effective_date,
 			flight.the_pilot.formal_name,
 			flight.num_people,
 			flight.num_people,
@@ -96,7 +96,7 @@ class PlaneLogEntry
 
 		PlaneLogEntry.new(
 			flights.first.the_plane.kennzeichen,
-			flights.last.effective_time.date,
+			flights.last.effective_date,
 			flights.last.the_pilot.formal_name,
 			flights.map { |flight| flight.num_people }.min,
 			flights.map { |flight| flight.num_people }.max,

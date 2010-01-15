@@ -95,12 +95,8 @@ class Person < ActiveRecord::Base
 			#     would be ambiguous which one should overwrite the person in
 			#     the database.
 			def identify
-				# TODO generally, is there a difference between nil (not
-				# present in the file) and blank (empty field in the file)?
-				# No, because "" means "not present for that person"?
-
 				if !@old_club_id.blank?
-					# Identify by old club ID
+					# Old club ID given - identify by old club ID
 					candidates=Person.all(:conditions => { :verein => @club, :vereins_id => @old_club_id })
 					case candidates.size
 					when 0: @id=nil; @error_message="Keine Person mit der angegebenen alten Vereins-ID im Verein \"#{@club}\" gefunden"
@@ -108,7 +104,7 @@ class Person < ActiveRecord::Base
 					else    @id=nil; @error_message="Mehrere Personen mit der angegebenen alten Vereins-ID im Verein \"#{@club}\" gefunden"
 					end
 				elsif !@club_id.blank?
-					# Identify by club ID
+					# Club ID given - identify by club ID
 					candidates=Person.all(:conditions => { :verein => @club, :vereins_id => @club_id })
 					case candidates.size
 					when 0: @id=0 # Not found - create new
@@ -116,12 +112,8 @@ class Person < ActiveRecord::Base
 					else    @id=nil; @error_message="Mehrere Personen mit der angegebenen Vereins-ID im Verein \"#{@club}\" gefunden"
 					end
 				else
-					# Identify by name
-					# club_id must also be empty (to remove a club ID, we have
-					# to select the person by old club ID)
-					# TODO what about NULL club ID in database?
-					# TODO does the club ID really have to be empty?
-					candidates=Person.all(:conditions => { :verein => @club, :vereins_id => "", :nachname => @last_name, :vorname => @first_name })
+					# Neither old nor current club ID given - identify by name
+					candidates=Person.all(:conditions => { :verein => @club, :nachname => @last_name, :vorname => @first_name })
 					case candidates.size
 					when 0: @id=0 # Not found - create new
 					when 1: @id=candidates[0].id
@@ -142,15 +134,19 @@ class Person < ActiveRecord::Base
 				return false if new?
 				return false if !identified?
 				
-				person=Person.find(@id)
+				# Retrieve the person and store its attributes
+				person=Person.find(@id, :readonly=>true)
 				old_attributes=person.attributes
 
+				# Update the person (don't save it)
 				person.attributes=attribute_hash
 
+				# Compare its attributes with the store attributes.
 				person.attributes!=old_attributes
 			end
 
 			def attribute_hash
+				# The attribute hash only includes values that are not nil.
 				result={}
 				result['vorname'   ]=@first_name if @first_name
 				result['nachname'  ]=@last_name  if @last_name
@@ -164,6 +160,14 @@ class Person < ActiveRecord::Base
 		attr_reader :missing_columns, :entries
 		attr_reader :creation_time, :original_filename
 
+		# Creates an ImportData instance from a CSV file. The number and order
+		# of the columns is read from the first row in the file, the header
+		# row.
+		# Values not specified, either because the column is not present in the
+		# file (header row) or because the row is shorter than the header row,
+		# will be nil. Columns with empty values (this includes the column past
+		# a trailing comma at the end of a row) will be returned as "" (so they
+		# can be distingushed from values which are not specified).
 		def initialize(csv, original_filename, club)
 			@creation_time=Time.now
 			@original_filename=original_filename
@@ -195,17 +199,28 @@ class Person < ActiveRecord::Base
 			reader.each { |row|
 				next if row.empty? || row==[nil]
 
+				# Empty values in the row are returned as nil by the CSV
+				# parser. However, we want them to be "", so we can distinguish
+				# them from values not specified at all. We also strip the
+				# values at this point.
+				row.map! { |value| (value || "").strip }
+
+				# Columns which do not exist in the file will have a column
+				# index of nil. We want the values from these columns to read
+				# as nil. Columns not present in a row will also be nil.
 				def row.[](index)
-					(index.nil?)? nil : super(index)
+					return nil if index.nil?
+					super(index)
 				end
 
 				entry=Entry.new
-
-				entry.last_name   =(row[columns[:last_name  ]] || "").strip
-				entry.first_name  =(row[columns[:first_name ]] || "").strip
-				entry.comments    =(row[columns[:comments   ]] || "").strip
-				entry.club_id     =(row[columns[:club_id    ]] || "").strip
-				entry.old_club_id =(row[columns[:old_club_id]] || "").strip
+				# Values for non-existing (nil) columns yields nil (see the
+				# monkey patch above).
+				entry.last_name   = row[columns[:last_name  ]]
+				entry.first_name  = row[columns[:first_name ]]
+				entry.comments    = row[columns[:comments   ]]
+				entry.club_id     = row[columns[:club_id    ]]
+				entry.old_club_id = row[columns[:old_club_id]]
 				entry.club=club
 
 				@entries << entry
@@ -220,7 +235,6 @@ class Person < ActiveRecord::Base
 			# This is an error for the person without, but not for the one with
 			# a club ID. Thus we have check all people against all others, even
 			# if we already checked the reverse.
-			# TODO when an old club ID is given, a club ID must also be given
 			@entries.each { |entry|
 				# First name or last name empty
 				errors << { :message=>"Vorname ist leer" , :entries=>[entry] } if entry.first_name.blank?

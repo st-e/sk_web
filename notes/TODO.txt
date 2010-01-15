@@ -1,6 +1,8 @@
 Critical (before release):
 
 Major (important changes):
+* unit tests for import
+* use :readonly=>true for all queries where applicable
 * Error handling in generate_pdf, for example: pstricks not installed
 * Flight model: has_many :flights, :foreign_key => 'pilot' (and begleiter and
   towpilot); then use flights.count in Person.used?
@@ -22,7 +24,6 @@ Major (important changes):
 * consider towflights for pilot log
 * make it not break on flights with NULL date (Flight.new.save)
 * Flight.<=> (and use sort instead of sort_by)
-* Add towplane registration as comment if not known from launch type
 * Can the _temp table duplication be supported through something like :finder_sql?
 * Permissions: specify for all actions of a controller
 * Permissions: allow exceptions to a permission for all actions of a controller
@@ -37,6 +38,7 @@ Major (important changes):
 * redirect_to :back: default values
 * PlaneLogEntry.create_merged: add "Towflight" or "Towflights" to comments list
 * generate_pdf: option for calling LaTeX 1/2/3 times
+* import review: show names of unknown columns
 
 Minor (less important changes or much work):
 * Better error page (without flash)
@@ -54,7 +56,6 @@ Minor (less important changes or much work):
 * use alias_attribute in all models
 * order of file formats
 * better error reporting with latex files
-* use :readonly=>true for all queries where applicable
 * delete confirmation without javascript (http://brandonaaron.net/blog/2009/02/25/unobtrusive-destroy-links-in-rails-using-jquery)
 * how to make sure not passwords are displayed? clear in view?
 * look into fastercsv

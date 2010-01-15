@@ -9,20 +9,32 @@ class Flight < ActiveRecord::Base
 
 	set_table_name "flug_temp" 
 
-	belongs_to :the_plane  , :class_name => "Plane" , :foreign_key => "flugzeug" 
-	belongs_to :the_pilot  , :class_name => "Person", :foreign_key => "pilot"
-	belongs_to :the_copilot, :class_name => "Person", :foreign_key => "begleiter"
+	belongs_to :the_plane   , :class_name => "Plane" , :foreign_key => "flugzeug" 
+	belongs_to :the_pilot   , :class_name => "Person", :foreign_key => "pilot"
+	belongs_to :the_copilot , :class_name => "Person", :foreign_key => "begleiter"
+	belongs_to :the_towplane, :class_name => "Plane" , :foreign_key => "towplane"
+
+	def incomplete_name(last_name, first_name)
+		if last_name.blank? && first_name.blank?
+			# Both blank
+			nil
+		elsif last_name.blank?
+			"(?, #{first_name})"
+		elsif first_name.blank?
+			"(#{last_name}, ?)"
+		else
+			"(#{last_name}, #{first_name})"
+		end
+	end
 
 	def effective_pilot_name
-		# TODO handle incomplete names
 		return the_pilot.formal_name if the_pilot
-		nil
+		incomplete_name(pnn, pvn)
 	end
 
 	def effective_copilot_name
-		# TODO handle incomplete names
 		return the_copilot.formal_name if the_copilot
-		nil
+		incomplete_name(bnn, bvn)
 	end
 
 	def effective_club
@@ -162,15 +174,27 @@ class Flight < ActiveRecord::Base
 		lands_here? and landed?
 	end
 
+	def time_text(time)
+		return nil if !time
+		time.strftime('%H:%M')
+	end
+
 	def effective_launch_time
 		return nil if !launch_time_valid?
-		# TODO return time, and use in LSV albgau plugin
-		startzeit.strftime('%H:%M')
+		startzeit
+	end
+
+	def effective_launch_time_text
+		time_text(effective_launch_time)
 	end
 
 	def effective_landing_time
 		return nil if !landing_time_valid?
-		landezeit.strftime('%H:%M')
+		landezeit
+	end
+
+	def effective_landing_time_text
+		time_text(effective_landing_time)
 	end
 
 	def duration
@@ -192,8 +216,8 @@ class Flight < ActiveRecord::Base
 	def effective_towplane_registration
 		return nil if !is_airtow?
 		# We now know that launch_type is not nil
-		launch_type.registration
-		# TODO other airtow!
+		return launch_type.registration if launch_type.towplane_known?
+		return the_towplane.kennzeichen if the_towplane
 	end
 
 	def towplane_id
@@ -217,8 +241,13 @@ class Flight < ActiveRecord::Base
 		return nil if !is_airtow?
 		return nil if !towflight_lands_here?
 		return nil if !towflight_landed?
-		land_schlepp.strftime('%H:%M')
+		land_schlepp
 	end
+
+	def effective_landing_time_text_towflight
+		time_text(effective_landing_time_towflight)
+	end
+
 
 	def effective_duration_towflight
 		return nil if !is_airtow?
@@ -253,7 +282,6 @@ class Flight < ActiveRecord::Base
 		end
 	end
 
-	# TODO use instead of effective_time.date
 	def effective_date
 		time=effective_time
 		return nil if !time
@@ -274,8 +302,10 @@ class Flight < ActiveRecord::Base
 		return false unless startort == prev.startort      # The flights are at the same airfield
 		
 		# For motor planes: only allow merging of towflights
-		# TODO: gliders and motor gliders true, other only for towflights
-		true
+		return true if the_plane && (the_plane.glider? || the_plane.motorglider?)
+		return true if is_towflight? && prev.is_towflight?
+
+		false
 	end
 
 	# additional_conditions is an array ["foo=:f", {:f=>42}]

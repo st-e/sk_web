@@ -104,12 +104,15 @@ DataFormatPlugin.define "lsv_albgau" do
 
 			date=flight.effective_date
 
+			launch_time=flight.effective_launch_time
+			landing_time=flight.effective_landing_time
+
 			[
 				(date)?(date.strftime('%Y%m%d')):"",
-				(flight.launch_time_valid?)?(flight.startzeit.hour):"",
-				(flight.launch_time_valid?)?(flight.startzeit.min):"",
-				(flight.landing_time_valid?)?(flight.landezeit.hour):"",
-				(flight.landing_time_valid?)?(flight.landezeit.min):"",
+				(launch_time)?(launch_time.hour):"",
+				(launch_time)?(launch_time.min):"",
+				(landing_time)?(landing_time.hour):"",
+				(landing_time)?(landing_time.min):"",
 				(plane)?(plane.kennzeichen):nil,
 				(plane)?(plane.verein):nil,
 				flight_type_text,

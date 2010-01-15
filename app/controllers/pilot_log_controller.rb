@@ -14,7 +14,7 @@ class PilotLogController < ApplicationController
 		@person=user.associated_person
 
 		if !@person
-			flash[:error]="Es kann kein Flugubch angezeigt werden, da dem Benutzer #{user.username} keine Person zugeordnet ist."
+			flash[:error]="Es kann kein Flugbuch angezeigt werden, da dem Benutzer #{user.username} keine Person zugeordnet ist."
 			redirect_to :back
 			return
 		end
@@ -90,7 +90,12 @@ protected
 			{ :title => 'Bemerkungen'     , :width => 20 }
 		]
 
-		rows=flights.each_with_index.map { |flight, index| [
+		rows=flights.each_with_index.map { |flight, index|
+			comments=[]
+			comments << "#{flight.effective_towplane_registration} #{flight.effective_duration_towflight}" if flight.is_airtow?
+			comments << flight.bemerkung if !flight.bemerkung.blank?
+		
+			[
 			flight.effective_date                         ,
 			flight.the_plane.typ                              ,
 			flight.the_plane.kennzeichen                      ,
@@ -99,10 +104,10 @@ protected
 			flight.launch_type_pilot_log_designator || "?",
 			flight.startort                               ,
 			flight.zielort                                ,
-			flight.effective_launch_time            || "?",
-			flight.effective_landing_time           || "?",
+			flight.effective_launch_time_text       || "?",
+			flight.effective_landing_time_text      || "?",
 			flight.effective_duration               || "?",
-			flight.bemerkung                              
+			comments.join('; ')
 		] }
 
 		{ :columns => columns, :rows => rows, :data => flights }
