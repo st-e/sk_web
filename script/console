@@ -1,3 +1,8 @@
 #!/usr/bin/env ruby
+
+# ./script/console defaults to development mode. This can be overridden by the
+# environment variable RAILS_ENV.
+ENV['RAILS_ENV'] ||= 'development'
+
 require File.expand_path('../../config/boot',  __FILE__)
 require 'commands/console'
