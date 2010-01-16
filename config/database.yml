@@ -18,7 +18,7 @@ development:
   adapter: mysql
   encoding: utf8
   reconnect: false
-  database: startkladde
+  database: startkladde2
   pool: 5
   username: sk_admin
   password: moobertshausen

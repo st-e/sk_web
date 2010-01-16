@@ -1,4 +1,37 @@
+/************
+ ** Colors **
+ ************/
+
 body { background-color: #fff; color: #333; }
+
+a         { color: #000; }
+a:visited { color: #666; }
+a:hover   { color: #fff; background-color:#333; }
+
+span.hidden_field { color: #BBB }
+
+
+/***********
+ ** Fonts **
+ ***********/
+
+body, p, ol, ul, td {
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size:   13px;
+}
+
+
+/******************************
+ ** General settings/classes **
+ ******************************/
+
+th { text-align: left; }
+
+pre {
+  background-color: #eee;
+  padding: 10px;
+  font-size: 11px;
+}
 
 .nobreak { white-space:nowrap; }
 .invisible { display:none; }
@@ -6,10 +39,12 @@ body { background-color: #fff; color: #333; }
 
 .transparent { background-color: transparent; }
 
-span.hidden_field { color: #BBB }
 
+/************
+ ** Tables **
+ ************/
 
-
+/** Lists of objects (objects in rows) **/
 table.list { border-collapse: collapse }
 table.list td,table.list th { padding: 2px 10px 2px 5px } /* top, right, bottom, left */
 table.list td,table.list th { border: solid white; border-width: 1px }
@@ -19,30 +54,17 @@ table.list tr.data1  td { background-color: #CCC }
 
 table.list tr td.error_message { color: red }
 
+/** Forms (setting name/input field) **/
 table.form th { white-space: nowrap }
 table.form td, table.form th  { vertical-align: top; }
+
+/** Objects (field name/value) **/
 table.object (td,td) { vertical-align: top; }
 
 
-th {
-	text-align: left;
-}
-
-body, p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
-  font-size:   13px;
-  line-height: 18px;
-}
-
-pre {
-  background-color: #eee;
-  padding: 10px;
-  font-size: 11px;
-}
-
-a         { color: #000; }
-a:visited { color: #666; }
-a:hover   { color: #fff; background-color:#333; }
+/************
+ ** Errors **
+ ************/
 
 .fieldWithErrors {
   padding: 2px;
@@ -80,6 +102,7 @@ a:hover   { color: #fff; background-color:#333; }
   list-style: square;
 }
 
+
 /****************
  ** Pagination **
  ****************/
@@ -89,6 +112,9 @@ a:hover   { color: #fff; background-color:#333; }
  * span.disabled/current (LinkRenderer), span.gap (all)
  */
 
+/* Options for the pagination list */
+
+div.pagination { padding-top: 4px; padding-bottom: 4px }
 /* Common options for all pagination elements */
 div.pagination a, div.pagination span, div.pagination input {
 	font-size: 13px;
@@ -97,7 +123,6 @@ div.pagination a, div.pagination span, div.pagination input {
 	text-decoration: none;
 }
 
-div.pagination { padding-top: 4px; padding-bottom: 4px }
 
 div.pagination a, div.pagination span, div.pagination input {
 	padding: 1px 9px 1px 9px;
