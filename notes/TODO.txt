@@ -5,6 +5,9 @@ Layout/Style:
 
 
 Major (important changes):
+* Import people: need to do 'dry run' to detect errors, e. g. club ID already
+  taken on change
+* Import people: transaction does not seem to work: one created, one fails
 * Filter by club in people list, overwrite and person selection
 * lib/hidden_field is not loaded
 * link to list_people: correct page
@@ -91,6 +94,7 @@ Minor (less important changes or much work):
 * Read config file in initializer?
 * error message when format does not possible
 * move local_network? to request
+* prevent user taking "club administrator" from himself
 
 Nice to have:
 * date in local format

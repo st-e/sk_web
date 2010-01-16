@@ -37,6 +37,11 @@ class Flight < ActiveRecord::Base
 		incomplete_name(bnn, bvn)
 	end
 
+	def effective_towpilot_name
+		return the_towpilot.formal_name if the_towpilot
+		incomplete_name(tpnn, tpvn)
+	end
+
 	def effective_club
 		return the_pilot.verein if the_pilot
 		return the_plane.verein if the_plane

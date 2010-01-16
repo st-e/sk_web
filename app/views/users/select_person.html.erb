@@ -37,12 +37,12 @@
 			<% table.body { |body, person| %>
 				<% checked=(@user.person==person.id)  %><%# person is the primary key, not the object %>
 				<%= body.cell f.radio_button('person', person.id, :checked => checked) %>
-				<%= body.cell link_to(person.id, person)                      %>
-				<%= body.cell link_to(person.last_name, person)               %>
-				<%= body.cell link_to(person.first_name, person)              %>
-				<%= body.text person.verein                                   %>
-				<%= body.text person.vereins_id                               %>
-				<%= body.text person.bemerkung                                %>
+				<%= body.cell person.id                                                %>
+				<%= body.cell person.last_name                                         %>
+				<%= body.cell person.first_name                                        %>
+				<%= body.text person.verein                                            %>
+				<%= body.text person.vereins_id                                        %>
+				<%= body.text person.bemerkung                                         %>
 			<% } %>
 		<% } %>
 	<% end %>

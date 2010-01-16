@@ -1,5 +1,6 @@
 New features:
   - Go to http://localhost:3000/pilot_log/today.html directly and log in
+  - Pagination
 
 Changes:
   - "Personen importieren" statt "Stammdaten einspielen"
@@ -10,18 +11,9 @@ Notes:
 	if in database.yml the database encoding is set to utf8, but not when it is
 	set to latin1?
 
-Tests (all with real database):
-  - towflight extra works for other and unknown towplane
-  - incomplete towpilot name
-  - LSV plugin
-  - passwords not logged
-  - import: if column not present, values not changed
-  - import: Club ID not unique after change
-  - import: null club ID in database
-  - Flight db: effective date
-  - PDF: `',<>
-  - CSV export with OpenOffice and Excel
+Tests (test database):
   - without referer
+  - CSV export with Excel
 
 Permission system:
   - Two criteria: (a) login required no/non-local/always, (b) user's permissions

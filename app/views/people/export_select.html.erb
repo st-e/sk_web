@@ -1,0 +1,21 @@
+<%= page_title "Personen exportieren" %>
+
+<% form_tag 'export' do %>
+	<table class="form">
+		<tr>
+			<th>Verein:</th>
+			<td><%= text_field_tag 'club', @club %> (leer lassen für alle)</td>
+		</tr>
+	</table>
+
+	<p>
+		Die Personen werden in einem Format exportiert, das zum Wieder-<%= link_to 'Import', :action=>'import' %> geeignet ist.
+	</p>
+
+	<p><%= submit_tag "Exportieren" %></p>
+<% end %>
+
+<p>
+	<%= link_to 'Personenliste', people_path %>
+</p>
+

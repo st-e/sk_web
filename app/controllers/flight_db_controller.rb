@@ -1,5 +1,6 @@
 require 'date'
 require 'tmpdir'
+require 'text'
 
 class FlightDbController < ApplicationController
 	require_permission :read_flight_db, :index, :show

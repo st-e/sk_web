@@ -2,8 +2,11 @@ require 'text'
 require 'util'
 
 class PeopleController < ApplicationController
-	require_permission :club_admin, :index, :show, :new, :create, :edit, :update, :destroy, :overwrite, :import
+	require_permission :club_admin, :index, :show, :new, :create, :edit, :update, :destroy, :overwrite, :import, :export
 	require_permission :sk_admin, :delete_unused
+
+	class ImportError <Exception
+	end
 
 	def index
 		attempt do
@@ -248,32 +251,48 @@ class PeopleController < ApplicationController
 			num_changed=0
 			num_unchanged=0
 
-			Person.transaction {
-				@import_data.entries.each { |entry|
-					if entry.new?
-						person=Person.new(entry.attribute_hash)
-						person.save
+			errors=[]
+			begin
+				Person.transaction do
+					@import_data.entries.each { |entry|
+						if entry.new?
+							person=Person.new(entry.attribute_hash)
 
-						num_created+=1
-					else
-						person=Person.find(entry.id)
-						old_attributes=person.attributes
-
-						person.attributes=entry.attribute_hash
-
-						if person.attributes==old_attributes
-							num_unchanged+=1
+							if person.save
+								num_created+=1
+							else
+								errors << person
+							end
 						else
-							person.save
-							num_changed+=1
+							person=Person.find(entry.id)
+							old_attributes=person.attributes
+
+							person.attributes=entry.attribute_hash
+
+							if person.attributes==old_attributes
+								num_unchanged+=1
+							else
+								if person.save
+									num_changed+=1
+								else
+									errors << person
+								end
+							end
 						end
-					end
-				}
+					}
 
-				cleanup_import_data
-			}
+					raise ImportError if !errors.empty?
+					cleanup_import_data
+				end
+			rescue ImportError
+			end
 
-			flash[:notice]="Es wurden #{num_created} Personen angelegt, #{num_changed} aktualisiert und #{num_unchanged} nicht geändert."
+			if errors.empty?
+				flash[:notice]="Es wurden #{num_created} Personen angelegt, #{num_changed} aktualisiert und #{num_unchanged} nicht geändert."
+			else
+				flash[:error]="#{errors.size} Fehler beim Importieren"
+			end
+
 			redirect_to :action=>'index'
 			return
 		end
@@ -281,6 +300,28 @@ class PeopleController < ApplicationController
 		# Fallthrough, should not happen
 		raise "Unbehandelter Fall in PeopleController::import"
 		redirect_to
+	end
+
+	def export
+		if !params[:commit]
+			@club=current_user.club.strip
+			render 'export_select'
+			return
+		end
+
+		if params[:club].blank?
+			@people=Person.all
+		else
+			@people=Person.find_all_by_verein(params[:club].strip)
+		end
+
+		@table=make_table(@people)
+
+		# Hack, because otherwise, the HTML partial will be rendered
+		params[:format]='csv'
+
+		render 'people.csv'
+		set_filename "personen_#{Date.today}.csv"
 	end
 
 protected
@@ -327,6 +368,26 @@ protected
 			end
 			import_data_filename=nil
 		end
+	end
+
+	def make_table(people)
+		columns = [
+			{ :title => 'Nachname'    },
+			{ :title => 'Vorname'     },
+			{ :title => 'Verein'      },
+			{ :title => 'Bemerkungen' },
+			{ :title => 'Vereins-ID'  }
+		]
+
+		rows=people.map { |person| [
+			person.nachname,
+			person.vorname,
+			person.verein,
+			person.bemerkung,
+			person.vereins_id
+		] }
+
+		{ :columns => columns, :rows => rows, :data => people }
 	end
 end
 
