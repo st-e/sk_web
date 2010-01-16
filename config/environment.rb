@@ -44,3 +44,7 @@ Rails::Initializer.run do |config|
   # Automatically set in config/initializers/!fix_relative_url_root.rb
   #config.action_controller.relative_url_root = "/startkladde"
 end
+
+require "will_paginate"
+
+

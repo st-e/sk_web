@@ -1,5 +1,10 @@
 Critical (before release):
-* people_list is very slow (36s vs. 8 with old sk_web)
+* people_list is very slow (36s vs. 8s with old sk_web) => prefetch all users
+* paginate people_list, also for person selection
+
+Layout/Style:
+* Menu at the top
+
 
 Major (important changes):
 * unit tests for import
@@ -86,6 +91,7 @@ Nice to have:
 * create/edit flights
 * form error messages for individual inputs
 * properly handle user disappeared
+* pagination like at erweiterungen.de
 
 After launch types in database:
 * :readonly=>true in lauch type queries

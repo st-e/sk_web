@@ -1,12 +1,25 @@
 require 'text'
 require 'util'
 
+# TODO to lib
+class WillPaginate::Collection
+	def page_first
+		offset+1
+	end
+
+	def page_last
+		last=offset+per_page
+		(last<=total_entries)?last:total_entries
+	end
+end
+
 class PeopleController < ApplicationController
 	require_permission :club_admin, :index, :show, :new, :create, :edit, :update, :destroy, :overwrite, :import
 	require_permission :sk_admin, :delete_unused
 
 	def index
-		@people=Person.all(:order => "nachname, vorname", :readonly=>true)
+		#@people = Person.all(:order => "nachname, vorname", :readonly=>true)
+		@people = Person.paginate :page => params[:page], :per_page => 50, :order => 'nachname'
 
 		respond_to do |format|
 			format.html

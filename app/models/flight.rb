@@ -94,7 +94,7 @@ class Flight < ActiveRecord::Base
 	end
 
 	def is_towflight?
-		typ=Flight.TYPE_TOW
+		typ=Flight::TYPE_TOW
 	end
 
 	def flight_type_text

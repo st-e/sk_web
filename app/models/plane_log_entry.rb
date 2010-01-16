@@ -74,7 +74,7 @@ class PlaneLogEntry
 		PlaneLogEntry.new(
 			flight.the_plane.kennzeichen,
 			flight.effective_date,
-			flight.the_pilot.formal_name,
+			flight.effective_pilot_name,
 			flight.num_people,
 			flight.num_people,
 			flight.startort,
@@ -97,7 +97,7 @@ class PlaneLogEntry
 		PlaneLogEntry.new(
 			flights.first.the_plane.kennzeichen,
 			flights.last.effective_date,
-			flights.last.the_pilot.formal_name,
+			flights.last.effective_pilot_name,
 			flights.map { |flight| flight.num_people }.min,
 			flights.map { |flight| flight.num_people }.max,
 			flights.first.startort,

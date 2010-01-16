@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
 	validates_presence_of   :username,                                :message   => "darf nicht leer sein" # length will also count blanks
 	validates_uniqueness_of :username, :case_sensitive => false,      :message   => "existiert schon"
 	validates_length_of     :username, :minimum => 2,                 :too_short => "muss mindestens {{count}} Zeichen lang sein"
-	validates_format_of     :username, :with => /^[a-zA-Z0-9_.-]*$/,  :message   => "Der Benutzername darf nur Buchstaben, Ziffern, _, . und - enthalten"
+	validates_format_of     :username, :with => /^[a-zA-Z0-9_.-]+$/,  :message   => "Der Benutzername darf nur Buchstaben, Ziffern, _, . und - enthalten"
 	validates_exclusion_of  :username, :in => reserved_usernames,     :message   => "{{value}} ist reserviert"
 
 	# Password validation
