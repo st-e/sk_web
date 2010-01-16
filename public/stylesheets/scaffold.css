@@ -8,7 +8,7 @@ body { background-color: #fff; color: #333; }
 
 span.hidden_field { color: #BBB }
 
-div.pagination input { background-color: #EEE; border: 1px solid #CCC; }
+
 
 table.list { border-collapse: collapse }
 table.list td,table.list th { padding: 2px 10px 2px 5px } /* top, right, bottom, left */
@@ -42,7 +42,7 @@ pre {
 
 a         { color: #000; }
 a:visited { color: #666; }
-a:hover   { color: #fff; background-color:#000; }
+a:hover   { color: #fff; background-color:#333; }
 
 .fieldWithErrors {
   padding: 2px;
@@ -79,4 +79,45 @@ a:hover   { color: #fff; background-color:#000; }
   font-size: 12px;
   list-style: square;
 }
+
+/****************
+ ** Pagination **
+ ****************/
+
+/*
+ * Pagination entries can be input (ButtonRenderer), a (LinkRenderer, active),
+ * span.disabled/current (LinkRenderer), span.gap (all)
+ */
+
+/* Common options for all pagination elements */
+div.pagination a, div.pagination span, div.pagination input {
+	font-size: 13px;
+	background-color: #EEE;
+	border: 1px solid #CCC;
+	text-decoration: none;
+}
+
+div.pagination { padding-top: 4px; padding-bottom: 4px }
+
+div.pagination a, div.pagination span, div.pagination input {
+	padding: 1px 9px 1px 9px;
+}
+
+div.pagination span.disabled {
+	color: #999
+}
+
+/* The gap is an exception: no background, lower padding */
+div.pagination span.gap {
+	background-color: transparent;
+	border: none;
+	padding: 1px
+
+}
+
+/* The element for the current page has a green border */
+div.pagination .current { border-color: #3C3; }
+
+div.pagination input:hover { color: #fff; background-color: #333; }
+div.pagination a:hover     { color: #fff; background-color: #333; }
 

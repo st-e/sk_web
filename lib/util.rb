@@ -9,6 +9,22 @@ require 'digest/sha1'
 #	end
 #end
 
+class FalseClass
+	def if
+	end
+end
+
+class TrueClass
+	def if
+		yield
+	end
+end
+
+def attempt
+	yield
+end
+
+
 class NilClass
 	def strip
 		self

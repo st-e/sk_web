@@ -120,7 +120,11 @@ class PeopleController < ApplicationController
 			redirect_to and return if request.method==:post
 
 			# Let the user select a person
-			@people=Person.all(:readonly=>true).reject { |person| person.id==@wrong_person.id }
+			attempt do
+				@people = Person.paginate(:page => params[:page], :per_page => 50, :order => 'nachname, vorname', :readonly=>true).reject { |person| person.id==@wrong_person.id }
+				params[:page]=1 and redo if @people.out_of_bounds?
+			end
+
 			render 'overwrite_select' and return
 		end
 

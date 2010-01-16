@@ -1,13 +1,12 @@
 Critical (before release):
-* paginate people_list, also for person selection
-* pagination link style like buttons
-* pagination for overwrite
 
 Layout/Style:
 * Menu at the top
 
 
 Major (important changes):
+* Filter by club in people list, overwrite and person selection
+* lib/hidden_field is not loaded
 * link to list_people: correct page
 * unit tests for import
 * Error handling in generate_pdf, for example: pstricks not installed
@@ -53,6 +52,8 @@ Major (important changes):
   session (but allow multiple!)
 
 Minor (less important changes or much work):
+* style: size of buttons and links is not the same for pagination
+* style: hover not for disabled pagination buttons
 * people_list is very slow => prefetch all users (not so bad b/c paginated)
 * Better error page (without flash)
 * Buttons in overwrite_confirm: same form? Then remove table

@@ -10,30 +10,34 @@
 
 <p>Bitte die korrekte Person auswählen:</p>
 
+<p><%= @people.page_info 'Person', 'Personen' %></p>
+
 <% form_tag do %>
 	<%= hidden_field_tag 'id', @wrong_person.id %>
 	
-	<% table_for(@people) { |table| %>
-		<% table.header_row { |header| %>
-			<%= header.text nil          %>
-			<%= header.text "ID"         %>
-			<%= header.text "Nachname"   %>
-			<%= header.text "Vorname"    %>
-			<%= header.text "Verein"     %>
-			<%= header.text "Vereins-ID" %>
-			<%= header.text "Bemerkung"  %>
-		<% } %>
+	<% paginated_section @people do %>
+		<% table_for(@people) { |table| %>
+			<% table.header_row { |header| %>
+				<%= header.text nil          %>
+				<%= header.text "ID"         %>
+				<%= header.text "Nachname"   %>
+				<%= header.text "Vorname"    %>
+				<%= header.text "Verein"     %>
+				<%= header.text "Vereins-ID" %>
+				<%= header.text "Bemerkung"  %>
+			<% } %>
 
-		<% table.body { |body, person| %>
-			<%= body.cell radio_button_tag('correct_person_id', person.id, false) %>
-			<%= body.cell link_to(person.id, person)                      %>
-			<%= body.cell link_to(person.last_name, person)               %>
-			<%= body.cell link_to(person.first_name, person)              %>
-			<%= body.text person.verein                                   %>
-			<%= body.text person.vereins_id                               %>
-			<%= body.text person.bemerkung                                %>
+			<% table.body { |body, person| %>
+				<%= body.cell radio_button_tag('correct_person_id', person.id, false) %>
+				<%= body.cell person.id                                       %>
+				<%= body.cell person.last_name                                %>
+				<%= body.cell person.first_name                               %>
+				<%= body.text person.verein                                   %>
+				<%= body.text person.vereins_id                               %>
+				<%= body.text person.bemerkung                                %>
+			<% } %>
 		<% } %>
-	<% } %>
+	<% end %>
 
 	<p><%= submit_tag 'Auswählen' %></p>
 <% end %>
