@@ -1,33 +1,35 @@
 <%= page_title "Benutzer" %>
 
-<p><%= h @users.size %> Benutzer</p>
+<p><%= @users.page_info 'Benutzer', 'Benutzer' %></p>
 
-<% table_for(@users) { |table| %>
-	<% table.header_row { |header| %>
-		<%= header.text "Benutzerdaten" , :colspan=>3 %>
-		<%= header.text "Berechtigungen", :colspan=>2 %>
-	<% } %>
+<% paginated_section @users do %>
+	<% table_for(@users) { |table| %>
+		<% table.header_row { |header| %>
+			<%= header.text "Benutzerdaten" , :colspan=>3 %>
+			<%= header.text "Berechtigungen", :colspan=>2 %>
+		<% } %>
 
-	<% table.header_row { |header| %>
-		<%= header.text "Benutzername"         %>
-		<%= header.text "Verein"               %>
-		<%= header.text "Person"               %>
-		<%= header.text "Vereinsadministrator" %>
-		<%= header.text "Flugdatenbank lesen"  %>
-	<% } %>
+		<% table.header_row { |header| %>
+			<%= header.text "Benutzername"         %>
+			<%= header.text "Verein"               %>
+			<%= header.text "Person"               %>
+			<%= header.text "Vereinsadministrator" %>
+			<%= header.text "Flugdatenbank lesen"  %>
+		<% } %>
 
-	<% person_formatter=lambda { |p| "#{p.formal_name} (#{p.id})" } %>
-	<% table.body { |body, user| %>
-		<% person=user.associated_person %>
-		<%= body.cell link_to(user.username, user)                                    %>
-		<%= body.text user.club                                                       %>
-		<%= body.cell((person)?link_to(person_formatter.call(person), person):h("-")) %>
-		<%= body.text yesno(user.perm_club_admin)                                     %>
-		<%= body.text yesno(user.perm_read_flight_db)                                 %>
-		<%= body.cell link_to 'Editieren', edit_user_path(user)                                                              %>
-		<%= body.cell link_to 'Löschen', user, :confirm => "Benutzer #{user.username} wirklich löschen?", :method => :delete %>
+		<% person_formatter=lambda { |p| "#{p.formal_name} (#{p.id})" } %>
+		<% table.body { |body, user| %>
+			<% person=user.associated_person %>
+			<%= body.cell link_to(user.username, user)                                    %>
+			<%= body.text user.club                                                       %>
+			<%= body.cell((person)?link_to(person_formatter.call(person), person):h("-")) %>
+			<%= body.text yesno(user.perm_club_admin)                                     %>
+			<%= body.text yesno(user.perm_read_flight_db)                                 %>
+			<%= body.cell link_to 'Editieren', edit_user_path(user)                                                              %>
+			<%= body.cell link_to 'Löschen', user, :confirm => "Benutzer #{user.username} wirklich löschen?", :method => :delete %>
+		<% } %>
 	<% } %>
-<% } %>
+<% end %>
 
 <p>
 	<%= link_to 'Benutzer anlegen', new_user_path %>

@@ -1,5 +1,19 @@
 require 'util'
 
+# TODO lib
+module ActionView
+	module Helpers
+		module FormHelper
+			def hidden_field(object_name, method, options = {})
+				# Alias doesn't seem to work - copy the contents of the original method
+				result=InstanceTag.new(object_name, method, self, options.delete(:object)).to_input_field_tag("hidden", options)
+				result+="<span class=\"hidden_field\">[#{h method}=#{h options[:value].inspect}]</span>" if session[:debug]
+				result
+			end
+		end
+	end
+end
+
 class UsersController < ApplicationController
 	filter_parameter_logging :password # Filter parameters containing "password"
 
@@ -7,7 +21,11 @@ class UsersController < ApplicationController
 	require_login :change_own_password
 
 	def index
-		@users = User.all(:order => "username", :readonly=>true)
+		attempt do
+			@users = User.paginate :page => params[:page], :per_page => 20, :order => 'username', :readonly=>true
+			params[:page]=1 and redo if @users.out_of_bounds?
+		end
+
 		render "index"
 	end
 
@@ -36,39 +54,66 @@ class UsersController < ApplicationController
 	end
 
 	def edit
-		# Store the location we came from, so we can return there after editing
-		store_origin
-		@user = User.find(params[:id], :readonly=>true)
+		@user = User.find(params[:id])
 		render_error "Der Spezialbenutzer #{@user.username} kann nicht editiert werden." and return if @user.special?
 
-		# If a user parameter is given, we've probably returned from a subpage.
+		# Restore the user, if given (e. g. after returning from a subpage)
 		@user.attributes=params[:user] if params[:user]
-	end
 
-	def update
-		@user = User.find(params[:id])
-		render_error "Der Spezialbenutzer #{@user.username} kann nicht gelöscht werden." and return if @user.special?
-
-		if params['commit']
-			# Store the user
-
-			# If we want to allow changing the password here, we should check
-			# if the password fields have been left blank and, in this case,
-			# remove them from the params hash.
-
-			if @user.update_attributes(params[:user])
-				flash[:notice] = "Der Benutzer #{@user.username} wurde gespeichert."
-				redirect_to_origin(default=@user)
-			else
-				render :action => "edit"
+		if params[:subpage]
+			# Button pressed on subpage
+			if params[:commit]
+				# Return from subpage
+				render
+			elsif params[:subpage]=='select_person'
+				# Button on select person subpage
+				select_person
 			end
-		elsif params['select_person']
-			# Go to the "select person" page
-			@user.attributes=params[:user]
-			@people = Person.all(:order => "nachname, vorname", :readonly=>true)
-			render 'select_person'
+		else
+			# Regular edit
+
+			# Store the location we came from, so we can return there after editing
+			store_origin
 		end
 	end
+
+	# If we want to allow changing the password here, we should check
+	# if the password fields have been left blank and, in this case,
+	# remove them from the params hash.
+	def update
+		# Button press on edit page
+
+		# Read the user and update the attributes (don't save at this point)
+		@user = User.find(params[:id])
+		render_error "Der Spezialbenutzer #{@user.username} kann nicht editiert werden." and return if @user.special?
+		@user.attributes=params[:user] if params[:user]
+
+		# Subpages
+		select_person and return if params['select_person']
+
+		if params['commit']
+			# 'Save' button
+			render 'edit' and return if !@user.save
+
+			flash[:notice] = "Der Benutzer #{@user.username} wurde gespeichert."
+			redirect_to_origin(default=@user)
+			return
+		end
+
+		render 'edit'
+	end
+
+	def select_person
+		page=page_parameter
+
+		attempt do
+			@people = Person.paginate :page => page, :per_page => 20, :order => 'nachname, vorname', :readonly=>true
+			params[:page]=1 and redo if @people.out_of_bounds?
+		end
+
+		render 'select_person'
+	end
+
 
 	def destroy
 		username=params[:id]

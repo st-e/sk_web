@@ -1,12 +1,14 @@
 Critical (before release):
-* people_list is very slow (36s vs. 8s with old sk_web) => prefetch all users
 * paginate people_list, also for person selection
+* pagination link style like buttons
+* pagination for overwrite
 
 Layout/Style:
 * Menu at the top
 
 
 Major (important changes):
+* link to list_people: correct page
 * unit tests for import
 * Error handling in generate_pdf, for example: pstricks not installed
 * Flight model: has_many :flights, :foreign_key => 'pilot' (and begleiter and
@@ -45,8 +47,13 @@ Major (important changes):
 * generate_pdf: option for calling LaTeX 1/2/3 times
 * import review: show names of unknown columns
 * redirect back after edit with anchor
+* user person_select: cancel button; requires: store original person in
+  user[person], additionally new_person
+* subform: better controller subdivision; maybe store person under edit in
+  session (but allow multiple!)
 
 Minor (less important changes or much work):
+* people_list is very slow => prefetch all users (not so bad b/c paginated)
 * Better error page (without flash)
 * Buttons in overwrite_confirm: same form? Then remove table
 * settings: plugin path
