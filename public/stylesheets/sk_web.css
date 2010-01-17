@@ -1,13 +1,110 @@
+/* The menu consists of the menu bar (displayed horizontally), first level
+ * menus (displayed vertically below the corresponding menu bar entry) and
+ * submenus (displayed vertically to the right of the corresponding parent
+ * menu entry).
+ */
+
+/** Menu size **/
+
+ul.menu { height: 2em; } /* Menu bar */
+
+/* All menu items */
+ul.menu a {
+	height: 2em;
+	line-height: 2em;
+	width: 10em;
+}
+
+
+
+
+
+/* Menu bar and menus */
+ul.menu, ul.menu ul {
+	padding: 0;
+	margin: 0;
+	list-style-image: none;
+	list-style-type: none;
+}
+
+
+/* Menus (first level menus and submenus) */
+ul.menu ul {
+	position: absolute;
+}
+
+/* First level menus */
+ul.menu > li > ul {
+	margin-left: -1px;
+	margin-top: 1px;
+}
+
+
+/* Menus are only shown when the mouse is over the parent menu entry */
+ul.menu li       > ul { display: none ; }
+ul.menu li:hover > ul { display: block; }
+
+/* IE7 closes the menu when the mouse pointer leaves the parent menu entry.
+ * This is a workaround for this problem. It is described just above
+ * http://de.selfhtml.org/css/layouts/navigationsleisten.htm#modern */
+*:first-child+html ul.menu ul { background-color:white; padding-bottom:1em; }
+
+
+/* Submenus */
+ul.menu ul ul {
+	margin-top: -2em;
+	margin-left: 10em;
+}
+
+
+
+
+/* All menu items (menu bar, first level menus and submenus) */
+ul.menu li {
+	margin: 0px;
+	padding: 0px;
+}
+/* All menu items */
+ul.menu a {
+	text-align: center;
+	display: block;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+/* Menu bar entries */
+ul.menu > li {
+	float: left;
+	border-right: 1px solid;
+}
+
+/* Menu items (first level and submenu) */
+ul.menu ul li {
+	border: 1px solid;
+	margin-top: -1px;
+}
+
+/* Submenu items */
+ul.menu ul ul li { }
+
+
+ul.menu ul li.children > a:after { content: "  "url(../images/black_arrow_bullet.png); }
+
+
+
+
+
+/*				
+						<li style="border: 0px solid red; float: left; height: 2em; line-height: 2em; width: 10em; text-align:center">
+						<a style="display:block; height:2em; line-height:2em; text-decoration:none; white-space:nowrap; width:10em;">
+				*/
+
 /************
- ** Colors **
+ ** Layout **
  ************/
 
 /* The body has a margin, that means, it's width is smaller than the window */
-body {
-	background-color: #def;
-	color: #333;
-	margin: 8px;
-}
+body { margin: 8px; }
 
 /* The width of the stretcher class is at least that of the body, but it can
  * grow if necessary. Note that a div that has the same width as the body and
@@ -15,10 +112,9 @@ body {
  * This is why we need the stretcher.
  */
 div.stretcher {
-	/*border: 1px solid red;/**/
 	float:left; /* Can grow larger than the body */
 	min-width: 100%;
-	/* may not have a padding */
+	padding:0px; /* May not have a padding */
 }
 
 /* The body is made up of divs (with a padding) each wrapped in a stretcher. We
@@ -26,30 +122,13 @@ div.stretcher {
  * stretcher; the margins of the stretchers also won't collapse because they
  * are floating (?).
  */
-div.stretcher+div.stretcher {
-	margin-top: 8px
-}
+div.stretcher+div.stretcher { margin-top: 8px }
 
+div.box { padding: 8px; }
 
-div.box {
-	background-color: #fff;
-	border: 1px solid #acf;
-	padding: 8px;
-}
+h2.page_title { margin-top: 8px; }
 
-div.box.footer {
-	font-size:x-small;
-}
-
-h2.page_title {
-	margin-top: 0px;
-}
-
-a         { color: #000; }
-a:visited { color: #666; }
-a:hover   { color: #fff; background-color:#333; }
-
-span.hidden_field { color: #BBB }
+div.box { border: 1px solid #acf; }
 
 
 /***********
@@ -61,14 +140,43 @@ body, p, ol, ul, td {
   font-size:   13px;
 }
 
+div.box.footer {
+	font-size:x-small;
+}
+
+
+/************
+ ** Colors **
+ ************/
+
+body {
+	background-color: #def;
+	color: #333;
+}
+
+div.box {
+	background-color: #fff;
+	border-color: #acf;
+}
+
+a         { color: #000; }
+a:visited { color: #666; }
+a:hover   { color: #fff; background-color:#333; }
+
+span.hidden_field { color: #BBB }
+
+/** Menus **/
+ul.menu         { background: #9bf; } /* Menu bar */
+ul.menu li      { background: #9bf; } /* All menu items (menu bar, first level menus and submenus) */
+ul.menu a:hover { background: #f00; }
+ul.menu > li  { border-right-color: white; } /* Menu bar entries */
+ul.menu ul li { border-color:       white; } /* Menu items (first level and submenu) */
+
+
 
 /******************************
  ** General settings/classes **
  ******************************/
-
-table { overflow:auto }
-
-th { text-align: left; }
 
 pre {
   background-color: #eee;
@@ -86,6 +194,8 @@ pre {
 /************
  ** Tables **
  ************/
+
+th { text-align: left; }
 
 /** Lists of objects (objects in rows) **/
 table.list { border-collapse: collapse }

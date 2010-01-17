@@ -6,7 +6,42 @@
 		<%= stylesheet_link_tag 'sk_web' %>
 	</head>
 
-		<% menu=["Hauptseite", "Flüge", "Personen", "Benutzer", "Sitzung"] %>
+	<%
+		menu=Menu.create(self)
+
+		menu.entry "Startseite", root_path
+		flights_menu = menu.entry "Flüge"
+		people_menu  = menu.entry "Personen"
+		users_menu   = menu.entry "Benutzer"
+		session_menu = menu.entry "Sitzung"
+
+		flights_menu.entry "Startliste", :controller => 'flightlist'
+		flights_menu.entry "Bordbücher", :controller => 'plane_log'
+		flights_menu.entry "Flugbuch", :controller => 'pilot_log'
+		flights_menu.entry "Flugdatenbank", :controller => 'flight_db'
+
+		people_menu.entry "Personenliste", people_path
+		people_menu.entry "Anlegen", new_person_path
+		people_menu.entry "Importieren", :controller => 'people', :action => 'import'
+		people_menu.entry "Exportieren", :controller => 'people', :action => 'export'
+
+		users_menu.entry "Benutzerliste", users_path
+		users_menu.entry "Anlegen", new_user_path
+
+		session_menu.entry "Passwort ändern", :controller => 'users', :action => 'change_own_password'
+		if session[:debug]
+			session_menu.entry "Diagnose aus", :controller=>'session', :action=>'settings', :debug=>'false'
+		else
+			session_menu.entry "Diagnose an", :controller=>'session', :action=>'settings', :debug=>'true'
+		end
+
+		if session[:username]
+			session_menu.entry "Abmelden", logout_path
+		else
+			session_menu.entry "Anmelden", login_path
+		end
+	%>
+
 
 	<body>
 		<div class="stretcher">
@@ -27,28 +62,16 @@
 		<div class="stretcher">
 			<div class="main box" style="padding: 0px">
 
-				<ul style="background-color: #acf; padding: 0px; margin: 0px; border: 0px solid green; height: 2em; list-style-image: none; list-style-type: none">
-					<% menu.each { |entry| %>
-						<li style="border: 0px solid red; float: left; height: 2em; line-height: 2em; width: 10em; text-align:center">
-						<a style="display:block; height:2em; line-height:2em; text-decoration:none; white-space:nowrap; width:10em;">
-								<%= h entry %>
-							</a>
-						</li>
-					<% } %>
-				</ul>
+				<%= render :partial=>'layouts/menu_entries', :locals=>{:menu=>menu, :css_class=>"menu"} %>
 
 				<div style="padding: 8px;">
 					<% if flash[:notice] %><p style="color: green"><%= flash[:notice] %></p><% end %>
 					<% if flash[:error]  %><p style="color: red"  ><%= flash[:error]  %></p><% end %>
 
 					<%= yield %>
-
 				</div>
-
-
 			</div><%# .main.box %>
 		</div>
-
 
 		<% config=Rails::Configuration.new %>
 		<div class="stretcher">
@@ -68,7 +91,6 @@
 				</div>
 			</div>
 		<% end %>
-		<!--</div>-->
 	</body>
 </html>
 

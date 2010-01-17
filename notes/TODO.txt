@@ -1,7 +1,7 @@
 Critical (before release):
 
 Layout/Style:
-* Menu at the top
+* Colors
 * heading("Foobar") do ... end, setting heading levels automatically
 
 

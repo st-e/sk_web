@@ -1,9 +1,11 @@
 New features:
   - Go to http://localhost:3000/pilot_log/today.html directly and log in
   - Pagination
+  - Works with IE (>=7)
 
 Changes:
   - "Personen importieren" statt "Stammdaten einspielen"
+
 
 Notes:
   - Database is latin1, everything else is utf8, but it still works. Where is

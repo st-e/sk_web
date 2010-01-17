@@ -1,0 +1,11 @@
+<% content_tag :ul, :class=>local_assigns[:css_class] do %>
+	<% menu.entries.each { |entry| %>
+		<% content_tag :li, :class=>("children" if !entry.entries.empty?) do %>
+			<%= content_tag :a, h(entry.text), :href=>entry.target %>
+			<% if !entry.entries.empty? %>
+				<%= render :partial=>'layouts/menu_entries', :locals=>{:menu=>entry} %>
+			<% end %>
+		<% end %>
+	<% } %>
+<% end %>
+
