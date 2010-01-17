@@ -6,7 +6,10 @@ class SessionController < ApplicationController
 	filter_parameter_logging :current_password, :password, :password_confirmation
 
 	def login
-		render and return if !request.post?
+		if !request.post?
+			@username=session[:last_username]
+			render and return
+		end
 
 		username=params[:username]
 		password=params[:password]
@@ -25,12 +28,15 @@ class SessionController < ApplicationController
 				render
 			end
 		else
+			@username=session[:last_username]
 			render
 		end
 	end
 
 	def logout
+		last_username=current_username
 		reset_session
+		session[:last_username]=last_username
 
 		flash[:notice]="Abgemeldet"
 		redirect_to root_path

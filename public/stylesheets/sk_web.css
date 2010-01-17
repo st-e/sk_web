@@ -113,13 +113,13 @@ div.stretcher {
  * stretcher; the margins of the stretchers also won't collapse because they
  * are floating (?).
  */
-div.stretcher+div.stretcher { margin-top: 8px }
-div.stretcher#main { margin-top: 0px; }
+div.stretcher { margin-bottom: 8px }
+div.stretcher.title { margin-bottom: 0px; }
 
 
 div.box { padding: 8px; }
 
-div#title h1 { margin: 0px; }
+div.title h1 { margin: 0px; }
 h2.page_title { margin-top: 8px; }
 
 div.box { border: 1px solid; }
@@ -134,7 +134,7 @@ body, p, ol, ul, td {
   font-size:   13px;
 }
 
-div.box#footer {
+div.box.footer {
 	font-size:x-small;
 }
 
@@ -153,9 +153,9 @@ div.box {
 	border-color: #acf;
 }
 
-#title { background-color: #7af; }
+div.title { background-color: #7af; }
 
-div.box#title div { color: black; }
+div.box.title div { color: black; }
 
 
 a         { color: #000; }
@@ -211,7 +211,7 @@ table.form th { white-space: nowrap }
 table.form td, table.form th  { vertical-align: top; }
 
 /** Objects (field name/value) **/
-table.object (td,td) { vertical-align: top; }
+table.object td,table.object th { vertical-align: top; }
 
 
 /************

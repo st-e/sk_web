@@ -12,21 +12,21 @@
 
 		<p>
 			Die wichtigsten Links:
-
-			<ul>
-				<li><%= link_to 'Startliste von heute', flightlist_path(:date=>'today', :format=>'pdf') %></li>
-				<li>
-					<%= link_to 'Bordbücher von heute', plane_log_path(:date=>'today', :format=>'html') %>
-					(<%= link_to 'als PDF', plane_log_path(:date=>'today', :format=>'pdf') %>)
-				</li>
-				<li>
-					<% today=Date.today %>
-					<%= link_to 'Persönliches Flugbuch der letzten Woche', pilot_log_path(:date=>"#{today-7.days}_#{today}", :format=>'html') %>
-
-					<% if !session[:username] %>(Anmeldung erforderlich)<% end %>
-				</li>
-			</ul>
 		</p>
+
+		<ul>
+			<li><%= link_to 'Startliste von heute', flightlist_path(:date=>'today', :format=>'pdf') %></li>
+			<li>
+				<%= link_to 'Bordbücher von heute', plane_log_path(:date=>'today', :format=>'html') %>
+				(<%= link_to 'als PDF', plane_log_path(:date=>'today', :format=>'pdf') %>)
+			</li>
+			<li>
+				<% today=Date.today %>
+				<%= link_to 'Persönliches Flugbuch der letzten Woche', pilot_log_path(:date=>"#{today-7.days}_#{today}", :format=>'html') %>
+
+				<% if !session[:username] %>(Anmeldung erforderlich)<% end %>
+			</li>
+		</ul>
 
 		<p>
 		Alle anderen Funktionen sind über das obige Menü zugänglich (gegebenenfalls ist eine Anmeldung erforderlich).
