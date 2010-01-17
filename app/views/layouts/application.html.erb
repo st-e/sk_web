@@ -44,10 +44,9 @@
 
 
 	<body>
-		<div class="stretcher">
-			<div class="title box">
+		<div class="stretcher" id="title">
+			<div class="box" id="title">
 				<div style="float:right">
-					<%= link_to "Hauptseite", root_path %> |
 					<% if session[:username] %>
 						Angemeldet als <%= h session[:username] %> (<%= link_to "Abmelden", logout_path %>)
 					<% else %>
@@ -59,8 +58,8 @@
 			</div>
 		</div>
 
-		<div class="stretcher">
-			<div class="main box" style="padding: 0px">
+		<div class="stretcher" id="main">
+			<div class="box" id="main" style="padding: 0px">
 
 				<%= render :partial=>'layouts/menu_entries', :locals=>{:menu=>menu, :css_class=>"menu"} %>
 
@@ -74,8 +73,8 @@
 		</div>
 
 		<% config=Rails::Configuration.new %>
-		<div class="stretcher">
-			<div class="footer box">
+		<div class="stretcher" id="footer">
+			<div class="box" id="footer">
 				Hauptflugbuch <%= h (Settings.instance.location || "") %> |
 				<%= h config.database_configuration[RAILS_ENV]["database"] %>@<%= config.database_configuration[RAILS_ENV]["host"] %> |
 				<%= h version_string %> in <%= h RAILS_ENV %> mode
@@ -83,8 +82,8 @@
 		</div>
 
 		<% if session[:debug] %>
-			<div class="stretcher">
-				<div class="debug box">
+			<div class="stretcher" id="debug">
+				<div class="box" id="debug">
 					<div>params=<%= h params.inspect %></div>
 					<div>session=<%= h session.inspect %></div>
 					<div><%= link_to "Deaktivieren", :controller=>'session', :action=>'settings', :debug=>'false' %></div>

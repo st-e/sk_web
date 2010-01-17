@@ -1,9 +1,5 @@
 Critical (before release):
 
-Layout/Style:
-* Colors
-
-
 Major (important changes):
 * overwrite_select: removal of person collides with pagination
 * Import people: need to do 'dry run' to detect errors, e. g. club ID already

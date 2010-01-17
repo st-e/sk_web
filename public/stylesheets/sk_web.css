@@ -16,9 +16,6 @@ ul.menu a {
 }
 
 
-
-
-
 /* Menu bar and menus */
 ul.menu, ul.menu ul {
 	padding: 0;
@@ -81,7 +78,7 @@ ul.menu > li {
 /* Menu items (first level and submenu) */
 ul.menu ul li {
 	border: 1px solid;
-	margin-top: -1px;
+	margin-top: -1px; /* Compensate non-collapsing border and make sure there is no gap between the menu bar and the first menu item */
 }
 
 /* Submenu items */
@@ -108,6 +105,7 @@ div.stretcher {
 	float:left; /* Can grow larger than the body */
 	min-width: 100%;
 	padding:0px; /* May not have a padding */
+	margin-right: 8px;
 }
 
 /* The body is made up of divs (with a padding) each wrapped in a stretcher. We
@@ -116,13 +114,15 @@ div.stretcher {
  * are floating (?).
  */
 div.stretcher+div.stretcher { margin-top: 8px }
+div.stretcher#main { margin-top: 0px; }
+
 
 div.box { padding: 8px; }
 
-div.title h1 { margin: 0px; }
+div#title h1 { margin: 0px; }
 h2.page_title { margin-top: 8px; }
 
-div.box { border: 1px solid #acf; }
+div.box { border: 1px solid; }
 
 
 /***********
@@ -134,7 +134,7 @@ body, p, ol, ul, td {
   font-size:   13px;
 }
 
-div.box.footer {
+div.box#footer {
 	font-size:x-small;
 }
 
@@ -153,6 +153,11 @@ div.box {
 	border-color: #acf;
 }
 
+#title { background-color: #7af; }
+
+div.box#title div { color: black; }
+
+
 a         { color: #000; }
 a:visited { color: #666; }
 a:hover   { color: #fff; background-color:#333; }
@@ -160,10 +165,10 @@ a:hover   { color: #fff; background-color:#333; }
 span.hidden_field { color: #BBB }
 
 /** Menus **/
-ul.menu         { background: #9bf; } /* Menu bar */
-ul.menu li      { background: #9bf; } /* All menu items (menu bar, first level menus and submenus) */
-ul.menu a:hover { background: #f00; }
-ul.menu > li  { border-right-color: white; } /* Menu bar entries */
+ul.menu         { background: #acf; } /* Menu bar */
+ul.menu li      { background: #acf; } /* All menu items (menu bar, first level menus and submenus) */
+ul.menu a:hover { background: #def; color: black; }
+ul.menu > li  { border-right-color: #def; } /* Menu bar entries */
 ul.menu ul li { border-color:       white; } /* Menu items (first level and submenu) */
 
 
