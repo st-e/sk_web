@@ -92,13 +92,6 @@ ul.menu ul li.children > a:after { content: "  "url(../images/black_arrow_bullet
 
 
 
-
-
-/*				
-						<li style="border: 0px solid red; float: left; height: 2em; line-height: 2em; width: 10em; text-align:center">
-						<a style="display:block; height:2em; line-height:2em; text-decoration:none; white-space:nowrap; width:10em;">
-				*/
-
 /************
  ** Layout **
  ************/
@@ -300,4 +293,13 @@ div.pagination .current { border-color: #3C3; }
 
 div.pagination input:hover { color: #fff; background-color: #333; }
 div.pagination a:hover     { color: #fff; background-color: #333; }
+
+/**********
+ ** Logo **
+ **********/
+
+div.logo pre {
+	font-size: small;
+	background-color: white;
+}
 
