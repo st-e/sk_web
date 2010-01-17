@@ -123,15 +123,15 @@ class Flight < ActiveRecord::Base
 	end
 
 	def started?
-		status & STATUS_STARTED
+		(status & STATUS_STARTED)!=0
 	end
 
 	def landed?
-		status & STATUS_LANDED
+		(status & STATUS_LANDED)!=0
 	end
 
 	def towflight_landed?
-		status & STATUS_TOWPLANE_LANDED
+		(status & STATUS_TOWPLANE_LANDED)!=0
 	end
 
 	def set_status(started, landed, towflight_landed)

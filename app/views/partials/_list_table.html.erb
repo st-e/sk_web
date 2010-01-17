@@ -1,15 +1,17 @@
-<table class="list">
-	<tr class="header">
-		<% table[:columns].reject { |column| column[:title]==nil }.each { |column| %>
-			<th><nobr><%= h column[:title] %></nobr></th>
-		<% } %>
-	</tr>
-	<% table[:rows].each_with_index { |row, index| %>
-		<tr class="<%= "data#{index%2}" %>">
-			<% row.each { |column| %>
-				<td><nobr><%= h (column || "-") %></nobr></td>
+<%#div style="overflow: auto"%>
+	<table class="list">
+		<tr class="header">
+			<% table[:columns].reject { |column| column[:title]==nil }.each { |column| %>
+				<th><nobr><%= h column[:title] %></nobr></th>
 			<% } %>
 		</tr>
-	<% } %>
-</table>
+		<% table[:rows].each_with_index { |row, index| %>
+			<tr class="<%= "data#{index%2}" %>">
+				<% row.each { |column| %>
+					<td><nobr><%= h (column || "-") %></nobr></td>
+				<% } %>
+			</tr>
+		<% } %>
+	</table>
+<%#/div%>
 

@@ -2,7 +2,48 @@
  ** Colors **
  ************/
 
-body { background-color: #fff; color: #333; }
+/* The body has a margin, that means, it's width is smaller than the window */
+body {
+	background-color: #def;
+	color: #333;
+	margin: 8px;
+}
+
+/* The width of the stretcher class is at least that of the body, but it can
+ * grow if necessary. Note that a div that has the same width as the body and
+ * has a padding will be too large (we want div.(width+padding)=body.width).
+ * This is why we need the stretcher.
+ */
+div.stretcher {
+	/*border: 1px solid red;/**/
+	float:left; /* Can grow larger than the body */
+	min-width: 100%;
+	/* may not have a padding */
+}
+
+/* The body is made up of divs (with a padding) each wrapped in a stretcher. We
+ * cannot collapse the margins of the boxes because they are wrapped in a
+ * stretcher; the margins of the stretchers also won't collapse because they
+ * are floating (?).
+ */
+div.stretcher+div.stretcher {
+	margin-top: 8px
+}
+
+
+div.box {
+	background-color: #fff;
+	border: 1px solid #acf;
+	padding: 8px;
+}
+
+div.box.footer {
+	font-size:x-small;
+}
+
+h2.page_title {
+	margin-top: 0px;
+}
 
 a         { color: #000; }
 a:visited { color: #666; }
@@ -24,6 +65,8 @@ body, p, ol, ul, td {
 /******************************
  ** General settings/classes **
  ******************************/
+
+table { overflow:auto }
 
 th { text-align: left; }
 
@@ -113,8 +156,9 @@ table.object (td,td) { vertical-align: top; }
  */
 
 /* Options for the pagination list */
+/*div.pagination { padding-top: 4px; padding-bottom: 4px }*/
+div.pagination { margin: 8px 0px; }
 
-div.pagination { padding-top: 4px; padding-bottom: 4px }
 /* Common options for all pagination elements */
 div.pagination a, div.pagination span, div.pagination input {
 	font-size: 13px;

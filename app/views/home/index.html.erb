@@ -1,5 +1,27 @@
-<%= page_title "Startkladde: Hauptmenü" %>
+<%= page_title "Hauptseite" %>
 
+<p>
+	Willkommen im Web-Zugang der Startkladde am Flugplatz <%= h Settings.instance.location %>!
+</p>
+
+<p>
+	Die wichtigsten Links:
+
+	<ul>
+		<li><%= link_to 'Startliste von heute', flightlist_path(:date=>'today', :format=>'pdf') %></li>
+		<li>
+			<%= link_to 'Bordbücher von heute', plane_log_path(:date=>'today', :format=>'html') %>
+			(<%= link_to 'als PDF', plane_log_path(:date=>'today', :format=>'pdf') %>)
+		</li>
+		<li>
+			<% today=Date.today %>
+			<%= link_to 'Persönliches Flugbuch der letzten Woche', pilot_log_path(:date=>"#{today-7.days}_#{today}", :format=>'html') %>
+
+			<% if !session[:username] %>(Anmeldung erforderlich)<% end %>
+		</li>
+	</ul>
+
+	<p>Das Menü wird nach oben verlegt werden:</p>
 <ul>
   <li>Flüge
     <ul>

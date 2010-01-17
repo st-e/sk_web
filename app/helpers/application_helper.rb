@@ -55,7 +55,7 @@ module ApplicationHelper
 		content_for :title do
 			title
 		end
-		"<h1>#{title}</h1>"
+		"<h2 class=\"page_title\">#{title}</h2>"
 	end
 
 

@@ -2,6 +2,7 @@ Critical (before release):
 
 Layout/Style:
 * Menu at the top
+* heading("Foobar") do ... end, setting heading levels automatically
 
 
 Major (important changes):
@@ -53,6 +54,7 @@ Major (important changes):
   user[person], additionally new_person
 * subform: better controller subdivision; maybe store person under edit in
   session (but allow multiple!)
+* use thead and tbody for tables
 
 Minor (less important changes or much work):
 * style: size of buttons and links is not the same for pagination

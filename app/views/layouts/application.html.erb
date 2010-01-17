@@ -2,38 +2,73 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<title><%= yield :title %></title>
+		<title>Startkladde <%= h Settings.instance.location %> - <%= yield :title %></title>
 		<%= stylesheet_link_tag 'sk_web' %>
 	</head>
 
+		<% menu=["Hauptseite", "Flüge", "Personen", "Benutzer", "Sitzung"] %>
+
 	<body>
-		<% if flash[:notice] %><p style="color: green"><%= flash[:notice] %></p><% end %>
-		<% if flash[:error]  %><p style="color: red"  ><%= flash[:error]  %></p><% end %>
+		<div class="stretcher">
+			<div class="title box">
+				<div style="float:right">
+					<%= link_to "Hauptseite", root_path %> |
+					<% if session[:username] %>
+						Angemeldet als <%= h session[:username] %> (<%= link_to "Abmelden", logout_path %>)
+					<% else %>
+						Nicht angemeldet (<%= link_to "Anmelden", login_path %>)
+					<% end %>
+				</div>
 
-		<%= yield %>
-
-		<hr />
-
-		<div>
-			<%= link_to "Hauptmenü", root_path %> |
-			<% if session[:username] %>
-				Angemeldet als <%= h session[:username] %> (<%= link_to "Abmelden", logout_path %>)
-			<% else %>
-				Nicht angemeldet (<%= link_to "Anmelden", login_path %>)
-			<% end %>
+				<h1 style="margin: 0px">Startkladde <%= h Settings.instance.location %></h1>
+			</div>
 		</div>
 
-		<div style="font-size:x-small">
-			Hauptflugbuch <%= h (Settings.instance.location || "") %> |
-			<%= h version_string %> in <%= h RAILS_ENV %> mode
+		<div class="stretcher">
+			<div class="main box" style="padding: 0px">
+
+				<ul style="background-color: #acf; padding: 0px; margin: 0px; border: 0px solid green; height: 2em; list-style-image: none; list-style-type: none">
+					<% menu.each { |entry| %>
+						<li style="border: 0px solid red; float: left; height: 2em; line-height: 2em; width: 10em; text-align:center">
+						<a style="display:block; height:2em; line-height:2em; text-decoration:none; white-space:nowrap; width:10em;">
+								<%= h entry %>
+							</a>
+						</li>
+					<% } %>
+				</ul>
+
+				<div style="padding: 8px;">
+					<% if flash[:notice] %><p style="color: green"><%= flash[:notice] %></p><% end %>
+					<% if flash[:error]  %><p style="color: red"  ><%= flash[:error]  %></p><% end %>
+
+					<%= yield %>
+
+				</div>
+
+
+			</div><%# .main.box %>
+		</div>
+
+
+		<% config=Rails::Configuration.new %>
+		<div class="stretcher">
+			<div class="footer box">
+				Hauptflugbuch <%= h (Settings.instance.location || "") %> |
+				<%= h config.database_configuration[RAILS_ENV]["database"] %>@<%= config.database_configuration[RAILS_ENV]["host"] %> |
+				<%= h version_string %> in <%= h RAILS_ENV %> mode
+			</div>
 		</div>
 
 		<% if session[:debug] %>
-			<hr/>
-			<div>params=<%= h params.inspect %></div>
-			<div>session=<%= h session.inspect %></div>
+			<div class="stretcher">
+				<div class="debug box">
+					<div>params=<%= h params.inspect %></div>
+					<div>session=<%= h session.inspect %></div>
+					<div><%= link_to "Deaktivieren", :controller=>'session', :action=>'settings', :debug=>'false' %></div>
+				</div>
+			</div>
 		<% end %>
-
+		<!--</div>-->
 	</body>
 </html>
 
