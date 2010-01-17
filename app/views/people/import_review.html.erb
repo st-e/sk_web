@@ -1,134 +1,139 @@
-<%= page_title "Personen importieren" %>
+<% page_title "Personen importieren" do %>
 
-<%
-	new_people_entries       =@import_data.entries.select { |entry| entry.new? }
-	updated_people_entries   =@import_data.entries-new_people_entries
+	<%
+		new_people_entries       =@import_data.entries.select { |entry| entry.new? }
+		updated_people_entries   =@import_data.entries-new_people_entries
 
-	changed_people_entries   =updated_people_entries.select { |entry| entry.changed? }
-	unchanged_people_entries =updated_people_entries-changed_people_entries
-%>
+		changed_people_entries   =updated_people_entries.select { |entry| entry.changed? }
+		unchanged_people_entries =updated_people_entries-changed_people_entries
+	%>
 
-<p>Es wurden <%= h @import_data.entries.size %> Personen aus der Datei <%=
-@import_data.original_filename %> gelesen. Bitte die Personen überprüfen:</p>
+	<p>Es wurden <%= h @import_data.entries.size %> Personen aus der Datei <%=
+	@import_data.original_filename %> gelesen. Bitte die Personen überprüfen:</p>
 
-<% unless new_people_entries.empty? %>
-	<h2>Neue Personen</h2>
+	<% unless new_people_entries.empty? %>
+		<% heading h "Neue Personen" do %>
+			<p>Die folgenden Personen werden neu angelegt:</p>
 
-	<p>Die folgenden Personen werden neu angelegt:</p>
+			<p>
+			<%# Note that for new people, the old club ID is always blank %>
+			<% table_for(new_people_entries) { |table| %>
+				<% table.header_row { |header| %>
+					<%= header.text "Nachname"        %>
+					<%= header.text "Vorname"         %>
+					<%= header.text "Verein"          %>
+					<%= header.text "Bemerkung"       %>
+					<%= header.text "Vereins-ID"      %>
+				<% } %>
 
-	<p>
-		<%# Note that for new people, the old club ID is always blank %>
-		<% table_for(new_people_entries) { |table| %>
-			<% table.header_row { |header| %>
-				<%= header.text "Nachname"        %>
-				<%= header.text "Vorname"         %>
-				<%= header.text "Verein"          %>
-				<%= header.text "Bemerkung"       %>
-				<%= header.text "Vereins-ID"      %>
+				<% table.body { |body, entry| %>
+					<%= body.text entry.last_name   %>
+					<%= body.text entry.first_name  %>
+					<%= body.text entry.club        %>
+					<%= body.text entry.comments    %>
+					<%= body.text entry.club_id     %>
+				<% } %>
 			<% } %>
+			</p>
+		<% end %>
+	<% end %>
 
-			<% table.body { |body, entry| %>
-				<%= body.text entry.last_name   %>
-				<%= body.text entry.first_name  %>
-				<%= body.text entry.club        %>
-				<%= body.text entry.comments    %>
-				<%= body.text entry.club_id     %>
+	<% unless changed_people_entries.empty? %>
+		<% heading h "Geänderte Personen" do %>
+
+			<p>Die folgenden Personen werden geändert:</p>
+
+			<p>
+			<% table_for(changed_people_entries) { |table| %>
+				<% table.header_row { |header| %>
+					<%= header.text "Neu", :colspan=>4 %>
+					<%= header.text "Alt", :colspan=>5 %>
+				<% } %>
+
+				<% table.header_row { |header| %>
+					<%= header.text "Nachname"        %>
+					<%= header.text "Vorname"         %>
+					<%= header.text "Bemerkung"       %>
+					<%= header.text "Vereins-ID"      %>
+
+					<%= header.text "ID"              %>
+					<%= header.text "Nachname"        %>
+					<%= header.text "Vorname"         %>
+					<%= header.text "Bemerkung"       %>
+					<%= header.text "Vereins-ID"      %>
+
+					<%= header.text "Verein"          %>
+				<% } %>
+
+				<% table.body { |body, entry| %>
+					<% person=Person.find(entry.id, :readonly=>true) %>
+
+					<%= body.text entry.last_name   %>
+					<%= body.text entry.first_name  %>
+					<%= body.text entry.comments    %>
+					<%= body.text entry.club_id     %>
+
+					<%= body.text person.id          %>
+					<%= body.text person.last_name   %>
+					<%= body.text person.first_name  %>
+					<%= body.text person.comments    %>
+					<%= body.text person.club_id     %>
+
+					<%= body.text person.club        %>
+				<% } %>
 			<% } %>
-		<% } %>
-	</p>
+			</p>
+		<% end %>
+	<% end %>
+
+	<% unless unchanged_people_entries.empty? %>
+		<% heading h "Unveränderte Personen" do %>
+
+			<p>Die folgenden Personen werden nicht geändert:</p>
+
+			<p>
+			<% table_for(unchanged_people_entries) { |table| %>
+				<% table.header_row { |header| %>
+					<%= header.text "ID"              %>
+					<%= header.text "Nachname"        %>
+					<%= header.text "Vorname"         %>
+					<%= header.text "Bemerkung"       %>
+					<%= header.text "Vereins-ID"      %>
+
+					<%= header.text "Verein"          %>
+				<% } %>
+
+				<% table.body { |body, entry| %>
+					<% person=Person.find(entry.id, :readonly=>true) %>
+
+					<%= body.text person.id          %>
+					<%= body.text person.last_name   %>
+					<%= body.text person.first_name  %>
+					<%= body.text person.comments    %>
+					<%= body.text person.club_id     %>
+
+					<%= body.text person.club        %>
+				<% } %>
+			<% } %>
+			</p>
+		<% end %>
+	<% end %>
+
+	<% heading h "OK?" do %>
+
+		<% form_tag 'import' do %>
+			<%= hidden_field_tag 'confirm', 'true' %>
+			<%= hidden_field_tag 'import_data_filename', @import_data_filename %>
+			<p>
+			<%= submit_tag "OK" %>
+			<%= submit_tag "Abbrechen", :name=>'cancel' %>
+			</p>
+		<% end %>
+
+		<p>
+		<%= link_to 'Personenliste', people_path %>
+		</p>
+	<% end %>
+
 <% end %>
-
-<% unless changed_people_entries.empty? %>
-	<h2>Geänderte Personen</h2>
-
-	<p>Die folgenden Personen werden geändert:</p>
-
-	<p>
-		<% table_for(changed_people_entries) { |table| %>
-			<% table.header_row { |header| %>
-				<%= header.text "Neu", :colspan=>4 %>
-				<%= header.text "Alt", :colspan=>5 %>
-			<% } %>
-
-			<% table.header_row { |header| %>
-				<%= header.text "Nachname"        %>
-				<%= header.text "Vorname"         %>
-				<%= header.text "Bemerkung"       %>
-				<%= header.text "Vereins-ID"      %>
-
-				<%= header.text "ID"              %>
-				<%= header.text "Nachname"        %>
-				<%= header.text "Vorname"         %>
-				<%= header.text "Bemerkung"       %>
-				<%= header.text "Vereins-ID"      %>
-
-				<%= header.text "Verein"          %>
-			<% } %>
-
-			<% table.body { |body, entry| %>
-				<% person=Person.find(entry.id, :readonly=>true) %>
-
-				<%= body.text entry.last_name   %>
-				<%= body.text entry.first_name  %>
-				<%= body.text entry.comments    %>
-				<%= body.text entry.club_id     %>
-
-				<%= body.text person.id          %>
-				<%= body.text person.last_name   %>
-				<%= body.text person.first_name  %>
-				<%= body.text person.comments    %>
-				<%= body.text person.club_id     %>
-
-				<%= body.text person.club        %>
-			<% } %>
-		<% } %>
-	</p>
-<% end %>
-
-<% unless unchanged_people_entries.empty? %>
-	<h2>Unveränderte Personen</h2>
-
-	<p>Die folgenden Personen werden nicht geändert:</p>
-
-	<p>
-		<% table_for(unchanged_people_entries) { |table| %>
-			<% table.header_row { |header| %>
-				<%= header.text "ID"              %>
-				<%= header.text "Nachname"        %>
-				<%= header.text "Vorname"         %>
-				<%= header.text "Bemerkung"       %>
-				<%= header.text "Vereins-ID"      %>
-
-				<%= header.text "Verein"          %>
-			<% } %>
-
-			<% table.body { |body, entry| %>
-				<% person=Person.find(entry.id, :readonly=>true) %>
-
-				<%= body.text person.id          %>
-				<%= body.text person.last_name   %>
-				<%= body.text person.first_name  %>
-				<%= body.text person.comments    %>
-				<%= body.text person.club_id     %>
-
-				<%= body.text person.club        %>
-			<% } %>
-		<% } %>
-	</p>
-<% end %>
-
-<h2>OK?</h2>
-
-<% form_tag 'import' do %>
-	<%= hidden_field_tag 'confirm', 'true' %>
-	<%= hidden_field_tag 'import_data_filename', @import_data_filename %>
-	<p>
-		<%= submit_tag "OK" %>
-		<%= submit_tag "Abbrechen", :name=>'cancel' %>
-	</p>
-<% end %>
-
-<p>
-	<%= link_to 'Personenliste', people_path %>
-</p>
 

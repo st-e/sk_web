@@ -1,35 +1,37 @@
-<%= page_title "Person anlegen" %>
+<% page_title "Person anlegen" do %>
 
-<% form_for(@person) do |f| %>
-	<%= f.error_messages %>
+	<% form_for(@person) do |f| %>
+		<%= f.error_messages %>
 
-	<table class="form">
-		<tr>
-			<th><%= f.label :nachname %>:</th>
-			<td><%= f.text_field :nachname %></td>
-		</tr>
-		<tr>
-			<th><%= f.label :vorname %>:</th>
-			<td><%= f.text_field :vorname %></td>
-		</tr>
-		<tr>
-			<th><%= f.label :verein %>:</th>
-			<td><%= f.text_field :verein %></td>
-		</tr>
-		<tr>
-			<th><%= f.label :vereins_id, "Vereins-ID" %>:</th>
-			<td><%= f.text_field :vereins_id %></td>
-		</tr>
-		<tr>
-			<th><%= f.label :bemerkung %>:</th>
-			<td><%= f.text_field :bemerkung %></td>
-		</tr>
-	</table>
+		<table class="form">
+			<tr>
+				<th><%= f.label :nachname %>:</th>
+				<td><%= f.text_field :nachname %></td>
+			</tr>
+			<tr>
+				<th><%= f.label :vorname %>:</th>
+				<td><%= f.text_field :vorname %></td>
+			</tr>
+			<tr>
+				<th><%= f.label :verein %>:</th>
+				<td><%= f.text_field :verein %></td>
+			</tr>
+			<tr>
+				<th><%= f.label :vereins_id, "Vereins-ID" %>:</th>
+				<td><%= f.text_field :vereins_id %></td>
+			</tr>
+			<tr>
+				<th><%= f.label :bemerkung %>:</th>
+				<td><%= f.text_field :bemerkung %></td>
+			</tr>
+		</table>
 
-	<p><%= f.submit 'Anlegen' %></p>
-<% end %>
+		<p><%= f.submit 'Anlegen' %></p>
+	<% end %>
 
-<p>
+	<p>
 	<%= link_to 'Personenliste', people_path %>
-</p>
+	</p>
+
+<% end %>
 

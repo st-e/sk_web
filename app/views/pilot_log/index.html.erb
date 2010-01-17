@@ -1,25 +1,27 @@
-<%= page_title "Flugbuch für #{h @person.full_name}" %>
+<% page_title "Flugbuch für #{h @person.full_name}" do %>
 
-<% form_tag do %>
-	<table class="form">
-		<%= render :partial=>'partials/date_fields', :locals=>{ :enable_range=>true } %>
-		<tr>
-			<th>Format:</th>
-			<td><%= select_tag('format', options_for_select(@formats, @format)) %></td>
-		</tr>
-		<tr>
-			<th>Fluglehrermodus:</th>
-			<td>
-				<%= radio_button_tag 'flight_instructor_mode', 'no',    true %>Nein (Nur Flüge als Pilot anzeigen)<br/>
-				<%= radio_button_tag 'flight_instructor_mode', 'strict'      %>Streng (Auch Schulflüge als Passagier anzeigen)<br/>
-				<%= radio_button_tag 'flight_instructor_mode', 'loose'       %>Locker (Alle Flüge als Passagier anzeigen)<br/>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="5">
-			  <%= submit_tag 'Abrufen' %>
-			</td>
-		</tr>
-	</table>
+	<% form_tag do %>
+		<table class="form">
+			<%= render :partial=>'partials/date_fields', :locals=>{ :enable_range=>true } %>
+			<tr>
+				<th>Format:</th>
+				<td><%= select_tag('format', options_for_select(@formats, @format)) %></td>
+			</tr>
+			<tr>
+				<th>Fluglehrermodus:</th>
+				<td>
+					<%= radio_button_tag 'flight_instructor_mode', 'no',    true %>Nein (Nur Flüge als Pilot anzeigen)<br/>
+					<%= radio_button_tag 'flight_instructor_mode', 'strict'      %>Streng (Auch Schulflüge als Passagier anzeigen)<br/>
+					<%= radio_button_tag 'flight_instructor_mode', 'loose'       %>Locker (Alle Flüge als Passagier anzeigen)<br/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="5">
+					<%= submit_tag 'Abrufen' %>
+				</td>
+			</tr>
+		</table>
+	<% end %>
+
 <% end %>
 

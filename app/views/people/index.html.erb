@@ -1,4 +1,4 @@
-<%= page_title "Personen" %>
+<% page_title "Personen" do %>
 
 <p><%= @people.page_info 'Person', 'Personen' %></p>
 
@@ -38,4 +38,6 @@
 	<%= link_to 'Personen importieren', import_people_path %>
 	<%#= link_to 'Unbenutzte Personen löschen', delete_unused_people_path, :confirm => 'Wirklich alle unbenutzten Personen löschen?', :method => :post %>
 </p>
+
+<% end %>
 

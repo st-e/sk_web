@@ -1,16 +1,18 @@
-<%= page_title "Bordbücher für #{h Settings.instance.location}" %>
+<% page_title "Bordbücher für #{h Settings.instance.location}" do %>
 
-<p><%= render :partial=>'partials/date_range', :locals=>{:date_range=>@date_range} %></p>
+	<p><%= render :partial=>'partials/date_range', :locals=>{:date_range=>@date_range} %></p>
 
-<% if @plane_log.empty? %>
-	<p>Keine Einträge</p>
-<% else %>
-	<% @plane_log.keys.sort.each { |club| %>
-		<% entries=@plane_log[club] %>
+	<% if @plane_log.empty? %>
+		<p>Keine Einträge</p>
+	<% else %>
+		<% @plane_log.keys.sort.each { |club| %>
+			<% entries=@plane_log[club] %>
 
-		<h2><%= h club %></h2>
+			<% heading h club do %>
+				<%= render :partial => 'partials/list_table', :locals => { :table => @tables[club] } %>
+			<% end %>
+		<% } %>
+	<% end %>
 
-		<%= render :partial => 'partials/list_table', :locals => { :table => @tables[club] } %>
-	<% } %>
 <% end %>
 

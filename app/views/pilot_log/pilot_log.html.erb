@@ -1,12 +1,14 @@
-<%= page_title "Flugbuch für #{h @person.full_name}" %>
+<% page_title "Flugbuch für #{h @person.full_name}" do %>
 
-<p>
-	<%= render :partial=>'partials/date_range', :locals=>{:date_range=>@date_range} %>
-	&mdash;
-	<%= render :partial=>'partials/flight_count', :locals=>{:num_flights=>@flights.size} %>
-</p>
+	<p>
+		<%= render :partial=>'partials/date_range', :locals=>{:date_range=>@date_range} %>
+		&mdash;
+		<%= render :partial=>'partials/flight_count', :locals=>{:num_flights=>@flights.size} %>
+	</p>
 
-<% if !@flights.empty? %>
-	<%= render :partial => 'partials/list_table', :locals => { :table => @table } %>
+	<% if !@flights.empty? %>
+		<%= render :partial => 'partials/list_table', :locals => { :table => @table } %>
+	<% end %>
+
 <% end %>
 

@@ -1,17 +1,19 @@
-<%= page_title "Bordbücher" %>
+<% page_title "Bordbücher" do %>
 
-<% form_tag do %>
-	<table class="form">
-		<%= render :partial=>'partials/date_fields' %>
-		<tr>
-			<th>Format:</th>
-			<td><%= select_tag('format', options_for_select(@formats, @format)) %></td>
-		</tr>
-		<tr>
-			<td colspan="5">
-			  <%= submit_tag 'Abrufen' %>
-			</td>
-		</tr>
-	</table>
+	<% form_tag do %>
+		<table class="form">
+			<%= render :partial=>'partials/date_fields' %>
+			<tr>
+				<th>Format:</th>
+				<td><%= select_tag('format', options_for_select(@formats, @format)) %></td>
+			</tr>
+			<tr>
+				<td colspan="5">
+					<%= submit_tag 'Abrufen' %>
+				</td>
+			</tr>
+		</table>
+	<% end %>
+
 <% end %>
 

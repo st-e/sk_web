@@ -1,21 +1,23 @@
-<%= page_title "Startliste" %>
+<% page_title "Startliste" do %>
 
-<% form_tag do %>
-	<table class="form">
-		<%= render :partial=>'partials/date_fields' %>
-		<% if @formats.size>1 %>
+	<% form_tag do %>
+		<table class="form">
+			<%= render :partial=>'partials/date_fields' %>
+			<% if @formats.size>1 %>
+				<tr>
+					<th>Format:</th>
+					<td><%= select_tag('format', options_for_select(@formats, @format)) %></td>
+				</tr>
+			<% else %>
+				<%= hidden_field_tag 'format', @format %>
+			<% end %>
 			<tr>
-				<th>Format:</th>
-				<td><%= select_tag('format', options_for_select(@formats, @format)) %></td>
+				<td colspan="5">
+					<%= submit_tag 'Abrufen' %>
+				</td>
 			</tr>
-		<% else %>
-			<%= hidden_field_tag 'format', @format %>
-		<% end %>
-		<tr>
-			<td colspan="5">
-			  <%= submit_tag 'Abrufen' %>
-			</td>
-		</tr>
-	</table>
+		</table>
+	<% end %>
+
 <% end %>
 

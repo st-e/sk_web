@@ -1,39 +1,41 @@
-<%= page_title "Benutzer: #{h @user.username}" %>
+<% page_title "Benutzer: #{h @user.username}" do %>
 
-<% person=@user.associated_person %>
+	<% person=@user.associated_person %>
 
-<table class="object">
-	<tr>
-		<th>Benutzername:</th>
-		<td><%= h @user.username %></td>
-	</tr>
-	<tr>
-		<th>Verein:</th>
-		<td><%= h @user.club %></td>
-	</tr>
-	<tr>
-		<th>Person:</th>
-		<td>
-			<% if person %>
-				<%= link_to "#{person.formal_name} (#{person.id})", person %>
-			<% else %>
-				-
-			<% end %>
-		</td>
-	</tr>
-	<tr>
-		<th>Vereinsadministrator:</th>
-		<td><%= h yesno(@user.perm_club_admin) %></td>
-	</tr>
-	<tr>
-		<th>Flugdatenbank lesen:</th>
-		<td><%= h yesno(@user.perm_read_flight_db) %></td>
-	</tr>
-</table>
+	<table class="object">
+		<tr>
+			<th>Benutzername:</th>
+			<td><%= h @user.username %></td>
+		</tr>
+		<tr>
+			<th>Verein:</th>
+			<td><%= h @user.club %></td>
+		</tr>
+		<tr>
+			<th>Person:</th>
+			<td>
+				<% if person %>
+					<%= link_to "#{person.formal_name} (#{person.id})", person %>
+				<% else %>
+					-
+				<% end %>
+			</td>
+		</tr>
+		<tr>
+			<th>Vereinsadministrator:</th>
+			<td><%= h yesno(@user.perm_club_admin) %></td>
+		</tr>
+		<tr>
+			<th>Flugdatenbank lesen:</th>
+			<td><%= h yesno(@user.perm_read_flight_db) %></td>
+		</tr>
+	</table>
 
-<p>
+	<p>
 	<%= link_to 'Editieren', edit_user_path(@user) %> |
 	<%= link_to 'Passwort ändern', :action => 'change_password', :id => @user.username %> |
 	<%= link_to 'Benutzerliste', users_path %>
-</p>
+	</p>
+
+<% end %>
 

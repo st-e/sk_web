@@ -1,38 +1,45 @@
-<%= page_title "Person #{h @wrong_person.full_name} überschreiben" %>
+<% page_title "Person #{h @wrong_person.full_name} überschreiben" do %>
 
-<h2>Falsche Person</h2>
+	<% heading h "Falsche Person" do %>
 
-<p>Die folgende (falsche) Person wird überschrieben:</p>
-<%= render :partial => 'person', :locals => { :person=>@wrong_person } %>
+		<p>Die folgende (falsche) Person wird überschrieben:</p>
+		<%= render :partial => 'person', :locals => { :person=>@wrong_person } %>
+
+	<% end %>
 
 
-<h2>Korrekte Person</h2>
+	<% heading h "Korrekte Person" do %>
 
-<p>Die obige Person wird durch die folgende (korrekte) Person überschrieben:</p>
-<%= render :partial => 'person', :locals => { :person=>@correct_person } %>
+		<p>Die obige Person wird durch die folgende (korrekte) Person überschrieben:</p>
+		<%= render :partial => 'person', :locals => { :person=>@correct_person } %>
 
-<h2>OK?</h2>
+	<% end %>
 
-<%# The table is required because the buttons are in different forms, but
-should be on the same line. %>
+	<% heading h "OK?" do %>
 
-<table class="form"><tr>
-<% form_tag do %>
-	<%= hidden_field_tag 'id'               , @wrong_person.id   %>
-	<%= hidden_field_tag 'correct_person_id', @correct_person.id %>
-	<%= hidden_field_tag 'confirm'          , 'true'             %>
+		<%# The table is required because the buttons are in different forms, but
+		should be on the same line. %>
 
-	<td><%= submit_tag 'Überschreiben' %></td>
+		<table class="form"><tr>
+				<% form_tag do %>
+					<%= hidden_field_tag 'id'               , @wrong_person.id   %>
+					<%= hidden_field_tag 'correct_person_id', @correct_person.id %>
+					<%= hidden_field_tag 'confirm'          , 'true'             %>
+
+					<td><%= submit_tag 'Überschreiben' %></td>
+				<% end %>
+
+				<% form_tag do %>
+					<%= hidden_field_tag 'id'               , @wrong_person.id   %>
+
+					<td><%= submit_tag 'Neu auswählen' %></td>
+				<% end %>
+		</tr></table>
+
+		<p>
+		<%= link_to 'Personenliste', people_path %>
+		</p>
+
+	<% end %>
 <% end %>
-
-<% form_tag do %>
-	<%= hidden_field_tag 'id'               , @wrong_person.id   %>
-
-	<td><%= submit_tag 'Neu auswählen' %></td>
-<% end %>
-</tr></table>
-
-<p>
-	<%= link_to 'Personenliste', people_path %>
-</p>
 

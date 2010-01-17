@@ -1,60 +1,62 @@
-<%= page_title "Personenauswahl für Benutzer #{h @user.username}" %>
+<% page_title "Personenauswahl für Benutzer #{h @user.username}" do %>
 
-<% current_person_on_page=@people.any? { |person| person.id==@user.person } %>
+	<% current_person_on_page=@people.any? { |person| person.id==@user.person } %>
 
-<% form_for(@user, :url => { :action => "edit" }, :html => {:method => :post}) do |f| %>
-	<%= f.hidden_field 'id'                 , { :value => @user.username            } %>
-	<%= f.hidden_field 'club'               , { :value => @user.club                } %>
-	<%= f.hidden_field 'perm_club_admin'    , { :value => @user.perm_club_admin     } %>
-	<%= f.hidden_field 'perm_read_flight_db', { :value => @user.perm_read_flight_db } %>
+	<% form_for(@user, :url => { :action => "edit" }, :html => {:method => :post}) do |f| %>
+		<%= f.hidden_field 'id'                 , { :value => @user.username            } %>
+		<%= f.hidden_field 'club'               , { :value => @user.club                } %>
+		<%= f.hidden_field 'perm_club_admin'    , { :value => @user.perm_club_admin     } %>
+		<%= f.hidden_field 'perm_read_flight_db', { :value => @user.perm_read_flight_db } %>
 
-	<%= hidden_field_tag 'subpage', 'select_person' %>
-	
-	<p><%= @people.page_info 'Person', 'Personen' %></p>
+		<%= hidden_field_tag 'subpage', 'select_person' %>
+		
+		<p><%= @people.page_info 'Person', 'Personen' %></p>
 
-	<% paginated_section @people, :renderer=>WillPaginate::ButtonRenderer do %>
-		<% table_for(@people) { |table| %>
-			<% table.body_row { |body| %>
-				<%= body.cell f.radio_button 'person', '0', :checked => !(@user.associated_person) %>
-				<%= body.text "Keine Person", :colspan=>6 %>
+		<% paginated_section @people, :renderer=>WillPaginate::ButtonRenderer do %>
+			<% table_for(@people) { |table| %>
+				<% table.body_row { |body| %>
+					<%= body.cell f.radio_button 'person', '0', :checked => !(@user.associated_person) %>
+					<%= body.text "Keine Person", :colspan=>6 %>
+				<% } %>
+
+				<% table.body_row { |body| %>
+					<%= body.cell f.radio_button 'person', @user.person, :checked => true %>
+					<%= body.text "Aktuelle Person: #{@user.associated_person.full_name} (#{@user.person})", :colspan=>6 %>
+				<% } if !current_person_on_page %>
+
+				<% table.header_row { |header| %>
+					<%= header.text nil          %>
+					<%= header.text "ID"         %>
+					<%= header.text "Nachname"   %>
+					<%= header.text "Vorname"    %>
+					<%= header.text "Verein"     %>
+					<%= header.text "Vereins-ID" %>
+					<%= header.text "Bemerkung"  %>
+				<% } %>
+
+				<% table.body { |body, person| %>
+					<% checked=(@user.person==person.id)  %><%# person is the primary key, not the object %>
+					<%= body.cell f.radio_button('person', person.id, :checked => checked) %>
+					<%= body.cell person.id                                                %>
+					<%= body.cell person.last_name                                         %>
+					<%= body.cell person.first_name                                        %>
+					<%= body.text person.verein                                            %>
+					<%= body.text person.vereins_id                                        %>
+					<%= body.text person.bemerkung                                         %>
+				<% } %>
 			<% } %>
-
-			<% table.body_row { |body| %>
-				<%= body.cell f.radio_button 'person', @user.person, :checked => true %>
-				<%= body.text "Aktuelle Person: #{@user.associated_person.full_name} (#{@user.person})", :colspan=>6 %>
-			<% } if !current_person_on_page %>
-
-			<% table.header_row { |header| %>
-				<%= header.text nil          %>
-				<%= header.text "ID"         %>
-				<%= header.text "Nachname"   %>
-				<%= header.text "Vorname"    %>
-				<%= header.text "Verein"     %>
-				<%= header.text "Vereins-ID" %>
-				<%= header.text "Bemerkung"  %>
-			<% } %>
-
-			<% table.body { |body, person| %>
-				<% checked=(@user.person==person.id)  %><%# person is the primary key, not the object %>
-				<%= body.cell f.radio_button('person', person.id, :checked => checked) %>
-				<%= body.cell person.id                                                %>
-				<%= body.cell person.last_name                                         %>
-				<%= body.cell person.first_name                                        %>
-				<%= body.text person.verein                                            %>
-				<%= body.text person.vereins_id                                        %>
-				<%= body.text person.bemerkung                                         %>
-			<% } %>
-		<% } %>
+		<% end %>
+		
+		<p>
+			<%= f.submit 'OK' %>
+		</p>
 	<% end %>
-	
-	<p>
-		<%= f.submit 'OK' %>
-	</p>
-<% end %>
 
-<p>
-	<%= link_to 'Anzeigen', @user %> |
-	<%= link_to 'Editieren', edit_user_path(@user) %> |
-	<%= link_to 'Benutzerliste', users_path %>
-</p>
+	<p>
+		<%= link_to 'Anzeigen', @user %> |
+		<%= link_to 'Editieren', edit_user_path(@user) %> |
+		<%= link_to 'Benutzerliste', users_path %>
+	</p>
+
+<% end %>
 

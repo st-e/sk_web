@@ -126,6 +126,7 @@ div.stretcher+div.stretcher { margin-top: 8px }
 
 div.box { padding: 8px; }
 
+div.title h1 { margin: 0px; }
 h2.page_title { margin-top: 8px; }
 
 div.box { border: 1px solid #acf; }

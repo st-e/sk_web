@@ -2,10 +2,10 @@ Critical (before release):
 
 Layout/Style:
 * Colors
-* heading("Foobar") do ... end, setting heading levels automatically
 
 
 Major (important changes):
+* overwrite_select: removal of person collides with pagination
 * Import people: need to do 'dry run' to detect errors, e. g. club ID already
   taken on change
 * Import people: transaction does not seem to work: one created, one fails

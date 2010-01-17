@@ -1,16 +1,16 @@
-<%= page_title "Personen importieren - Fehler" %>
+<% page_title "Personen importieren - Fehler" do %>
 
-<%
-	single_person_errors=@errors.select { |error| error[:entries].size==1 }
-	two_person_errors   =@errors.select { |error| error[:entries].size==2 }
-%>
+	<%
+		single_person_errors=@errors.select { |error| error[:entries].size==1 }
+		two_person_errors   =@errors.select { |error| error[:entries].size==2 }
+	%>
 
-<p>Beim Importieren sind die folgenden Probleme aufgetreten:</p>
+	<p>Beim Importieren sind die folgenden Probleme aufgetreten:</p>
 
-<p>Verein: <%= h @club %></p>
+	<p>Verein: <%= h @club %></p>
 
-<% if !single_person_errors.empty? %>
-	<p>
+	<% if !single_person_errors.empty? %>
+		<p>
 		<% table_for(single_person_errors) { |table| %>
 			<% table.header_row { |header| %>
 				<%= header.hidden                     %>
@@ -35,11 +35,11 @@
 				<%= body.text error[:entries][0].old_club_id %>
 			<% } %>
 		<% } %>
-	</p>
-<% end %>
+		</p>
+	<% end %>
 
-<% if !two_person_errors.empty? %>
-	<p>
+	<% if !two_person_errors.empty? %>
+		<p>
 		<% table_for(two_person_errors) { |table| %>
 			<% table.header_row { |header| %>
 				<%= header.hidden                            %>
@@ -75,11 +75,13 @@
 				<%= body.text error[:entries][1].old_club_id %>
 			<% } %>
 		<% } %>
-	</p>
-<% end %>
+		</p>
+	<% end %>
 
-<p>
+	<p>
 	<%= link_to 'Personenliste', people_path %>
 	<%= link_to 'Personen importieren', import_people_path %>
-</p>
+	</p>
+
+<% end %>
 

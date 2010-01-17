@@ -1,17 +1,19 @@
-<%= page_title "Anmelden" %>
+<% page_title "Anmelden" do %>
 
-<% form_tag 'login' do %>
-	<table class="form">
-		<tr>
-			<th>Benutzername:</th>
-			<td><%= text_field_tag :username, @username %></td>
-		</tr>
-		<tr>
-			<th>Passwort:</th>
-			<td><%= password_field_tag :password %></td>
-		</tr>
-	</table>
+	<% form_tag 'login' do %>
+		<table class="form">
+			<tr>
+				<th>Benutzername:</th>
+				<td><%= text_field_tag :username, @username %></td>
+			</tr>
+			<tr>
+				<th>Passwort:</th>
+				<td><%= password_field_tag :password %></td>
+			</tr>
+		</table>
 
-	<%= submit_tag "Anmelden" %>
+		<%= submit_tag "Anmelden" %>
+	<% end %>
+
 <% end %>
 

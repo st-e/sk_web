@@ -1,11 +1,13 @@
-<%= page_title "Person: #{h @person.full_name}" %>
+<% page_title "Person: #{h @person.full_name}" do %>
 
-<% user=@person.user %>
+	<% user=@person.user %>
 
-<%= render :partial => 'person', :locals => { :person=>@person } %>
+	<%= render :partial => 'person', :locals => { :person=>@person } %>
 
-<p>
+	<p>
 	<%= link_to 'Editieren', edit_person_path(@person) %> |
 	<%= link_to 'Personenliste', people_path %>
-</p>
+	</p>
+
+<% end %>
 
