@@ -83,10 +83,22 @@
 
 		<% if session[:debug] %>
 			<div class="stretcher debug">
+				<div class="box_title debug">
+					<span class="box_title">Diagnoseinformationen</span> (<%= link_to "Deaktivieren", :controller=>'session', :action=>'settings', :debug=>'false' %>)
+				</div>
 				<div class="box debug">
-					<div>params=<%= h params.inspect %></div>
-					<div>session=<%= h session.inspect %></div>
-					<div><%= link_to "Deaktivieren", :controller=>'session', :action=>'settings', :debug=>'false' %></div>
+					<table>
+						<tr>
+							<th>params</th>
+							<td>=</td>
+							<td><%= h params.inspect %></td>
+						</tr>
+						<tr>
+							<th>session</th>
+							<td>=</td>
+							<td><%= h session.inspect %></td>
+						</tr>
+					</table>
 				</div>
 			</div>
 		<% end %>
