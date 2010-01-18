@@ -29,5 +29,9 @@
 		Alle anderen Funktionen sind über das obige Menü zugänglich (gegebenenfalls ist eine Anmeldung erforderlich).
 		</p>
 	<% end %>
+
+	<% begin %>
+		<%= render :partial=>'../../local/main_page' %>
+	<% rescue ActionView::MissingTemplate; end %>
 </div>
 

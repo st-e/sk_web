@@ -1,0 +1,5 @@
+<% heading h "Zusätzliche Informationen" do %>
+	Zusätzliche Informationen, die auf der Startseite angezeigt werden
+<% end %>
+
+
