@@ -1,8 +1,6 @@
-SetEnv RAILS_ENV production
-
-# Rewrite everything to the public/ subdirectory, ugly solution.
 RewriteEngine On
 
+# Rewrite everything to the public/ subdirectory, ugly solution.
 # Problem:
 #   - we need to use REQUEST_URI (b/c in userdir, we don't know the rewrite
 #     base and we don't want to specify it manually)

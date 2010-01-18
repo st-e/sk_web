@@ -1,4 +1,7 @@
-SetEnv RAILS_ENV production
+# Set the environment. This requires the setenv apache module.
+# In a suexec environment, this will not work, as environment variables are
+# cleared.
+#SetEnv RAILS_ENV production
 
 # General Apache options
 #AddHandler fastcgi-script .fcgi

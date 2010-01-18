@@ -22,6 +22,9 @@ Rails::Initializer.run do |config|
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
 
+  #config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
+
+
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
@@ -47,4 +50,7 @@ end
 
 require "will_paginate"
 
+# Hack to avoid Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE)
+# http://www.ruby-forum.com/topic/164696
+ActiveRecord::Base.connection.execute "SET collation_connection = 'latin1_general_ci' "
 
