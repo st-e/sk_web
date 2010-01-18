@@ -1,106 +1,126 @@
 Critical (before release):
 
 Major (important changes):
-* overwrite_select: removal of person collides with pagination
-* Import people: need to do 'dry run' to detect errors, e. g. club ID already
-  taken on change
-* Import people: transaction does not seem to work: one created, one fails
-* Filter by club in people list, overwrite and person selection
-* lib/hidden_field is not loaded
-* link to list_people: correct page
-* unit tests for import
-* Error handling in generate_pdf, for example: pstricks not installed
-* Flight model: has_many :flights, :foreign_key => 'pilot' (and begleiter and
-  towpilot); then use flights.count in Person.used?
-* Menu entries only for available actions?
-* Person selection on create user
-* invalid date handling
-* make it work in userdir
-* style: table border transparent instead of white
-* better redirect to origin - if multiple user edit windows are open, all of
-  them will redirect back to the last one
-* import errors: show club in tables
-* flight model: add towplane and towpilot associations
-* user model: rename to the_person
-* redirect to origin does not work after user udpate if person selection was
-  used
-* lib/ file inclusion
-* paginated tables for resource lists and person selection
-* layout for tex
-* consider towflights for pilot log
-* make it not break on flights with NULL date (Flight.new.save)
-* Flight.<=> (and use sort instead of sort_by)
-* Can the _temp table duplication be supported through something like :finder_sql?
-* Permissions: specify for all actions of a controller
-* Permissions: allow exceptions to a permission for all actions of a controller
-  (e. g. change own password)
-* Permissions: make "require_login" override "require_permission" (?) and rename it
-* Permissions: require_permission: require "perm, a" or "perm, [a, b, ...]"
-* Permissions: permission for granting permissions on edit and create user
-* Text formatting for tables
-* Import: all clubs and values tested should be stripped
-* Create person/user: back to origin
-* import people: undefinedness if the database is modified between identify and perform
-* redirect_to :back: default values
-* PlaneLogEntry.create_merged: add "Towflight" or "Towflights" to comments list
-* generate_pdf: option for calling LaTeX 1/2/3 times
-* import review: show names of unknown columns
-* redirect back after edit with anchor
-* user person_select: cancel button; requires: store original person in
-  user[person], additionally new_person
-* subform: better controller subdivision; maybe store person under edit in
-  session (but allow multiple!)
-* use thead and tbody for tables
+* Overwriting
+  * overwrite_select: removal of person collides with pagination
+* Import
+  * need to do 'dry run' to detect errors, e. g. club ID already taken on change
+  * transaction does not seem to work: one created, one fails
+  * unit tests for import
+  * import errors: show club in tables
+  * all clubs and values tested should be stripped (what about trailing blanks
+    in database?)
+  * import people: undefinedness if the database is modified between identify and
+    perform
+  * review: show names of unknown columns
+* People list
+  * Filter by club (also overwrite and person selection)
+  * link to list_people: correct page
+* PDF
+  * Error handling in generate_pdf, for example: pstricks not installed
+  * layout for tex
+  * generate_pdf: option for calling LaTeX 1/2/3 times
+* Models
+  * Flight model: has_many :flights, :foreign_key => 'pilot' (and begleiter and
+    towpilot); then use flights.count in Person.used?
+  * flight model: add towplane and towpilot associations
+  * user model: rename associated_person to the_person
+  * Flight.<=> (and use sort instead of sort_by)
+* User
+  * Person selection on create user
+  * user person_select: cancel button; requires: store original person in
+    user[person], additionally new_person
+  * subform: better controller subdivision; maybe store person under edit in
+    session (but allow multiple!)
+* Date
+  * invalid date handling
+* Style
+  * table border transparent instead of white
+* URLs
+  * better redirect to origin - if multiple user edit windows are open, all of
+    them will redirect back to the last one
+  * redirect to origin does not work after user udpate if person selection was
+    used
+  * Create person/user: back to origin
+  * redirect_to :back: default values
+  * redirect back after edit to correct page/with anchor
+* Statistics
+  * consider towflights for pilot log
+  * PlaneLogEntry.create_merged: add "Towflight" or "Towflights" to comments
+    list
+* Bugs
+  * make it not break on flights with NULL date (Flight.new.save)
+* Database
+  * Can the _temp table duplication be supported through something like
+    :finder_sql?
+* Permissions
+  * specify for all actions of a controller
+  * allow exceptions to a permission for all actions of a controller
+    (e. g. change own password)
+  * make "require_login" override "require_permission" (?) and rename it
+  * require_permission: require "perm, a" or "perm, [a, b, ...]"
+  * permission for granting permissions on edit and create user
+* Views
+  * use thead and tbody for tables
+* Editing
+  * delete confirmation without javascript
+    (http://brandonaaron.net/blog/2009/02/25/unobtrusive-destroy-links-in-rails-using-jquery)
 
 Minor (less important changes or much work):
-* style: size of buttons and links is not the same for pagination
-* style: hover not for disabled pagination buttons
-* people_list is very slow => prefetch all users (not so bad b/c paginated)
-* Better error page (without flash)
-* Buttons in overwrite_confirm: same form? Then remove table
-* settings: plugin path
-* flight: rename to the_launch_type
-* delete uploaded import data on logout
-* make class DateRange
-* When overwriting a person, display their number of flights
-* route /person/1/overwrite/2
-* "Create user" for person if there is none yet
-* When using time_range, recover from ArgumentError (invalid date), redirect to
-  the form, display an error message and preenter the (erroneous) values
-* User not found: 404 or error message
-* use alias_attribute in all models
-* order of file formats
-* better error reporting with latex files
-* delete confirmation without javascript (http://brandonaaron.net/blog/2009/02/25/unobtrusive-destroy-links-in-rails-using-jquery)
-* how to make sure not passwords are displayed? clear in view?
-* look into fastercsv
-* Download people CSV in format for import
-* Allow per-person club specification when importing
-* Import: in unclear cases, let the user select candidates
-* Import: if there are people with the same club or in another club: suggest
-  :merge (for misspelled clubs)
-* Import: let the use uncheck people
-* Import: errors: don't display symmetric errors twice
-* Import: errors: highlight erroneous fields
-* Redirect back after login doeesn't work for debug on/off
-* Add display of host/database
-* Turn of debug: wrong redirect target?
-* What happens if a user is deleted while logged in?
-* Import person success message: pluralization
-* Improve redirect after session settings, so deactivating debug from redirect
-  page redirects back (but works correctly, even directly after activating)
-* Read config file in initializer?
-* error message when format does not possible
-* move local_network? to request
-* prevent user taking "club administrator" from himself
+* Style
+  * size of buttons and links is not the same for pagination
+  * hover not for disabled pagination buttons
+* Queries
+  * people_list is very slow => prefetch all users (not so bad b/c paginated)
+* Views
+  * Buttons in overwrite_confirm: can they be in the same form? Then remove
+    table
+* Settings
+  * plugin path
+  * Read config file in initializer?
+* Models
+  * flight: rename to the_launch_type
+  * use alias_attribute in all models
+* Session
+  * delete uploaded import data on logout
+Date
+  * make class DateRange
+Routes
+  * route /person/1/overwrite/2
+Editing
+  * When overwriting a person, display their number of flights
+  * "Create user" for person if there is none yet
+  * prevent user taking "club administrator" from himself
+Error handling
+  * When using time_range, recover from ArgumentError (invalid date), redirect
+    to the form, display an error message and preenter the (erroneous) values
+  * User not found: 404 or error message
+  * better error reporting with latex files
+  * What happens if a user is deleted while logged in?
+CSV
+  * look into fastercsv
+Import
+  * Allow per-person club specification when importing
+  * in unclear cases, let the user select candidates
+  * if there are people with the same club or in another club: suggest
+    :merge (for misspelled clubs)
+  * let the user uncheck entries
+  * don't display symmetric errors twice
+  * errors: highlight erroneous fields
+  * Import person success message: pluralization
+URLs
+  * Redirect back after login doeesn't work for debug on/off
+  * Wrong redirect target when login for pilot_log, but no person
+  * Improve redirect after session settings, so deactivating debug from redirect
+    page redirects back (but works correctly, even directly after activating)
+Requests
+  * move local_network? to request
 
 Nice to have:
-* date in local format
 * consolidate tabel partial and table_for
 * create/edit planes
 * create/edit flights
 * form error messages for individual inputs
-* properly handle user disappeared
 * pagination like at erweiterungen.de
 
 After launch types in database:

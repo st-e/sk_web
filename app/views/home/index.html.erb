@@ -9,7 +9,6 @@
 			Willkommen im Web-Zugang der Startkladde am Flugplatz <%= h Settings.instance.location %>!
 		</p>
 
-
 		<p>
 			Die wichtigsten Links:
 		</p>
@@ -23,8 +22,6 @@
 			<li>
 				<% today=Date.today %>
 				<%= link_to 'Persönliches Flugbuch der letzten Woche', pilot_log_path(:date=>"#{today-7.days}_#{today}", :format=>'html') %>
-
-				<% if !session[:username] %>(Anmeldung erforderlich)<% end %>
 			</li>
 		</ul>
 
