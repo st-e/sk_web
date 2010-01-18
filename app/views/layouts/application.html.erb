@@ -75,7 +75,6 @@
 		<% config=Rails::Configuration.new %>
 		<div class="stretcher footer">
 			<div class="box footer">
-				Hauptflugbuch <%= h (Settings.instance.location || "") %> |
 				<%= h config.database_configuration[RAILS_ENV]["database"] %>@<%= config.database_configuration[RAILS_ENV]["host"] %> |
 				<%= h version_string %> in <%= h RAILS_ENV %> mode
 			</div>
@@ -97,6 +96,16 @@
 							<th>session</th>
 							<td>=</td>
 							<td><%= h session.inspect %></td>
+						</tr>
+						<tr>
+							<th>id</th>
+							<td>=</td>
+							<td><%= "#{`id -u -n`.chomp}:#{`id -g -n`.chomp}" %></td>
+						</tr>
+						<tr>
+							<th>groups</th>
+							<td>=</td>
+							<td><%= "#{`id -G -n`.chomp}" %></td>
 						</tr>
 					</table>
 				</div>

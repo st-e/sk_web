@@ -1,4 +1,6 @@
 Critical (before release):
+* Handle "Config file not found"
+* What happens if a non-latin1 character is input?
 
 Major (important changes):
 * Overwriting
@@ -37,6 +39,7 @@ Major (important changes):
 * Style
   * table border transparent instead of white
 * URLs
+  * Improve automatic relative_url_root detection: only do once
   * better redirect to origin - if multiple user edit windows are open, all of
     them will redirect back to the last one
   * redirect to origin does not work after user udpate if person selection was

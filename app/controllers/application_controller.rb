@@ -35,6 +35,14 @@ class ApplicationController < ActionController::Base
 		nil
 	end
 
+	# Add additional information to the log block
+	def log_processing
+		super
+
+        if logger && logger.info?
+			logger.info("  username: #{session[:username].inspect}")
+        end
+	end
 	
 
 protected

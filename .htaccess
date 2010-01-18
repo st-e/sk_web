@@ -1,5 +1,9 @@
 RewriteEngine On
 
+# Important: when using the redirect to public/, make sure that all requests
+# are redirected, even if the file requested exists outside of public/.
+# Otherwise, a user might get access to, for example, config/database.yml.
+
 # Rewrite everything to the public/ subdirectory, ugly solution.
 # Problem:
 #   - we need to use REQUEST_URI (b/c in userdir, we don't know the rewrite

@@ -22,7 +22,7 @@ Rails::Initializer.run do |config|
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
 
-  #config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
+  config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
 
 
   # Only load the plugins named here, in the order given (default is alphabetical).
@@ -47,8 +47,6 @@ Rails::Initializer.run do |config|
   # Automatically set in config/initializers/!fix_relative_url_root.rb
   #config.action_controller.relative_url_root = "/startkladde"
 end
-
-require "will_paginate"
 
 # Hack to avoid Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE)
 # http://www.ruby-forum.com/topic/164696
