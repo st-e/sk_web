@@ -1,7 +1,7 @@
 Critical (before release):
-* What happens if a non-latin1 character is input?
 
 Major (important changes):
+* Better handling of utf8 characters
 * Templates
   * template for HTML file (yield body)
 * Error handling
