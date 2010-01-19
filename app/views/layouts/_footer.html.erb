@@ -1,0 +1,8 @@
+<% config=Rails::Configuration.new %>
+<div class="stretcher footer">
+	<div class="box footer">
+		<%= h config.database_configuration[RAILS_ENV]["database"] %>@<%= config.database_configuration[RAILS_ENV]["host"] %> |
+		<%= h version_string %> in <%= h RAILS_ENV %> mode
+	</div>
+</div>
+

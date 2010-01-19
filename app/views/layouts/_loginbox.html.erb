@@ -1,0 +1,8 @@
+<div style="float:right">
+	<% if session[:username] %>
+		Angemeldet als <%= h session[:username] %> (<%= link_to "Abmelden", logout_path %>)
+	<% else %>
+		Nicht angemeldet (<%= link_to "Anmelden", login_path %>)
+	<% end %>
+</div>
+

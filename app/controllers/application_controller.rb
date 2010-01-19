@@ -4,6 +4,10 @@
 class ApplicationController < ActionController::Base
 	include Rendering
 	include DateHandling
+	include ERB::Util
+
+	class DummyError <Exception
+	end
 
 	helper :all # include all helpers, all the time
 	protect_from_forgery # See ActionController::RequestForgeryProtection for details
@@ -14,8 +18,25 @@ class ApplicationController < ActionController::Base
 	before_filter :check_permissions
 	before_filter :require_ssl
 
-	
+	rescue_from(DummyError) { |ex|
+		render_error h "DummyError wurde ausgelöst"
+	}
 
+	# Handle exceptions during rendering like other exceptions
+	rescue_from(ActionView::TemplateError) { |ex|
+		raise ex.original_exception
+	}
+
+	rescue_from(ActionController::InvalidAuthenticityToken) { |ex|
+		flash[:error]="Die Anmeldung ist fehlgeschlagen. Sind Cookies aktiviert?"
+		render 'session/login'
+	}
+
+	rescue_from(Settings::ConfigFileNotFound) { |ex|
+		# Need failsafe layout because otherwise, the template will also need
+		# the settings instance (for getting the location)
+		render_error h "Konfigurationsdatei nicht gefunden", :layout=>"failsafe"
+	}
 
 	def current_username
 		session[:username]
@@ -134,7 +155,7 @@ private
 
 		# Complain if no permissions have been set
 		permissions=self.class.required_permissions_for action
-		render_error ("Fehler: Für diese Aktion wurden keine Zugriffsrechte gesetzt.") and return if !permissions
+		render_error(h "Fehler: Für diese Aktion wurden keine Zugriffsrechte gesetzt.") and return if !permissions
 
 		# Other actions require login
 		redirect_to_login and return unless logged_in?
@@ -149,12 +170,12 @@ private
 		if current_user.has_permission? permission
 			yield if block_given?
 		else
-			render_error("Der Benutzer #{current_user.username} verfügt nicht über die Berechtigung \"#{permission}\", die für diese Aktion erforderlich ist.")
+			render_error(h "Der Benutzer #{current_user.username} verfügt nicht über die Berechtigung \"#{permission}\", die für diese Aktion erforderlich ist.")
 		end
 	end
 
 	def render_permission_denied
-		render_error "Zugriff verweigert"
+		render_error h "Zugriff verweigert"
 	end
 
 	# Filter that redirects to SSL unless the request comes from a local address

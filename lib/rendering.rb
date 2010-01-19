@@ -1,7 +1,8 @@
 module Rendering
-	def render_error(message)
+	# The message will not be escaped
+	def render_error(message, options={})
 		flash.now[:error]=message
-		render :text=>"", :layout=>true
+		render({:text=>"", :layout=>true}.merge(options))
 	end
 
 	def generate_pdf(template)

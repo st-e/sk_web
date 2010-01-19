@@ -1,0 +1,34 @@
+<%# Failsafe layout, for use from rescue_from - should call no code that could throw %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<title>Startkladde - Fehler</title>
+		<%= stylesheet_link_tag 'sk_web' %>
+	</head>
+
+	<body>
+		<div class="stretcher title">
+			<div class="box title">
+				<h1>Startkladde</h1>
+			</div>
+		</div>
+
+		<div class="stretcher main">
+			<div class="box main" style="padding: 0px">
+				<div style="padding: 8px;">
+					<% heading h "Fehler" do %>
+						<%= render :partial=>'layouts/flash', :locals=>{:flash=>flash} %>
+
+						<%= yield %>
+					<% end %>
+				</div>
+			</div><%# .main.box %>
+		</div>
+
+		<%= render :partial=>'layouts/footer' %>
+
+		<%= render :partial=>'layouts/debug' %>
+	</body>
+</html>
+

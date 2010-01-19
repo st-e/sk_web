@@ -17,7 +17,7 @@ class UsersController < ApplicationController
 
 	def show
 		@user = User.find(params[:id], :readonly=>true)
-		render_error "Der Spezialbenutzer #{@user.username} kann nicht angezeigt werden." and return if @user.special?
+		render_error h "Der Spezialbenutzer #{@user.username} kann nicht angezeigt werden." and return if @user.special?
 		render "show"
 	end
 
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
 
 	def edit
 		@user = User.find(params[:id])
-		render_error "Der Spezialbenutzer #{@user.username} kann nicht editiert werden." and return if @user.special?
+		render_error h "Der Spezialbenutzer #{@user.username} kann nicht editiert werden." and return if @user.special?
 
 		# Restore the user, if given (e. g. after returning from a subpage)
 		@user.attributes=params[:user] if params[:user]
@@ -71,7 +71,7 @@ class UsersController < ApplicationController
 
 		# Read the user and update the attributes (don't save at this point)
 		@user = User.find(params[:id])
-		render_error "Der Spezialbenutzer #{@user.username} kann nicht editiert werden." and return if @user.special?
+		render_error h "Der Spezialbenutzer #{@user.username} kann nicht editiert werden." and return if @user.special?
 		@user.attributes=params[:user] if params[:user]
 
 		# Subpages
@@ -103,8 +103,8 @@ class UsersController < ApplicationController
 	def destroy
 		username=params[:id]
 		@user = User.find(username)
-		render_error "Der Spezialbenutzer #{@user.username} kann nicht gelöscht werden." and return if @user.special?
-		render_error "Der Benutzer #{current_username} kann sich nicht selbst löschen." and return if @user.username==current_username
+		render_error h "Der Spezialbenutzer #{@user.username} kann nicht gelöscht werden." and return if @user.special?
+		render_error h "Der Benutzer #{current_username} kann sich nicht selbst löschen." and return if @user.username==current_username
 
 		@user.destroy
 
@@ -116,7 +116,7 @@ class UsersController < ApplicationController
 		@user = User.find(params[:id])
 		@display_old_password_field=false
 
-		render_error "Das Passwort des Spezialbenutzers #{@user.username} kann nicht geändert werden." and return if @user.special?
+		render_error h "Das Passwort des Spezialbenutzers #{@user.username} kann nicht geändert werden." and return if @user.special?
 
 		if params[:user]
 			@user.attributes=params[:user]
@@ -133,7 +133,7 @@ class UsersController < ApplicationController
 		@user=current_user(readonly=false)
 		@display_current_password_field=true
 
-		render_error "Das Passwort des Spezialbenutzers #{@user.username} kann nicht geändert werden." and return if @user.special?
+		render_error h "Das Passwort des Spezialbenutzers #{@user.username} kann nicht geändert werden." and return if @user.special?
 
 		if params[:user]
 			if User.authenticate(@user.username, params[:user][:current_password])

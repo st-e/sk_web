@@ -2,7 +2,10 @@ require 'text'
 
 class Settings
 	include Singleton
-	
+
+	class ConfigFileNotFound <Exception
+	end
+
 	attr_reader :location, :launch_types
 
 	def config_filename
@@ -19,7 +22,7 @@ class Settings
 		@local_addresses=[]
 
 		filename=config_filename
-		raise "Konfigurationsdatei nicht gefunden" if filename.nil?
+		raise Settings::ConfigFileNotFound if filename.nil?
 
 		puts "Reading configuration from #{filename}"
 		File.new(filename).each_line { |line|

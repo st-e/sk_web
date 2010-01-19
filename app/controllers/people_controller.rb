@@ -208,8 +208,8 @@ class PeopleController < ApplicationController
 			@import_data=Person::ImportData.new(csv, @filename, @club)
 
 			# Check for file (formal) errors
-			render_error "Die folgenden Spalten fehlen in der CSV-Datei: #{@import_data.missing_columns.join(', ')}" and return if !@import_data.missing_columns.empty?
-			render_error "Die CSV-Datei enthält keine Personendatensätze." and return if @import_data.entries.empty?
+			render_error h "Die folgenden Spalten fehlen in der CSV-Datei: #{@import_data.missing_columns.join(', ')}" and return if !@import_data.missing_columns.empty?
+			render_error h "Die CSV-Datei enthält keine Personendatensätze." and return if @import_data.entries.empty?
 
 			# Check for data errors
 			@errors=@import_data.check_errors

@@ -11,12 +11,16 @@ class Menu
 	# The ActionView used for rendering this menu
 	attr_accessor :view
 
+	attr_accessor :visible
+
 	# Creates a new menu entry with given text, link target and entries.
 	# Menu.create et. al are more useful.
 	def initialize(text=nil, target=nil, entries=[])
 		@text=text
 		@target=target
 		@entries=entries
+
+		@visible=true
 	end
 
 	# Creates a menu, for use as top level menu, with a given view. The view can
@@ -35,17 +39,22 @@ class Menu
 	# link or the same arguments as url_for, when a view is set. The menu entry
 	# has the same view as its parent. If a block is given, the newly created menu
 	# entry is yielded to the block before returning it.
-	def entry(text, target=nil)
+	def entry(text, target=nil, visible=true)
 		if @view && target && !target.instance_of?(String)
 			target=view.url_for target
 		end
 
 		entry=Menu.new(text, target)
 		entry.view=@view
+		entry.visible=visible
 
 		entries << entry
 		yield entry if block_given?
 		entry
+	end
+
+	def entry_if(visible, text, target)
+		entry(text, target, visible)
 	end
 end
 

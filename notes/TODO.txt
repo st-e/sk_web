@@ -1,8 +1,11 @@
 Critical (before release):
-* Handle "Config file not found"
 * What happens if a non-latin1 character is input?
 
 Major (important changes):
+* Templates
+  * template for HTML file (yield body)
+* Error handling
+  * Send mail on exception
 * Overwriting
   * overwrite_select: removal of person collides with pagination
 * Import
@@ -17,6 +20,7 @@ Major (important changes):
   * review: show names of unknown columns
 * People list
   * Filter by club (also overwrite and person selection)
+  * Filter a la portal
   * link to list_people: correct page
 * PDF
   * Error handling in generate_pdf, for example: pstricks not installed
@@ -47,6 +51,9 @@ Major (important changes):
   * Create person/user: back to origin
   * redirect_to :back: default values
   * redirect back after edit to correct page/with anchor
+  * after reloading the login page, the origin is gone
+  * add origin to login form instead of session => even works when cookies are
+    disabled
 * Statistics
   * consider towflights for pilot log
   * PlaneLogEntry.create_merged: add "Towflight" or "Towflights" to comments
@@ -71,6 +78,8 @@ Major (important changes):
     (http://brandonaaron.net/blog/2009/02/25/unobtrusive-destroy-links-in-rails-using-jquery)
 
 Minor (less important changes or much work):
+* Templates
+  * Layout for "box in stretcher"?
 * Style
   * size of buttons and links is not the same for pagination
   * hover not for disabled pagination buttons
@@ -87,23 +96,23 @@ Minor (less important changes or much work):
   * use alias_attribute in all models
 * Session
   * delete uploaded import data on logout
-Date
+* Date
   * make class DateRange
-Routes
+* Routes
   * route /person/1/overwrite/2
-Editing
+* Editing
   * When overwriting a person, display their number of flights
   * "Create user" for person if there is none yet
   * prevent user taking "club administrator" from himself
-Error handling
+* Error handling
   * When using time_range, recover from ArgumentError (invalid date), redirect
     to the form, display an error message and preenter the (erroneous) values
   * User not found: 404 or error message
   * better error reporting with latex files
   * What happens if a user is deleted while logged in?
-CSV
+* CSV
   * look into fastercsv
-Import
+* Import
   * Allow per-person club specification when importing
   * in unclear cases, let the user select candidates
   * if there are people with the same club or in another club: suggest
@@ -112,12 +121,12 @@ Import
   * don't display symmetric errors twice
   * errors: highlight erroneous fields
   * Import person success message: pluralization
-URLs
+* URLs
   * Redirect back after login doeesn't work for debug on/off
   * Wrong redirect target when login for pilot_log, but no person
   * Improve redirect after session settings, so deactivating debug from redirect
     page redirects back (but works correctly, even directly after activating)
-Requests
+* Requests
   * move local_network? to request
 
 Nice to have:
