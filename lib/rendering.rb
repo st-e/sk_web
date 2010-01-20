@@ -1,3 +1,166 @@
+# TODO lib
+require 'rubygems'
+
+require 'prawn'
+require "prawn/measurement_extensions"
+require "prawn/table"
+
+class Prawn::Document
+	attr_accessor :footer_margin, :header_margin
+	attr_accessor :header_size, :table_size
+
+	def left_text(y, t)
+		text_at t, :at => [bounds.left, y]
+	end
+
+	def right_text(y, t)
+		text_at t, :at => [bounds.right-width_of(t), y]
+	end
+
+	def centered_text(y, t)
+		text_at t, :at => [bounds.left+bounds.width/2-width_of(t)/2, y]
+	end
+
+	def     left_header(t);     left_text(bounds.   top-font.ascender,  t); end
+	def centered_header(t); centered_text(bounds.   top-font.ascender,  t); end
+	def    right_header(t);    right_text(bounds.   top-font.ascender,  t); end
+	def     left_footer(t);     left_text(bounds.bottom+font.descender, t); end
+	def centered_footer(t); centered_text(bounds.bottom+font.descender, t); end
+	def    right_footer(t);    right_text(bounds.bottom+font.descender, t); end
+
+	def headings_box
+		canvas do
+			l=bounds.left+@margins[:left]
+			r=bounds.right-@margins[:right]
+			t=bounds.top-(@header_margin||0)
+			b=bounds.bottom+(@footer_margin||0)
+			bounding_box([l,t], :width=>(r-l), :height=>(t-b)) do
+				yield
+			end
+		end
+	end
+
+	def save_state(&block)
+		add_content "q"
+		yield
+		add_content "Q"
+	end
+
+	def clip_box(x, y, w, h, stroke=false, &block)
+		save_state do
+			self.line_width=0.5
+
+			add_content "W" # Start clip path
+
+			# Draw the cell outline
+			add_content "#{x  } #{y  } m" # Move to upper left corner
+			add_content "#{x  } #{y-h} l" # Line to lower left corner
+			add_content "#{x+w} #{y-h} l" # Line to lower right corner
+			add_content "#{x+w} #{y  } l" # Line to upper right corner
+
+			add_content (stroke)?"s":"n" # Close path and stroke
+
+			yield
+		end
+	end
+
+
+	def render_table_row(column_widths, values)
+		horizontal_margin=2
+		vertical_margin=0.5
+
+		# Let's use local coordinates. This means we have to add origin x and y for
+		# the absolute coordinates used in add_content.
+		ox=bounds.absolute_left
+		oy=bounds.absolute_bottom
+
+		# Upper left cell corner
+		cx=0
+		cy=y-oy
+
+		# Cell height
+		h=font.height+2*vertical_margin
+		descender=font.descender
+
+		return false if cy-h<=bounds.bottom
+
+		values.each_with_index { |value, index|
+			# Cell width
+			w=column_widths[index]
+
+
+			clip_box cx+ox, cy+oy, w, h, true do
+				# text_at is significantly faster than text :at=>
+				text_at(value.to_s, :at=>[cx+horizontal_margin, cy-h+vertical_margin+descender])
+			end
+
+			# Move to the next cell
+			cx+=w
+		}
+
+		self.y-=h
+
+		true
+	end
+
+	def render_table_header(column_widths, values)
+		ok=render_table_row column_widths, values
+		move_down 2 if ok
+		ok
+	end
+
+	def render_table(table)
+		# Extract some values from the table
+		columns=table[:columns]
+		rows=table[:rows]
+
+		column_widths=table[:columns].map { |column| column[:width].mm }
+		column_widths_hash={}
+		column_widths.each_with_index { |width, index| column_widths_hash[index]=width }
+		
+		header_values=columns.map { |column| column[:title] }
+		
+		# Render the table header
+		render_table_header(column_widths_hash, header_values)
+
+		table[:rows].each { |row|
+			# Render the current table row
+			if !render_table_row column_widths, row
+				# Oops...the row didn't fit on the page
+
+				# Start a new page
+				start_new_page
+
+				# Render the table header again
+				render_table_header(column_widths_hash, header_values)
+
+				# Render the current row again
+				render_table_row column_widths, row
+			end
+		}
+	end
+
+	def paragraph
+		move_down 0.5.cm
+	end
+
+	# before_render won't work because it's called after finalize_all_page_contents
+	def render_headings
+		page_count.times do |i|
+			page=i+1
+			go_to_page(page)
+		 
+			headings_box do
+				font_size (@header_size) do
+					yield page
+				end
+			end
+		end
+	end
+end
+
+
+
 module Rendering
 	# The message will not be escaped
 	def render_error(message, options={})
@@ -5,7 +168,7 @@ module Rendering
 		render({:text=>"", :layout=>true}.merge(options))
 	end
 
-	def generate_pdf(template)
+	def generate_pdf_latex(template)
 		Dir.mktmpdir { |dir|
 			texfile="#{dir}/file.tex"
 			dvifile="#{dir}/file.dvi"
@@ -34,8 +197,53 @@ module Rendering
 		}
 	end
 
-	def render_pdf(template, options={})
-		send_data generate_pdf(template), { :type => 'application/pdf', :disposition => 'inline' }.merge(options)
+	def render_pdf_latex(template, options={})
+		render_pdf generate_pdf_latex(template), options
+	end
+
+	def render_pdf(pdf, options={})
+		send_data pdf, { :type => 'application/pdf', :disposition => 'inline' }.merge(options)
+	end
+
+	def generate_pdf_prawn
+pdf = Prawn::Document.new(
+	:page_size => 'A4', :page_layout => :landscape,
+	:skip_page_creation => true,
+	:left_margin => 1.cm, :right_margin => 1.cm, :top_margin => (2.5).cm, :bottom_margin =>(2.5).cm
+)
+
+pdf.header_margin=1.75.cm
+pdf.footer_margin=1.5.cm
+pdf.header_size=7
+pdf.table_size=7
+
+#pdf.on_page_create do
+#	pdf.font "DejaVuSans.ttf"
+#	pdf.font_size font_size
+#end
+
+pdf.start_new_page
+
+pdf.font "#{Prawn::BASEDIR}/data/fonts/DejaVuSans.ttf"
+pdf.font_size 7
+
+
+
+yield pdf
+
+
+pdf.render_headings do |page|
+	pdf.centered_header "Hauptflugbuch Dingenskirchen"
+	pdf.right_header "x.xx.xxxx"
+
+	pdf.left_footer "sk_web version string/Prawn #{Prawn::VERSION}"
+	pdf.right_footer "Seite #{page} von #{pdf.page_count}"
+end
+
+
+#pdf.render_file('prawn.pdf')
+pdf.render
+
 	end
 
 	def set_filename(filename)

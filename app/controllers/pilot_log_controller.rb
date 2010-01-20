@@ -56,7 +56,7 @@ class PilotLogController < ApplicationController
 
 		respond_to do |format|
 			format.html { render 'pilot_log'        ; set_filename "flugbuch_#{date_range_filename(@date_range)}.html" }
-			format.pdf  { render_pdf 'pilot_log.tex'; set_filename "flugbuch_#{date_range_filename(@date_range)}.pdf"  }
+			format.pdf  { render_pdf_latex 'pilot_log.tex'; set_filename "flugbuch_#{date_range_filename(@date_range)}.pdf"  }
 			format.tex  { render 'pilot_log'        ; set_filename "flugbuch_#{date_range_filename(@date_range)}.tex"  }
 			format.csv  { render 'pilot_log'        ; set_filename "flugbuch_#{date_range_filename(@date_range)}.csv"  }
 			#format.xml  { render :xml => @flights   ; set_filename "flugbuch_#{date_range_filename(@date_range)}.xml"  }

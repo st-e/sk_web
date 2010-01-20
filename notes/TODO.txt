@@ -1,4 +1,7 @@
 Critical (before release):
+* Startlisten langsam, zum Beispiel 7.10.2009
+* Better PDF generation, it's too slow
+* ssl redirect in htaccess, and add warning
 
 Major (important changes):
 * Better handling of utf8 characters
