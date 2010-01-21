@@ -14,7 +14,9 @@ Notes:
 	set to latin1?
 
 Tests:
-  - Flightlist 7.10.2009 fast?
+  - Flightlist from localhost on adam, wget, pdf:
+  - 7.10.2009: latex 23.5s-30s
+  - 7.10.2010: latex 6.5s
 
 Tests (test database):
   - without referer

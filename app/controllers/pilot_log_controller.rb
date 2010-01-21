@@ -56,7 +56,9 @@ class PilotLogController < ApplicationController
 
 		respond_to do |format|
 			format.html { render 'pilot_log'        ; set_filename "flugbuch_#{date_range_filename(@date_range)}.html" }
-			format.pdf  { render_pdf_latex 'pilot_log.tex'; set_filename "flugbuch_#{date_range_filename(@date_range)}.pdf"  }
+			#format.pdf  { render_pdf_latex 'pilot_log.tex'; set_filename "flugbuch_#{date_range_filename(@date_range)}.pdf"  }
+			format.pdf  { @faux_template='pilot_log';
+				          render 'layouts/faux_layout'      ; set_filename "flugbuch_#{date_range_filename(@date_range)}.pdf"  }
 			format.tex  { render 'pilot_log'        ; set_filename "flugbuch_#{date_range_filename(@date_range)}.tex"  }
 			format.csv  { render 'pilot_log'        ; set_filename "flugbuch_#{date_range_filename(@date_range)}.csv"  }
 			#format.xml  { render :xml => @flights   ; set_filename "flugbuch_#{date_range_filename(@date_range)}.xml"  }
@@ -76,18 +78,18 @@ protected
 
 	def make_table(flights, short=false)
 		columns = [
-			{ :title => 'Datum'           , :width => 14 },
+			{ :title => 'Datum'           , :width => 16 },
 			{ :title => 'Muster'          , :width => 12 },
-			{ :title => 'Kennzeichen'     , :width => 16 },
-			{ :title => 'Flugzeugführer'  , :width => 20 },
+			{ :title => 'Kennzeichen'     , :width => 18 },
+			{ :title => 'Pilot'           , :width => 20 },
 			{ :title => 'Begleiter'       , :width => 20 },
 			{ :title => 'Startart'        , :width => 11 },
 			{ :title => 'Starort'         , :width => 15 },
 			{ :title => 'Zielort'         , :width => 15 },
 			{ :title => 'Start'           , :width => 12 },
 			{ :title => 'Landung'         , :width => 12 },
-			{ :title => 'Flugdauer'       , :width => 13 },
-			{ :title => 'Bemerkungen'     , :width => 20 }
+			{ :title => 'Dauer'           , :width => 12 },
+			{ :title => 'Bemerkungen'     , :width => 20, :stretch=>1 }
 		]
 
 		rows=flights.each_with_index.map { |flight, index|

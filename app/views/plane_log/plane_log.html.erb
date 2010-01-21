@@ -6,8 +6,6 @@
 		<p>Keine Einträge</p>
 	<% else %>
 		<% @plane_log.keys.sort.each { |club| %>
-			<% entries=@plane_log[club] %>
-
 			<% heading h club do %>
 				<%= render :partial => 'partials/list_table', :locals => { :table => @tables[club] } %>
 			<% end %>

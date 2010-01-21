@@ -44,7 +44,7 @@ class Settings
 				elsif (line =~ /ort (.*)/i)
 					@location=$1.strip
 				elsif (line =~ /local_hosts (.*)/i)
-					@local_addresses=$1.split(',').map { |address| address.strip.split('.') }
+					@local_addresses+=$1.split(',').map { |address| address.strip.split('.') }
 				end
 			end
 		}

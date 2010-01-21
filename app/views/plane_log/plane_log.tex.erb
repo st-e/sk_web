@@ -33,8 +33,6 @@
 	<p>Keine Einträge</p>
 <% else %>
 	<% @plane_log.keys.sort.each { |club| %>
-		<% entries=@plane_log[club] %>
-
 		\section{<%= l club %>}
 
 		<%= render :partial => 'partials/list_table.tex.erb', :locals => { :table => @tables[club] } %>

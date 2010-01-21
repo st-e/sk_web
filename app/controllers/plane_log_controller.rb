@@ -32,8 +32,10 @@ class PlaneLogController < ApplicationController
 
 		respond_to do |format|
 			format.html { render 'plane_log'        ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.html" }
-			format.pdf  { render_pdf_latex 'plane_log.tex'; set_filename "bordbuecher_#{date_range_filename(@date_range)}.pdf"  }
-			format.tex  { render 'plane_log'        ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.tex"  }
+			#format.pdf  { render_pdf_latex 'plane_log.tex'; set_filename "bordbuecher_#{date_range_filename(@date_range)}.pdf"  }
+			format.pdf  { @faux_template='plane_log';
+				          render 'layouts/faux_layout'       ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.pdf"  }
+			format.tex  { render 'plane_log'         ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.tex"  }
 			#format.csv  { render 'plane_log'        ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.csv"  }
 			#format.xml  { render :xml => @flights   ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.xml"  }
 			#format.json { render :json => @flights  ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.json" }
@@ -51,16 +53,16 @@ protected
 
 	def make_table(entries)
 		columns = [
-			{ :title => 'Kennzeichen'      , :width => 17 },
-			{ :title => 'Datum'            , :width => 15 },
-			{ :title => 'Name'             , :width => 32 },
-			{ :title => 'Insassen'         , :width => 11 },
-			{ :title => 'Startort'         , :width => 24 },
-			{ :title => 'Zielort'          , :width => 24 },
-			{ :title => 'Startzeit'        , :width => 14 },
-			{ :title => 'Landezeit'        , :width => 14 },
-			{ :title => 'Anzahl Landungen' , :width => 25 },
-			{ :title => 'Dauer'            , :width =>  8 }
+			{ :title => 'Kennzeichen' , :width => 18 },
+			{ :title => 'Datum'       , :width => 16 },
+			{ :title => 'Name'        , :width => 32, :stretch => 1 },
+			{ :title => 'Insassen'    , :width => 13 },
+			{ :title => 'Startort'    , :width => 24, :stretch => 1 },
+			{ :title => 'Zielort'     , :width => 24, :stretch => 1 },
+			{ :title => 'Startzeit'   , :width => 14 },
+			{ :title => 'Landezeit'   , :width => 14 },
+			{ :title => 'Landungen'   , :width => 16 },
+			{ :title => 'Dauer'       , :width => 10 }
 		]
 
 		rows=entries.map { |entry| [

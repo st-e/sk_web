@@ -161,6 +161,13 @@ class Prawn::Document
 		move_down 0.5.cm
 	end
 
+	def section(*args)
+		text *args
+		move_down 0.4.cm
+		yield
+		move_down 1.cm
+	end
+
 	# before_render won't work because it's called after finalize_all_page_contents
 	def render_headings
 		page_count.times do |i|

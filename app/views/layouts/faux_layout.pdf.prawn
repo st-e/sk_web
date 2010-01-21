@@ -13,7 +13,16 @@ pdf.footer_margin=1.5.cm
 pdf.header_size=7
 pdf.table_size=7
 
-pdf.font "#{Prawn::BASEDIR}/data/fonts/DejaVuSans.ttf"
+pdf.font_families.update(
+	"DejaVuSans" => {
+	:bold        => "#{RAILS_ROOT}/lib/fonts/DejaVuSans-Bold.ttf",
+	:italic      => "#{RAILS_ROOT}/lib/fonts/DejaVuSans-Oblique.ttf",
+	:bold_italic => "#{RAILS_ROOT}/lib/fonts/DejaVuSans-BoldOblique.ttf",
+	:normal      => "#{RAILS_ROOT}/lib/fonts/DejaVuSans.ttf"
+	})
+
+
+pdf.font "DejaVuSans"
 pdf.font_size 7
 
 # Faux yield

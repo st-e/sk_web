@@ -31,8 +31,8 @@ class FlightlistController < ApplicationController
 		respond_to do |format|
 			format.html { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.html" }
 #			format.pdf  { render_pdf_latex 'flightlist.tex'; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
-			format.pdf  { @page_layout=:landscape; @faux_template='flightlist';
-				          render 'faux_layout'       ; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
+			format.pdf  { @faux_template='flightlist'; @page_layout=:landscape;
+				          render 'layouts/faux_layout'       ; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
 			format.tex  { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.tex"  }
 			format.csv  { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.csv"  }
 			#format.xml  { render :xml => @flights    ; set_filename "startkladde_#{date_range_filename(@date_range)}.xml"  }

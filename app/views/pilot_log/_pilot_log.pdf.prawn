@@ -1,4 +1,4 @@
-ppdf.centered_header="Hauptflugbuch #{Settings.instance.location}"
+ppdf.centered_header="Flugbuch für #{@person.full_name}"
 render :partial=>'partials/date_range', :locals=>{:ppdf=>ppdf, :date_range=>@date_range}
 
 render :partial=>'partials/flight_count', :locals=>{:ppdf=>ppdf, :num_flights=>@flights.size}
