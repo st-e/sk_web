@@ -13,6 +13,9 @@ Notes:
 	if in database.yml the database encoding is set to utf8, but not when it is
 	set to latin1?
 
+Tests:
+  - Flightlist 7.10.2009 fast?
+
 Tests (test database):
   - without referer
   - CSV export with Excel

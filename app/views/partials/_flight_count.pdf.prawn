@@ -1,0 +1,6 @@
+ppdf.text case num_flights
+	when 0 then "Keine Flüge"
+	when 1 then "1 Flug"
+	else "#{num_flights} Flüge"
+end
+

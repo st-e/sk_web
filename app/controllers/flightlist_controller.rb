@@ -31,7 +31,8 @@ class FlightlistController < ApplicationController
 		respond_to do |format|
 			format.html { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.html" }
 #			format.pdf  { render_pdf_latex 'flightlist.tex'; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
-			format.pdf  { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
+			format.pdf  { @page_layout=:landscape; @faux_template='flightlist';
+				          render 'faux_layout'       ; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
 			format.tex  { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.tex"  }
 			format.csv  { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.csv"  }
 			#format.xml  { render :xml => @flights    ; set_filename "startkladde_#{date_range_filename(@date_range)}.xml"  }
@@ -70,23 +71,23 @@ protected
 
 	def make_table(flights, short=false)
 		columns = [
-			{ :title => (short)?'Nr.'        :'Nr.'                   , :width =>  5 },
-			{ :title => (short)?'Kennz.'     :'Kennzeichen'           , :width => 16 },
-			{ :title => (short)?'Typ'        :'Typ'                   , :width => 20 },
-			{ :title => (short)?'Pilot'      :'Pilot'                 , :width => 27 },
-			{ :title => (short)?'Begleiter'  :'Begleiter'             , :width => 27 },
-			{ :title => (short)?'Verein'     :'Verein'                , :width => 25 },
-			{ :title => (short)?'SA'         :'Startart'              , :width =>  6 },
-			{ :title => (short)?'Start'      :'Startzeit'             , :width =>  9 },
-			{ :title => (short)?'Landg.'     :'Landezeit'             , :width =>  9 },
-			{ :title => (short)?'Dauer'      :'Dauer'                 , :width =>  9 },
-			{ :title => (short)?'Ld. Sfz.'   :'Landezeit Schleppflug' , :width => 11 },
-			{ :title => (short)?'Dauer'      :'Dauer Schleppflug'     , :width =>  9 },
-			{ :title => (short)?'#Ldg.'      :'Anzahl Landungen'      , :width =>  9 },
-			{ :title => (short)?'Startort'   :'Startort'              , :width => 19 },
-			{ :title => (short)?'Zielort'    :'Zielort'               , :width => 19 },
-			{ :title => (short)?'Zielort SFZ':'Zielort Schleppflug'   , :width => 19 },
-			{ :title => (short)?'Bemerkung'  :'Bemerkungen'           , :width => 22 }
+			{ :title => (short)?'Nr.'         :'Nr.'                   , :width =>  5 },
+			{ :title => (short)?'Kennz.'      :'Kennzeichen'           , :width => 16 },
+			{ :title => (short)?'Typ'         :'Typ'                   , :width => 20 },
+			{ :title => (short)?'Pilot'       :'Pilot'                 , :width => 27 },
+			{ :title => (short)?'Begleiter'   :'Begleiter'             , :width => 27 },
+			{ :title => (short)?'Verein'      :'Verein'                , :width => 25 },
+			{ :title => (short)?'SA'          :'Startart'              , :width =>  6 },
+			{ :title => (short)?'Start'       :'Startzeit'             , :width =>  9 },
+			{ :title => (short)?'Landg.'      :'Landezeit'             , :width =>  9 },
+			{ :title => (short)?'Dauer'       :'Dauer'                 , :width =>  9 },
+			{ :title => (short)?'Ld. Sfz.'    :'Landezeit Schleppflug' , :width => 11 },
+			{ :title => (short)?'Dauer'       :'Dauer Schleppflug'     , :width =>  9 },
+			{ :title => (short)?'#Ldg.'       :'Anzahl Landungen'      , :width =>  9 },
+			{ :title => (short)?'Startort'    :'Startort'              , :width => 19 },
+			{ :title => (short)?'Zielort'     :'Zielort'               , :width => 19 },
+			{ :title => (short)?'Zielort SFZ' :'Zielort Schleppflug'   , :width => 19 },
+			{ :title => (short)?'Bemerkungen' :'Bemerkungen'           , :width => 22, :stretch=>1}
 		]
 
 		rows=flights.each_with_index.map { |flight, index| [

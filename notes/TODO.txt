@@ -1,9 +1,5 @@
 Critical (before release):
-* Startlisten langsam, zum Beispiel 7.10.2009
-* Better PDF generation, it's too slow
 * ssl redirect in htaccess, and add warning if ssl is off
-* prawn: faux_layouts (mit partials)
-* flightlist PDF: correct "no flights" display
 * other PDFs with prawn
 * move Prawn::Document extensions out of rendering
 
@@ -11,6 +7,8 @@ Major (important changes):
 * Better handling of utf8 characters
 * Templates
   * template for HTML file (yield body)
+  * get rid of flight_count partial
+  * get rid of date_range partial (use an escaper block)
 * Error handling
   * Send mail on exception
 * Overwriting

@@ -8,6 +8,8 @@ require "prawn/table"
 class Prawn::Document
 	attr_accessor :footer_margin, :header_margin
 	attr_accessor :header_size, :table_size
+	attr_accessor :left_header, :centered_header, :right_header
+	attr_accessor :left_footer, :centered_footer, :right_footer
 
 	def left_text(y, t)
 		text_at t, :at => [bounds.left, y]
@@ -21,12 +23,13 @@ class Prawn::Document
 		text_at t, :at => [bounds.left+bounds.width/2-width_of(t)/2, y]
 	end
 
-	def     left_header(t);     left_text(bounds.   top-font.ascender,  t); end
-	def centered_header(t); centered_text(bounds.   top-font.ascender,  t); end
-	def    right_header(t);    right_text(bounds.   top-font.ascender,  t); end
-	def     left_footer(t);     left_text(bounds.bottom+font.descender, t); end
-	def centered_footer(t); centered_text(bounds.bottom+font.descender, t); end
-	def    right_footer(t);    right_text(bounds.bottom+font.descender, t); end
+	def     left_header_text(t);     left_text(bounds.   top-font.ascender,  t) if t; end
+	def centered_header_text(t); centered_text(bounds.   top-font.ascender,  t) if t; end
+	def    right_header_text(t);    right_text(bounds.   top-font.ascender,  t) if t; end
+	def     left_footer_text(t);     left_text(bounds.bottom+font.descender, t) if t; end
+	def centered_footer_text(t); centered_text(bounds.bottom+font.descender, t) if t; end
+	def    right_footer_text(t);    right_text(bounds.bottom+font.descender, t) if t; end
+
 
 	def headings_box
 		canvas do
@@ -114,16 +117,30 @@ class Prawn::Document
 		columns=table[:columns]
 		rows=table[:rows]
 
-		column_widths=table[:columns].map { |column| column[:width].mm }
-		column_widths_hash={}
-		column_widths.each_with_index { |width, index| column_widths_hash[index]=width }
-		
 		header_values=columns.map { |column| column[:title] }
+
+		# Determine the column widths
+		column_widths=columns.map { |column| column[:width].mm }
+
+		# Distribute extra space according to stretch factors
+		total_stretch=columns.sum { |column| column[:stretch] || 0 }
+		if total_stretch>0
+			total_width=column_widths.sum
+			extra_width_per_stretch = (bounds.width - total_width)/total_stretch
+
+			column_widths.size.times { |i|
+				column_widths[i] += extra_width_per_stretch * (columns[i][:stretch] || 0)
+			}
+		end
 		
+		# Create a column width hash
+		column_widths_hash={}
+		column_widths.each_with_index { |width, index| column_widths_hash[index]=width.max(0) }
+
 		# Render the table header
 		render_table_header(column_widths_hash, header_values)
 
-		table[:rows].each { |row|
+		rows.each { |row|
 			# Render the current table row
 			if !render_table_row column_widths, row
 				# Oops...the row didn't fit on the page
