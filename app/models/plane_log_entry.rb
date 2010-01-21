@@ -1,5 +1,4 @@
 require_dependency 'duration'
-require_dependency 'hash_by'
 
 class PlaneLogEntry
 	attr_reader :registration
