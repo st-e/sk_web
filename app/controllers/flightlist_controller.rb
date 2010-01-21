@@ -31,7 +31,7 @@ class FlightlistController < ApplicationController
 		respond_to do |format|
 			format.html { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.html" }
 #			format.pdf  { render_pdf_latex 'flightlist.tex'; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
-			format.pdf  { render_pdf generate_flightlist_prawn; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
+			format.pdf  { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
 			format.tex  { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.tex"  }
 			format.csv  { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.csv"  }
 			#format.xml  { render :xml => @flights    ; set_filename "startkladde_#{date_range_filename(@date_range)}.xml"  }
@@ -40,13 +40,10 @@ class FlightlistController < ApplicationController
 	end
 
 protected
-	def generate_flightlist_prawn
-		generate_pdf_prawn do |pdf|
-			pdf.text "#{@flights.size} Flüge"
-			pdf.paragraph
-			pdf.render_table @table
-		end
-	end
+#	def generate_flightlist_prawn
+#		generate_pdf_prawn do |pdf|
+#		end
+#	end
 
 	def available_formats
 		formats.select { |format| format_available? format[1] }

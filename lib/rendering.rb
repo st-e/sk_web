@@ -205,46 +205,10 @@ module Rendering
 		send_data pdf, { :type => 'application/pdf', :disposition => 'inline' }.merge(options)
 	end
 
-	def generate_pdf_prawn
-pdf = Prawn::Document.new(
-	:page_size => 'A4', :page_layout => :landscape,
-	:skip_page_creation => true,
-	:left_margin => 1.cm, :right_margin => 1.cm, :top_margin => (2.5).cm, :bottom_margin =>(2.5).cm
-)
-
-pdf.header_margin=1.75.cm
-pdf.footer_margin=1.5.cm
-pdf.header_size=7
-pdf.table_size=7
-
-#pdf.on_page_create do
-#	pdf.font "DejaVuSans.ttf"
-#	pdf.font_size font_size
-#end
-
-pdf.start_new_page
-
-pdf.font "#{Prawn::BASEDIR}/data/fonts/DejaVuSans.ttf"
-pdf.font_size 7
-
-
-
-yield pdf
-
-
-pdf.render_headings do |page|
-	pdf.centered_header "Hauptflugbuch Dingenskirchen"
-	pdf.right_header "x.xx.xxxx"
-
-	pdf.left_footer "sk_web version string/Prawn #{Prawn::VERSION}"
-	pdf.right_footer "Seite #{page} von #{pdf.page_count}"
-end
-
-
-#pdf.render_file('prawn.pdf')
-pdf.render
-
-	end
+	#def generate_pdf_prawn
+		#pdf.render_file('prawn.pdf')
+		#pdf.render
+	#end
 
 	def set_filename(filename)
 		response.headers["Content-Disposition"] = "inline; filename=#{filename}"
