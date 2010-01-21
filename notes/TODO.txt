@@ -1,10 +1,12 @@
 Critical (before release):
-* ssl redirect in htaccess, and add warning if ssl is off
-* move Prawn::Document extensions out of rendering
-* local date in pilot log and plane log
+* rake gems:install doesn't work - due to prawnto?
 
 Major (important changes):
-* Better handling of utf8 characters
+* There are rails classes for durations
+* Database
+  * Better handling of utf8 characters
+* Invocation
+  * ssl redirect in htaccess, and add warning if ssl is off
 * Templates
   * template for HTML file (yield body)
   * get rid of flight_count partial
@@ -65,6 +67,7 @@ Major (important changes):
   * consider towflights for pilot log
   * PlaneLogEntry.create_merged: add "Towflight" or "Towflights" to comments
     list
+  * Towplane in pilot log: D-XXXX 12' instead of 0:12
 * Bugs
   * make it not break on flights with NULL date (Flight.new.save)
 * Database

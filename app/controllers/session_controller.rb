@@ -1,5 +1,3 @@
-require 'util'
-
 class SessionController < ApplicationController
 	allow_public :login, :logout, :settings
 

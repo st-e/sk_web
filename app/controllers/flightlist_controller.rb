@@ -1,6 +1,3 @@
-require 'date'
-require 'tmpdir'
-
 class FlightlistController < ApplicationController
 	allow_local :index, :show
 

@@ -1,6 +1,3 @@
-require 'date'
-require 'tmpdir'
-
 class PilotLogController < ApplicationController
 	require_login :index, :show
 
@@ -98,7 +95,7 @@ protected
 			comments << flight.bemerkung if !flight.bemerkung.blank?
 		
 			[
-			flight.effective_date                         ,
+			date_formatter(german_format, true).call(flight.effective_date),
 			flight.the_plane.typ                              ,
 			flight.the_plane.kennzeichen                      ,
 			flight.effective_pilot_name             || "?",

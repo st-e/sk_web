@@ -12,7 +12,7 @@
 		<%= radio_button_tag('date', 'single', false) %>Anderes Datum: <%= text_field_tag 'single_date', date_formatter(german_format, true).call(today), :size=>10, :maxlength=>10 %>
 <% if local_assigns[:enable_range] %>
 		<br/>
-		<%= radio_button_tag('date', 'range', false) %>Bereich:
+		<%= radio_button_tag('date', 'range', false) %>Zeitraum:
 		<%= text_field_tag 'first_date', date_formatter(german_format, true).call(first_date), :size=>10, :maxlength=>10 %> bis
 		<%= text_field_tag 'last_date' , date_formatter(german_format, true).call(today     ), :size=>10, :maxlength=>10 %>
 <% end %>

@@ -1,6 +1,6 @@
 module DateHandling
 	# A date specification is a string describing a date or a date range. The
-	# kind of date specification is determined from he 'date' parameter. And
+	# kind of date specification is determined from he 'date' parameter, and
 	# potentially other parameters.
 	#
 	# date param |date specification    |other params
@@ -72,6 +72,18 @@ module DateHandling
 
 		# Redirect to the show action with the date specification
 		redirect_to redirect_options.merge({ :date=>ds })
+	end
+
+	def german_format
+		"%d.%m.%Y"
+	end
+
+	def date_formatter(format, strip_leading_zeros=false)
+		lambda { |date|
+			string=date.strftime(format)
+			string.gsub!(/(^|\.)0/, '\1') if strip_leading_zeros
+			string
+		}
 	end
 end
 

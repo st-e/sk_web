@@ -1,5 +1,4 @@
-require 'text'
-require 'util'
+require_dependency 'duration'
 
 class Flight < ActiveRecord::Base
 	# Status flags used in the database

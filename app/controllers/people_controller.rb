@@ -1,5 +1,4 @@
-require 'text'
-require 'util'
+require_dependency 'attempt'
 
 class PeopleController < ApplicationController
 	require_permission :club_admin, :index, :show, :new, :create, :edit, :update, :destroy, :overwrite, :import, :export

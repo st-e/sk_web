@@ -1,6 +1,3 @@
-require 'date'
-require 'tmpdir'
-
 class PlaneLogController < ApplicationController
 	allow_local :index, :show
 
@@ -67,7 +64,7 @@ protected
 
 		rows=entries.map { |entry| [
 			entry.registration          ,
-			entry.date                  ,
+			date_formatter(german_format, true).call (entry.date),
 			entry.pilot_name            ,
 			entry.num_passengers_string ,
 			entry.departure_airfield    ,

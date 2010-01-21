@@ -1,4 +1,4 @@
-require 'util'
+require_dependency 'attempt'
 
 class UsersController < ApplicationController
 	filter_parameter_logging :password # Filter parameters containing "password"

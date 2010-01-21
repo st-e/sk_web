@@ -1,5 +1,3 @@
-require 'text'
-
 class Settings
 	include Singleton
 
