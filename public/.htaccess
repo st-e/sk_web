@@ -21,7 +21,7 @@ AddHandler fcgid-script .fcgi
 # For better performance replace the dispatcher with the fastcgi one
 #
 # Example:
-#   RewriteRule ^(.*)$ dispatch.fcgi [QSA,L]
+#   RewriteRule ^(.*)$ sk_web.fcgi [QSA,L]
 #RewriteEngine On
 
 # If your Rails application is accessed via an Alias directive,
@@ -35,8 +35,8 @@ AddHandler fcgid-script .fcgi
 #RewriteRule ^$ index.html [QSA]
 #RewriteRule ^([^.]+)$ $1.html [QSA]
 #RewriteCond %{REQUEST_FILENAME} !-f
-##RewriteRule ^(.*)$ dispatch.cgi [QSA,L]
-#RewriteRule ^(.*)$ dispatch.fcgi [QSA,L]
+##RewriteRule ^(.*)$ sk_web.cgi [QSA,L]
+#RewriteRule ^(.*)$ sk_web.fcgi [QSA,L]
 
 # In case Rails experiences terminal errors
 # Instead of displaying this message you can supply a file here which will be rendered instead
@@ -50,19 +50,19 @@ AddHandler fcgid-script .fcgi
 
 RewriteEngine On
 
-RewriteRule ^/?$ %{REQUEST_URI}/dispatch.fcgi [L]
+RewriteRule ^/?$ %{REQUEST_URI}/sk_web.fcgi [L]
 
 # Nicht existierende Dateien im Basisverzeichnis direkt auf den dispatcher
 # umschreiben, danach keine weiterne Regeln mehr ausführen
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^[^/]*$ %{REQUEST_URI}/../dispatch.fcgi [L]
+RewriteRule ^[^/]*$ %{REQUEST_URI}/../sk_web.fcgi [L]
 
 # Nicht existierende Dateien in einem Unterverzeichnis auf den Dispatcher im
 # nächsthöheren Verzeichnis umschreiben. Diese Regel wird rekursiv angewendet.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^.*/.*$ %{REQUEST_URI}/../../dispatch.fcgi
+RewriteRule ^.*/.*$ %{REQUEST_URI}/../../sk_web.fcgi
 
 
 

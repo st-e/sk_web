@@ -31,11 +31,11 @@ class PlaneLogController < ApplicationController
 		}
 
 		respond_to do |format|
-			format.html { render 'plane_log'        ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.html" }
-			#format.pdf  { render_pdf_latex 'plane_log.tex'; set_filename "bordbuecher_#{date_range_filename(@date_range)}.pdf"  }
+			format.html { render 'plane_log'           ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.html" }
 			format.pdf  { @faux_template='plane_log';
-				          render 'layouts/faux_layout'       ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.pdf"  }
-			format.tex  { render 'plane_log'         ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.tex"  }
+				          render 'layouts/faux_layout' ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.pdf"  }
+			#format.pdf  { render_pdf_latex 'plane_log.tex'; set_filename "bordbuecher_#{date_range_filename(@date_range)}.pdf"  }
+			#format.tex  { render 'plane_log'        ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.tex"  }
 			#format.csv  { render 'plane_log'        ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.csv"  }
 			#format.xml  { render :xml => @flights   ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.xml"  }
 			#format.json { render :json => @flights  ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.json" }
@@ -46,8 +46,8 @@ protected
 	def formats
 		[
 			['PDF'  , 'pdf'  ],
-			['HTML' , 'html' ],
-			['LaTeX', 'latex']
+			['HTML' , 'html' ]
+#			['LaTeX', 'latex']
 		]
 	end
 

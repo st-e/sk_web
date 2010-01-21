@@ -15,8 +15,8 @@ Notes:
 
 Tests:
   - Flightlist from localhost on adam, wget, pdf:
-  - 7.10.2009: latex 23.5s-30s
-  - 7.10.2010: latex 6.5s
+  - 7.10.2009: latex 23.5s-30s, prawn 15s
+  - 7.10.2010: latex 6.5s, prawn 2-3s
 
 Tests (test database):
   - without referer

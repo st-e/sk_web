@@ -2,8 +2,6 @@ Critical (before release):
 * ssl redirect in htaccess, and add warning if ssl is off
 * move Prawn::Document extensions out of rendering
 * local date in pilot log and plane log
-* remove latex options
-* rename dispatch.fcgi
 
 Major (important changes):
 * Better handling of utf8 characters
@@ -11,6 +9,8 @@ Major (important changes):
   * template for HTML file (yield body)
   * get rid of flight_count partial
   * get rid of date_range partial (use an escaper block)
+  * tables as text
+  * prawn pdfs are 5 times the size of pdf documents
 * Error handling
   * Send mail on exception
 * Overwriting

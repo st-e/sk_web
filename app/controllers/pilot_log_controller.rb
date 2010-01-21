@@ -55,12 +55,12 @@ class PilotLogController < ApplicationController
 		@table=make_table(@flights)
 
 		respond_to do |format|
-			format.html { render 'pilot_log'        ; set_filename "flugbuch_#{date_range_filename(@date_range)}.html" }
-			#format.pdf  { render_pdf_latex 'pilot_log.tex'; set_filename "flugbuch_#{date_range_filename(@date_range)}.pdf"  }
+			format.html { render 'pilot_log'           ; set_filename "flugbuch_#{date_range_filename(@date_range)}.html" }
 			format.pdf  { @faux_template='pilot_log';
-				          render 'layouts/faux_layout'      ; set_filename "flugbuch_#{date_range_filename(@date_range)}.pdf"  }
-			format.tex  { render 'pilot_log'        ; set_filename "flugbuch_#{date_range_filename(@date_range)}.tex"  }
-			format.csv  { render 'pilot_log'        ; set_filename "flugbuch_#{date_range_filename(@date_range)}.csv"  }
+				          render 'layouts/faux_layout' ; set_filename "flugbuch_#{date_range_filename(@date_range)}.pdf"  }
+			format.csv  { render 'pilot_log'           ; set_filename "flugbuch_#{date_range_filename(@date_range)}.csv"  }
+			#format.pdf  { render_pdf_latex 'pilot_log.tex'; set_filename "flugbuch_#{date_range_filename(@date_range)}.pdf"  }
+			#format.tex  { render 'pilot_log'        ; set_filename "flugbuch_#{date_range_filename(@date_range)}.tex"  }
 			#format.xml  { render :xml => @flights   ; set_filename "flugbuch_#{date_range_filename(@date_range)}.xml"  }
 			#format.json { render :json => @flights  ; set_filename "flugbuch_#{date_range_filename(@date_range)}.json" }
 		end
@@ -71,8 +71,8 @@ protected
 		[
 			['HTML' , 'html' ],
 			['CSV'  , 'csv'  ],
-			['PDF'  , 'pdf'  ],
-			['LaTeX', 'latex']
+			['PDF'  , 'pdf'  ]
+			#['LaTeX', 'latex']
 		]
 	end
 

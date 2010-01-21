@@ -29,12 +29,12 @@ class FlightlistController < ApplicationController
 		render_permission_denied and return if !format_available? format
 
 		respond_to do |format|
-			format.html { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.html" }
-#			format.pdf  { render_pdf_latex 'flightlist.tex'; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
+			format.html { render 'flightlist'          ; set_filename "startkladde_#{date_range_filename(@date_range)}.html" }
 			format.pdf  { @faux_template='flightlist'; @page_layout=:landscape;
-				          render 'layouts/faux_layout'       ; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
-			format.tex  { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.tex"  }
-			format.csv  { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.csv"  }
+				          render 'layouts/faux_layout' ; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
+			format.csv  { render 'flightlist'          ; set_filename "startkladde_#{date_range_filename(@date_range)}.csv"  }
+#			format.pdf  { render_pdf_latex 'flightlist.tex'; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
+			#format.tex  { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.tex"  }
 			#format.xml  { render :xml => @flights    ; set_filename "startkladde_#{date_range_filename(@date_range)}.xml"  }
 			#format.json { render :json => @flights   ; set_filename "startkladde_#{date_range_filename(@date_range)}.json" }
 		end
@@ -54,8 +54,8 @@ protected
 		[
 			['PDF'  , 'pdf'  ],
 			['HTML' , 'html' ],
-			['CSV'  , 'csv'  ],
-			['LaTeX', 'latex']
+			['CSV'  , 'csv'  ]
+#			['LaTeX', 'latex']
 		]
 	end
 
@@ -64,7 +64,7 @@ protected
 		when 'pdf'  : true
 		when 'html' : current_user && current_user.has_permission?(:read_flight_db)
 		when 'csv'  : current_user && current_user.has_permission?(:read_flight_db)
-		when 'latex': current_user && current_user.has_permission?(:read_flight_db)
+#		when 'latex': current_user && current_user.has_permission?(:read_flight_db)
 		else false
 		end
 	end
