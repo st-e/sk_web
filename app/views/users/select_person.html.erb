@@ -19,10 +19,12 @@
 					<%= body.text "Keine Person", :colspan=>6 %>
 				<% } %>
 
-				<% table.body_row { |body| %>
-					<%= body.cell f.radio_button 'person', @user.person, :checked => true %>
-					<%= body.text "Aktuelle Person: #{@user.associated_person.full_name} (#{@user.person})", :colspan=>6 %>
-				<% } if !current_person_on_page %>
+				<% if @user.associated_person %>
+					<% table.body_row { |body| %>
+						<%= body.cell f.radio_button 'person', @user.person, :checked => true %>
+						<%= body.text "Aktuelle Person: #{@user.associated_person.full_name} (#{@user.person})", :colspan=>6 %>
+					<% } if !current_person_on_page %>
+				<% end %>
 
 				<% table.header_row { |header| %>
 					<%= header.text nil          %>

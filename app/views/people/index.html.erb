@@ -2,35 +2,37 @@
 
 <p><%= @people.page_info 'Person', 'Personen' %></p>
 
-<% paginated_section @people do %>
-	<% table_for(@people) { |table| %>
-		<% table.header_row { |header| %>
-			<%= header.text "Nachname"   %>
-			<%= header.text "Vorname"    %>
-			<%= header.text "Verein"     %>
-			<%= header.text "Vereins-ID" %>
-			<%= header.text "Bemerkung"  %>
-			<%= header.text "Benutzer"   %>
-			<%= header.text "ID"         %>
-			<%#= header.text "Benutzt?"   %>
-		<% } %>
+<% if not @people.empty? %>
+	<% paginated_section @people do %>
+		<% table_for(@people) { |table| %>
+			<% table.header_row { |header| %>
+				<%= header.text "Nachname"   %>
+				<%= header.text "Vorname"    %>
+				<%= header.text "Verein"     %>
+				<%= header.text "Vereins-ID" %>
+				<%= header.text "Bemerkung"  %>
+				<%= header.text "Benutzer"   %>
+				<%= header.text "ID"         %>
+				<%#= header.text "Benutzt?"   %>
+			<% } %>
 
-		<% table.body { |body, person| %>
-			<% user=person.user %>
-			<%= body.cell link_to(person.last_name, person)               %>
-			<%= body.cell link_to(person.first_name, person)              %>
-			<%= body.text person.verein                                   %>
-			<%= body.text person.vereins_id                               %>
-			<%= body.text person.bemerkung                                %>
-			<%= body.cell((user)?link_to(user.username, user):h("-"))     %>
-			<%= body.cell link_to(person.id, person)                      %>
-			<%#= body.text yesno(person.used?)     %>
-			<%= body.cell link_to('Editieren',     edit_person_path(      person)) %>
-			<%= body.cell link_to('Löschen',       person, :method => :delete,
-				:confirm => "Person #{person.full_name} wirklich löschen?"       ) %>
-			<%= body.cell link_to('Überschreiben', overwrite_person_path( person)) %>
+			<% table.body { |body, person| %>
+				<% user=person.user %>
+				<%= body.cell link_to(person.last_name, person)               %>
+				<%= body.cell link_to(person.first_name, person)              %>
+				<%= body.text person.verein                                   %>
+				<%= body.text person.vereins_id                               %>
+				<%= body.text person.bemerkung                                %>
+				<%= body.cell((user)?link_to(user.username, user):h("-"))     %>
+				<%= body.cell link_to(person.id, person)                      %>
+				<%#= body.text yesno(person.used?)     %>
+				<%= body.cell link_to('Editieren',     edit_person_path(      person)) %>
+				<%= body.cell link_to('Löschen',       person, :method => :delete,
+					:confirm => "Person #{person.full_name} wirklich löschen?"       ) %>
+				<%= body.cell link_to('Überschreiben', overwrite_person_path( person)) %>
+			<% } %>
 		<% } %>
-	<% } %>
+	<% end %>
 <% end %>
 
 <p>

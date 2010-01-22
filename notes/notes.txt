@@ -5,6 +5,7 @@ New features:
 
 Changes:
   - "Personen importieren" statt "Stammdaten einspielen"
+  - club_admin kann auch read_flight_db vergeben
 
 
 Notes:

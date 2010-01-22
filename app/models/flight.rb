@@ -81,6 +81,13 @@ class Flight < ActiveRecord::Base
 	TYPE_GUEST_EXTERNAL=8
 	TYPE_TOW=7
 
+	# The towpilot columns may or may not exist (to be fixed in a future
+	# database schema version)
+	def towpilot; self[:towpilot] || 0 ; end
+	def tpvn    ; self[:tpvn]     || ""; end
+	def tpnn    ; self[:tpnn]     || ""; end
+	def self.has_towpilot?; Flight.columns_hash.keys.include? 'towpilot'; end
+
 	def self.flight_type_text(flight_type)
 		case flight_type
 			when Flight::TYPE_NORMAL; return "Normalflug"

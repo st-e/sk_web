@@ -10,7 +10,7 @@ class PeopleController < ApplicationController
 	def index
 		attempt do
 			@people = Person.paginate :page => params[:page], :per_page => 50, :order => 'nachname, vorname', :readonly=>true
-			params[:page]=1 and redo if @people.out_of_bounds?
+			params[:page]=1 and redo if (!@people.empty? and @people.out_of_bounds?)
 		end
 
 		respond_to do |format|
@@ -124,7 +124,7 @@ class PeopleController < ApplicationController
 			# Let the user select a person
 			attempt do
 				@people = Person.paginate(:page => params[:page], :per_page => 50, :order => 'nachname, vorname', :readonly=>true).reject { |person| person.id==@wrong_person.id }
-				params[:page]=1 and redo if @people.out_of_bounds?
+				params[:page]=1 and redo if (!@people.empty? and @people.out_of_bounds?)
 			end
 
 			render 'overwrite_select' and return
@@ -147,13 +147,13 @@ class PeopleController < ApplicationController
 		User  .all(:conditions => { :person     => wrong_person_id }).each { |user|   user.person=      correct_person_id; user  .save }
 		Flight.all(:conditions => { :pilot      => wrong_person_id }).each { |flight| flight.pilot=     correct_person_id; flight.save }
 		Flight.all(:conditions => { :begleiter  => wrong_person_id }).each { |flight| flight.begleiter= correct_person_id; flight.save }
-		Flight.all(:conditions => { :towpilot   => wrong_person_id }).each { |flight| flight.towpilot=  correct_person_id; flight.save }
+		Flight.all(:conditions => { :towpilot   => wrong_person_id }).each { |flight| flight.towpilot=  correct_person_id; flight.save } if Flight.has_towpilot?
 
 		# Check that the person has no flights or users any more
 		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Benutzer, der auf die Person verweist." and redirect_to and return if User  .exists? :person    =>wrong_person_id
 		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Flug, der auf die Person verweist."     and redirect_to and return if Flight.exists? :pilot     =>wrong_person_id
 		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Flug, der auf die Person verweist."     and redirect_to and return if Flight.exists? :begleiter =>wrong_person_id
-		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Flug, der auf die Person verweist."     and redirect_to and return if Flight.exists? :towpilot  =>wrong_person_id
+		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Flug, der auf die Person verweist."     and redirect_to and return if (Flight.has_towpilot? && Flight.exists?(:towpilot  =>wrong_person_id))
 
 		# Once again for safety, as this is really important
 		flash[:error]="Fehler: Nach dem Überschreiben ist die Person noch in Benutzung." and redirect_to and return if @wrong_person.used?

@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 	def index
 		attempt do
 			@users = User.paginate :page => params[:page], :per_page => 20, :order => 'username', :readonly=>true
-			params[:page]=1 and redo if @users.out_of_bounds?
+			params[:page]=1 and redo if (!@users.empty? and @users.out_of_bounds?)
 		end
 
 		render "index"

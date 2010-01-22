@@ -1,8 +1,16 @@
+Before deploy:
+* Better error documents
+* make sure that towpilot works if recorded
+
 Critical (before release):
 * rake gems:install doesn't work - due to prawnto?
+* flightlist: pilot "", copilot "?"
+* <nobr> in Tabellen
 
 Major (important changes):
 * There are rails classes for durations
+* database.yml.dist
+* attempt/redo can get into endless loop; better redo_once
 * Invocation
   * ssl redirect in htaccess, and add warning if ssl is off
   * make relative_url_root setting independent of the script name by removing
@@ -17,6 +25,7 @@ Major (important changes):
   * prawn pdfs are 5 times the size of pdf documents
 * Error handling
   * Send mail on exception
+  * Handling of non-existent objects, e. g. person for user
 * Overwriting
   * overwrite_select: removal of person collides with pagination
 * Import

@@ -2,7 +2,6 @@ module ActionView
 	module Helpers
 		module FormHelper
 			def hidden_field(object_name, method, options = {})
-				puts "####### hidden_field called"
 				# alias or alias_method chain doesn't seem to work (because
 				# we're in a module?) - copy the contents of the original
 				# method

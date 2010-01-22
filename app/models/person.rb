@@ -53,7 +53,7 @@ class Person < ActiveRecord::Base
 		User  .exists?(:person    =>id)||
 		Flight.exists?(:pilot     =>id)||
 		Flight.exists?(:begleiter =>id)||
-		Flight.exists?(:towpilot  =>id)
+		(Flight.has_towpilot? && Flight.exists?(:towpilot  =>id))
 	end
 	
 
