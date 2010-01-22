@@ -49,7 +49,3 @@ Rails::Initializer.run do |config|
   #config.action_controller.relative_url_root = "/startkladde"
 end
 
-# Hack to avoid Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE)
-# http://www.ruby-forum.com/topic/164696
-ActiveRecord::Base.connection.execute "SET collation_connection = 'latin1_general_ci' "
-
