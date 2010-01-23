@@ -50,8 +50,6 @@ class Prawn::Document
 
 	def clip_box(x, y, w, h, stroke=false, &block)
 		save_state do
-			self.line_width=0.5
-
 			add_content "W" # Start clip path
 
 			# Draw the cell outline
@@ -112,6 +110,8 @@ class Prawn::Document
 	end
 
 	def render_table(table)
+		self.line_width=0.5
+
 		# Extract some values from the table
 		columns=table[:columns]
 		rows=table[:rows]

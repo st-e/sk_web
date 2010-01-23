@@ -1,7 +1,8 @@
 pdf = Prawn::Document.new(
 	:page_size => 'A4', :page_layout => (@page_layout || :portrait),
 	# The page margins are the amount of page not used for the main document
-	:left_margin => 1.cm, :right_margin => 1.cm, :top_margin => (2.5).cm, :bottom_margin =>(2.5).cm
+	:left_margin => 1.cm, :right_margin => 1.cm, :top_margin => (2.5).cm, :bottom_margin =>(2.5).cm,
+	:compress => true
 )
 
 # The header and footer margins are the amount of page not used for the

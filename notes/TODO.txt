@@ -25,7 +25,6 @@ Major (important changes):
   * get rid of flight_count partial
   * get rid of date_range partial (use an escaper block)
   * tables as text
-  * prawn pdfs are 5 times the size of pdf documents
   * link to "delete" on user/person show
 * Error handling
   * Send mail on exception
@@ -48,10 +47,6 @@ Major (important changes):
   * Filter by club (also overwrite and person selection)
   * Filter a la portal
   * link to list_people: correct page
-* PDF
-  * Error handling in generate_pdf, for example: pstricks not installed
-  * layout for tex
-  * generate_pdf: option for calling LaTeX 1/2/3 times
 * Models
   * Flight model: has_many :flights, :foreign_key => 'pilot' (and begleiter and
     towpilot); then use flights.count in Person.used?
@@ -138,7 +133,6 @@ Minor (less important changes or much work):
   * When using time_range, recover from ArgumentError (invalid date), redirect
     to the form, display an error message and preenter the (erroneous) values
   * User not found: 404 or error message
-  * better error reporting with latex files
   * What happens if a user is deleted while logged in?
 * CSV
   * look into fastercsv
@@ -169,4 +163,8 @@ Nice to have:
 After launch types in database:
 * :readonly=>true in lauch type queries
 
+* If LaTeX is used:
+* Better error handling, for example: pstricks not installed
+* layout for tex
+* generate_pdf: option for calling LaTeX 1/2/3 times
 
