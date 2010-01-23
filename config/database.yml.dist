@@ -18,7 +18,7 @@ development:
   adapter: mysql
   encoding: utf8
   reconnect: false
-  database: startkladde2
+  database: startkladde
   pool: 5
   username: sk_admin
   password: moobertshausen
@@ -43,7 +43,7 @@ production:
   reconnect: false
   database: startkladde
   pool: 5
-  username: startkladde
-  password: moobert
+  username: sk_admin
+  password: moobertshausen
   host: localhost
 
