@@ -33,7 +33,7 @@ pdf.render_headings do |page|
 	pdf.centered_header_text pdf.centered_header
 	pdf.   right_header_text pdf.   right_header
 
-	pdf. left_footer_text "#{version_string}/Prawn #{Prawn::VERSION}"
+	pdf. left_footer_text "#{Version.instance.version_string}/Prawn #{Version.instance.prawn}"
 	pdf.right_footer_text "Seite #{page} von #{pdf.page_count}"
 end
 

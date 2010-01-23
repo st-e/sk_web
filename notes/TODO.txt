@@ -1,11 +1,11 @@
-Before deploy:
-* Better error documents
-* make sure that towpilot works if recorded
-
 Critical (before release):
-* rake gems:install doesn't work - due to prawnto?
-* flightlist: pilot "", copilot "?"
-* <nobr> in Tabellen
+* people list is extremely slow, even though paginated, probably due to user
+  (overwrite select is way faster)
+* overwrite perform is also slow
+* make sure that towpilot works if recorded
+* Better error documents
+* rake gems:install doesn't work for prawn - due to prawnto requiring prawn?
+* can collation problem still happen?
 
 Major (important changes):
 * There are rails classes for durations
@@ -26,6 +26,7 @@ Major (important changes):
 * Error handling
   * Send mail on exception
   * Handling of non-existent objects, e. g. person for user
+  * Startup error (e. g. database connection) error reporting is poor
 * Overwriting
   * overwrite_select: removal of person collides with pagination
 * Import
@@ -98,6 +99,8 @@ Major (important changes):
 * Editing
   * delete confirmation without javascript
     (http://brandonaaron.net/blog/2009/02/25/unobtrusive-destroy-links-in-rails-using-jquery)
+* Controllers
+  * Move functionality from people controller to model
 
 Minor (less important changes or much work):
 * Templates

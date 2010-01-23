@@ -24,7 +24,7 @@
 \rohead{<%= render :partial=>'partials/date_range.tex', :locals=>{:date_range=>@date_range} %>}
 
 \cofoot{}
-\lofoot{<%= l version_string %>}
+\lofoot{<%= l Version.instance.version_string %>}
 \rofoot{Seite \thepage{} von \pageref{LastPage}}
 
 \setlength{\tabcolsep}{0.4mm}

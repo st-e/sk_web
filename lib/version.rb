@@ -1,9 +1,58 @@
-def version_string
-	ruby="Ruby #{RUBY_VERSION}"
-	rails="Rails #{Rails::VERSION::STRING}"
-	mysql="MySQL #{Mysql.client_version.to_s.sub(/^(.)(..)(..)/, '\\1.\\2.\\3')}"
-	"sk_web Version 2.0 (experimental)/#{ruby}/#{rails}/#{mysql}"
-	# RUBY_RELEASE_DATE
-end
+require 'rexml/document'
 
+class Version
+	include Singleton
+
+	attr_reader :name, :base_version, :version, :revision
+	attr_reader :ruby, :rails, :mysql_client, :mysql_server, :mysql_server_short, :prawn
+	attr_reader :database, :server, :effective_server, :host, :database_user
+
+	attr_reader :short_version_string
+	attr_reader :version_string
+	attr_reader :database_string
+	attr_reader :short_database_string
+
+	def initialize
+		@name="sk_web"
+		@base_version="2.0"
+		@revision=svn_revision!
+		@version=("#{@base_version} (rev. #{@revision})" if @revision) or @base_version
+
+		@ruby=RUBY_VERSION
+		@rails=Rails::VERSION::STRING
+		@mysql_client=Mysql.client_version.to_s.sub(/^(.)(..)(..)/, '\\1.\\2.\\3')
+		@mysql_server=ActiveRecord::Base.connection.show_variable('version')
+		@mysql_server_short=@mysql_server.gsub(/-.*/, '')
+		@prawn=Prawn::VERSION
+
+		config=Rails::Configuration.new
+		@host=`hostname`.strip
+		@database=config.database_configuration[RAILS_ENV]["database"] 
+		@server=config.database_configuration[RAILS_ENV]["host"] 
+		@database_user=config.database_configuration[RAILS_ENV]["username"] 
+		@effective_server=(@host if is_localhost?(server)) or @server
+
+		@version_string="#{@name} Version #{@version}/Ruby #{@ruby}/Rails #{@rails}/MySQL #{@mysql_server_short}"
+
+		@database_string="#{@database_user}@#{@effective_server}:#{@database}"
+		@short_database_string="#{@database}@#{@effective_server}"
+	end
+
+	protected
+
+	def is_localhost?(server)
+		server=="localhost" || server=="127.0.0.1"
+	end
+
+	def svn_revision!
+		svn_info=`svn info --xml`
+		return nil if svn_info.blank?
+
+		svn_xml=REXML::Document.new(svn_info)
+		entry=svn_xml.elements['info'].elements['entry']
+		return nil if !entry
+
+		entry.attributes['revision']
+	end
+end
 
