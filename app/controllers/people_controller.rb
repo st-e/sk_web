@@ -80,7 +80,12 @@ class PeopleController < ApplicationController
 		if @person.used?
 			flash[:error]="Die Person #{@person.full_name} kann nicht gelöscht werden, da sie in Benutzung ist."
 		else
-			@person.destroy
+			full_name=@person.full_name
+			if @person.destroy
+				flash[:notice] = "Die Person #{full_name} wurde gelöscht."
+			else
+				flash[:error] = "Beim Löschen ist ein Fehler aufgetreten."
+			end
 		end
 
 		respond_to do |format|

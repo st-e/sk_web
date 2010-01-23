@@ -7,18 +7,6 @@ Changes:
   - "Personen importieren" statt "Stammdaten einspielen"
   - club_admin kann auch read_flight_db vergeben
 
-
-Notes:
-  - Database is latin1, everything else is utf8, but it still works. Where is
-	it converted, and how is the database charset determined? Why does it work
-	if in database.yml the database encoding is set to utf8, but not when it is
-	set to latin1?
-
-Tests:
-  - Flightlist from localhost on adam, wget, pdf:
-  - 7.10.2009: latex 23.5s-30s, prawn 15s
-  - 7.10.2010: latex 6.5s, prawn 2-3s
-
 Tests (test database):
   - without referer
   - CSV export with Excel

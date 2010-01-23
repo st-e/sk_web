@@ -6,11 +6,14 @@ Critical (before release):
 * Better error documents
 * rake gems:install doesn't work for prawn - due to prawnto requiring prawn?
 * can collation problem still happen?
+* rhst: export/import - some are "changed", although identical
 
 Major (important changes):
+* Add option to log in permanently
 * There are rails classes for durations
 * database.yml.dist
 * attempt/redo can get into endless loop; better redo_once
+* Select "Other" radio button when "other" date field is edited (javascript)
 * Invocation
   * ssl redirect in htaccess, and add warning if ssl is off
   * make relative_url_root setting independent of the script name by removing
@@ -23,6 +26,7 @@ Major (important changes):
   * get rid of date_range partial (use an escaper block)
   * tables as text
   * prawn pdfs are 5 times the size of pdf documents
+  * link to "delete" on user/person show
 * Error handling
   * Send mail on exception
   * Handling of non-existent objects, e. g. person for user
@@ -39,6 +43,7 @@ Major (important changes):
   * import people: undefinedness if the database is modified between identify and
     perform
   * review: show names of unknown columns
+  * columns with missing value: treat as "" instead?
 * People list
   * Filter by club (also overwrite and person selection)
   * Filter a la portal
