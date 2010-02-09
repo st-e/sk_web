@@ -22,6 +22,15 @@ class ApplicationController < ActionController::Base
 	before_filter :check_permissions
 	before_filter :require_ssl
 
+	after_filter :set_pragma_public
+
+	def set_pragma_public
+		# Internet explorer requires special treatment
+		if request.env['HTTP_USER_AGENT'] =~ /msie/i
+			headers['Pragma'] = 'public'
+		end
+	end
+
 	rescue_from(DummyError) { |ex|
 		render_error h "DummyError wurde ausgelöst"
 	}
