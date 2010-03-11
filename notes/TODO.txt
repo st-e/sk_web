@@ -1,21 +1,16 @@
 Critical (before release):
-* make sure pagination works when no people/users are in the database
-* rake test might use production mode
+* make sure that towpilot works: pilot log, flight list
+* rhst: export/import - some are "changed", although identical
+* Better error documents
+* Custom log albgen style
+* Use table_for plugin
+* Use new schema
+* remove old config file
+
+Major (important changes):
 * people list is extremely slow, even though paginated, probably due to user
   (overwrite select is way faster)
 * overwrite perform is also slow
-* make sure that towpilot works if recorded
-* Better error documents
-* rake gems:install doesn't work for prawn - due to prawnto requiring prawn?
-* can collation problem still happen?
-* rhst: export/import - some are "changed", although identical
-* don't change relative_url_root unless blank to allow setting by
-  ENV['RAILS_RELATIVE_URL_ROOT']
-* Custom log albgen style
-* fix default environment setting
-* Use table_for plugin
-
-Major (important changes):
 * Add option to log in permanently
 * There are rails classes for durations
 * database.yml.dist

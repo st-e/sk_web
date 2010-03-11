@@ -12,6 +12,8 @@ module ActionController
 
 			script_name=env['SCRIPT_NAME']
 			if !script_name.blank?
+				# Only if relative_url_root is blank to allow overriding by
+				# ENV['RAILS_RELATIVE_URL_ROOT']
 				if Base.relative_url_root.blank?
 					rur=nil
 					# There may be duplicate slashes.
