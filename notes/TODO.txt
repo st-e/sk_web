@@ -1,4 +1,5 @@
 Critical (before release):
+* make sure pagination works when no people/users are in the database
 * rake test might use production mode
 * people list is extremely slow, even though paginated, probably due to user
   (overwrite select is way faster)
@@ -8,6 +9,11 @@ Critical (before release):
 * rake gems:install doesn't work for prawn - due to prawnto requiring prawn?
 * can collation problem still happen?
 * rhst: export/import - some are "changed", although identical
+* don't change relative_url_root unless blank to allow setting by
+  ENV['RAILS_RELATIVE_URL_ROOT']
+* Custom log albgen style
+* fix default environment setting
+* Use table_for plugin
 
 Major (important changes):
 * Add option to log in permanently

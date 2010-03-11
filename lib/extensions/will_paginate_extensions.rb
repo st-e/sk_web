@@ -21,9 +21,9 @@ module WillPaginate
 
 			if total_pages < 2
 				case size
-				when 0; "Keine #{plural}"
-				when 1; "<b>1</b> #{singular}"
-				else;   "<b>#{size}</b> #{plural}"
+				when 0; "Keine #{h plural}"
+				when 1; "<b>1</b> #{h singular}"
+				else;   "<b>#{size}</b> #{h plural}"
 				end
 			else
 				%{%s <b>%d</b> bis <b>%d</b> von <b>%d</b>} %

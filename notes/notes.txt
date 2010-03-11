@@ -27,4 +27,8 @@ Permission system:
 	- no permissions set for action => disallow
   - if skip_filter :only is used more than once, the first is ineffective
 
+Installation:
+  - Packages: ruby, rubygems, libopenssl-ruby; libapache2-mod-fcgid, ~suexec;
+    libmysql-ruby, libfcgi-ruby;
+	gems: rails, will_paginate(, mysql)
 
