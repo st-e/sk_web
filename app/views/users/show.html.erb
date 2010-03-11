@@ -1,6 +1,6 @@
 <% page_title "Benutzer: #{h @user.username}" do %>
 
-	<% person=@user.associated_person %>
+	<% person=@user.person %>
 
 	<table class="object">
 		<tr>
@@ -33,7 +33,7 @@
 
 	<p>
 	<%= link_to 'Editieren', edit_user_path(@user) %> |
-	<%= link_to 'Passwort ändern', :action => 'change_password', :id => @user.username %> |
+	<%= link_to 'Passwort ändern', :action => 'change_password', :id => @user.id %> |
 	<%= link_to 'Benutzerliste', users_path %>
 	</p>
 

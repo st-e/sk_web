@@ -1,6 +1,6 @@
 <% page_title "Personenauswahl für Benutzer #{h @user.username}" do %>
 
-	<% current_person_on_page=@people.any? { |person| person.id==@user.person } %>
+	<% current_person_on_page=@people.any? { |person| person.id==@user.person_id } %>
 
 	<% form_for(@user, :url => { :action => "edit" }, :html => {:method => :post}) do |f| %>
 		<%= f.hidden_field 'id'                 , { :value => @user.username            } %>
@@ -15,14 +15,14 @@
 		<% paginated_section @people, :renderer=>WillPaginate::ButtonRenderer do %>
 			<% table_for(@people) { |table| %>
 				<% table.body_row { |body| %>
-					<%= body.cell f.radio_button 'person', '0', :checked => !(@user.associated_person) %>
+					<%= body.cell f.radio_button 'person_id', '0', :checked => !(@user.person) %>
 					<%= body.text "Keine Person", :colspan=>6 %>
 				<% } %>
 
-				<% if @user.associated_person %>
+				<% if @user.person %>
 					<% table.body_row { |body| %>
-						<%= body.cell f.radio_button 'person', @user.person, :checked => true %>
-						<%= body.text "Aktuelle Person: #{@user.associated_person.full_name} (#{@user.person})", :colspan=>6 %>
+						<%= body.cell f.radio_button 'person_id', @user.person_id, :checked => true %>
+						<%= body.text "Aktuelle Person: #{@user.person.full_name} (#{@user.person_id})", :colspan=>6 %>
 					<% } if !current_person_on_page %>
 				<% end %>
 
@@ -37,14 +37,14 @@
 				<% } %>
 
 				<% table.body { |body, person| %>
-					<% checked=(@user.person==person.id)  %><%# person is the primary key, not the object %>
-					<%= body.cell f.radio_button('person', person.id, :checked => checked) %>
-					<%= body.cell person.id                                                %>
-					<%= body.cell person.last_name                                         %>
-					<%= body.cell person.first_name                                        %>
-					<%= body.text person.verein                                            %>
-					<%= body.text person.vereins_id                                        %>
-					<%= body.text person.bemerkung                                         %>
+					<% checked=(@user.person_id==person.id)  %>
+					<%= body.cell f.radio_button('person_id', person.id, :checked => checked) %>
+					<%= body.cell person.id                                                   %>
+					<%= body.cell person.last_name                                            %>
+					<%= body.cell person.first_name                                           %>
+					<%= body.text person.club                                                 %>
+					<%= body.text person.club_id                                              %>
+					<%= body.text person.comments                                             %>
 				<% } %>
 			<% } %>
 		<% end %>

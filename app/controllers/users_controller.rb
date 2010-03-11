@@ -93,7 +93,7 @@ class UsersController < ApplicationController
 		page=page_parameter
 
 		attempt do
-			@people = Person.paginate :page => page, :per_page => 20, :order => 'nachname, vorname', :readonly=>true
+			@people = Person.paginate :page => page, :per_page => 20, :order => 'last_name, first_name', :readonly=>true
 			params[:page]=1 and redo if @people.out_of_bounds?
 		end
 
@@ -101,14 +101,13 @@ class UsersController < ApplicationController
 	end
 
 	def destroy
-		username=params[:id]
-		@user = User.find(username)
+		@user = User.find(params[:id])
 		render_error h "Der Spezialbenutzer #{@user.username} kann nicht gelöscht werden." and return if @user.special?
 		render_error h "Der Benutzer #{current_username} kann sich nicht selbst löschen." and return if @user.username==current_username
 
 		@user.destroy
 
-		flash[:notice]="Der Benutzer #{username} wurde gelöscht."
+		flash[:notice]="Der Benutzer #{@user.username} wurde gelöscht."
 		redirect_to(users_url)
 	end
 

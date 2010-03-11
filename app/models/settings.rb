@@ -4,7 +4,7 @@ class Settings
 	class ConfigFileNotFound <Exception
 	end
 
-	attr_reader :location, :launch_types
+	attr_reader :location
 
 	def config_filename
 		[
@@ -16,7 +16,6 @@ class Settings
 
 	def initialize
 		@location="???"
-		@launch_types=[]
 		@local_addresses=[]
 
 		filename=config_filename
@@ -27,19 +26,7 @@ class Settings
 			line.strip!
 
 			if !(line =~ /^#/) && !line.blank?
-				if (line =~ /^startart (.*), (.*), (.*), (.*), (.*), (.*), (.*), (.*)/i)
-					id                   =$1.strip.to_i
-					type                 =$2.strip
-					registration         =$3.strip # winch, airtow, self, other
-					name                 =$4.strip
-					short_name           =$5.strip
-					keyboard_shortcut    =$6.strip
-					pilot_log_designator =$7.strip
-					person_required      =$8.strip.to_b
-
-					launch_type=LaunchType.new(id, type, registration, name, short_name, keyboard_shortcut, pilot_log_designator, person_required)
-					@launch_types << launch_type
-				elsif (line =~ /ort (.*)/i)
+				if (line =~ /ort (.*)/i)
 					@location=$1.strip
 				elsif (line =~ /local_hosts (.*)/i)
 					@local_addresses+=$1.split(',').map { |address| address.strip.split('.') }

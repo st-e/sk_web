@@ -23,7 +23,9 @@ Rails::Initializer.run do |config|
   # config.gem "aws-s3", :lib => "aws/s3"
 
   config.gem 'will_paginate', :version => '~> 2.3.11'#, :source => 'http://gemcutter.org'
-  config.gem 'prawn', :version => '>= 0.7.1'
+  # If there are problems with PDF rendering, try setting this to '= 0.8.4', or
+  # read the Prawn change log.
+  config.gem 'prawn', :version => '~> 0.8.4'
 
 
   # Only load the plugins named here, in the order given (default is alphabetical).

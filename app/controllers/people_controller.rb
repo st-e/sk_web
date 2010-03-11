@@ -9,7 +9,7 @@ class PeopleController < ApplicationController
 
 	def index
 		attempt do
-			@people = Person.paginate :page => params[:page], :per_page => 50, :order => 'nachname, vorname', :readonly=>true
+			@people = Person.paginate :page => params[:page], :per_page => 50, :order => 'last_name, first_name', :readonly=>true
 			params[:page]=1 and redo if (!@people.empty? and @people.out_of_bounds?)
 		end
 
@@ -128,7 +128,7 @@ class PeopleController < ApplicationController
 
 			# Let the user select a person
 			attempt do
-				@people = Person.paginate(:page => params[:page], :per_page => 50, :order => 'nachname, vorname', :readonly=>true).reject { |person| person.id==@wrong_person.id }
+				@people = Person.paginate(:page => params[:page], :per_page => 50, :order => 'last_name, first_name', :readonly=>true).reject { |person| person.id==@wrong_person.id }
 				params[:page]=1 and redo if (!@people.empty? and @people.out_of_bounds?)
 			end
 
@@ -149,16 +149,16 @@ class PeopleController < ApplicationController
 		# 3. perform the operation
 
 		# Update users and flights
-		User  .all(:conditions => { :person     => wrong_person_id }).each { |user|   user.person=      correct_person_id; user  .save }
-		Flight.all(:conditions => { :pilot      => wrong_person_id }).each { |flight| flight.pilot=     correct_person_id; flight.save }
-		Flight.all(:conditions => { :begleiter  => wrong_person_id }).each { |flight| flight.begleiter= correct_person_id; flight.save }
-		Flight.all(:conditions => { :towpilot   => wrong_person_id }).each { |flight| flight.towpilot=  correct_person_id; flight.save } if Flight.has_towpilot?
+		User  .all(:conditions => { :person     => wrong_person_id }).each { |user|   user.person_id    = correct_person_id; user  .save }
+		Flight.all(:conditions => { :pilot_id   => wrong_person_id }).each { |flight| flight.pilot_id   = correct_person_id; flight.save }
+		Flight.all(:conditions => { :copilot_id => wrong_person_id }).each { |flight| flight.copilot_id = correct_person_id; flight.save }
+		Flight.all(:conditions => { :towpilot_id=> wrong_person_id }).each { |flight| flight.towpilot_id= correct_person_id; flight.save }
 
 		# Check that the person has no flights or users any more
-		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Benutzer, der auf die Person verweist." and redirect_to and return if User  .exists? :person    =>wrong_person_id
-		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Flug, der auf die Person verweist."     and redirect_to and return if Flight.exists? :pilot     =>wrong_person_id
-		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Flug, der auf die Person verweist."     and redirect_to and return if Flight.exists? :begleiter =>wrong_person_id
-		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Flug, der auf die Person verweist."     and redirect_to and return if (Flight.has_towpilot? && Flight.exists?(:towpilot  =>wrong_person_id))
+		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Benutzer, der auf die Person verweist." and redirect_to and return if User  .exists? :person_id   =>wrong_person_id
+		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Flug, der auf die Person verweist."     and redirect_to and return if Flight.exists? :pilot_id    =>wrong_person_id
+		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Flug, der auf die Person verweist."     and redirect_to and return if Flight.exists? :copilot_id  =>wrong_person_id
+		flash[:error]="Fehler: Nach dem Überschreiben der Person existiert noch ein Flug, der auf die Person verweist."     and redirect_to and return if Flight.exists? :towpilot_id =>wrong_person_id
 
 		# Once again for safety, as this is really important
 		flash[:error]="Fehler: Nach dem Überschreiben ist die Person noch in Benutzung." and redirect_to and return if @wrong_person.used?
@@ -316,7 +316,7 @@ class PeopleController < ApplicationController
 		if params[:club].blank?
 			@people=Person.all
 		else
-			@people=Person.find_all_by_verein(params[:club].strip)
+			@people=Person.find_all_by_club(params[:club].strip)
 		end
 
 		@table=make_table(@people)
@@ -384,11 +384,11 @@ protected
 		]
 
 		rows=people.map { |person| [
-			person.nachname,
-			person.vorname,
-			person.verein,
-			person.bemerkung,
-			person.vereins_id
+			person.last_name,
+			person.first_name,
+			person.club,
+			person.comments,
+			person.club_id
 		] }
 
 		{ :columns => columns, :rows => rows, :data => people }

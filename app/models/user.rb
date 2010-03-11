@@ -1,13 +1,6 @@
 class User < ActiveRecord::Base
-	# Table settings
-	set_table_name "user" 
-	set_primary_key "username"
-
 	# Associations
-	# It's called associated_person rather than person because the attribute
-	# name should be different from the foreign key. Otherwise, we could not
-	# distinguish between accesses to the attribute and to the key.
-	belongs_to :associated_person, :class_name => "Person", :foreign_key => 'person'
+	belongs_to :person
 
 	# Additional (non-database) fields
 	attr_accessor :current_password
@@ -64,7 +57,7 @@ class User < ActiveRecord::Base
 		respond_to?(permission_method) && send(permission_method)
 	end
 
-	def self.find(*args)
+	def self.find_by_username(*args)
 		if args[0]==DatabaseUser.username
 			DatabaseUser.new
 		else

@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
 
 	def current_user(readonly=true)
 		return nil if !session[:username]
-		User.find(session[:username], :readonly=>readonly)
+		User.find_by_username(session[:username], :readonly=>readonly)
 	end
 
 	def page_parameter

@@ -1,7 +1,7 @@
 <% page_title "Benutzer #{h @user.username} editieren" do %>
 
 	<% form_for(@user) do |f| %>
-		<% person=@user.associated_person %>
+		<% person=@user.person %>
 		<%= f.error_messages %>
 
 		<div style="display:none;"><%= f.submit 'Speichern' %></div>
@@ -19,7 +19,7 @@
 				<th><%= f.label :person, "Person:" %></th>
 				<td>
 					<%= h (person)?"#{person.formal_name} (#{person.id})":"-" %>
-					<%= f.hidden_field 'person', { :value => (person)?(person.id):0 } %>
+					<%= f.hidden_field 'person_id', { :value => (person)?(person.id):0 } %>
 					<%= submit_tag (person)?"Ändern":"Auswählen", :name => 'select_person' %>
 				</td>
 			</tr>
@@ -44,7 +44,7 @@
 
 	<p>
 	<%= link_to 'Anzeigen', @user %> |
-	<%= link_to 'Passwort ändern', :action => 'change_password', :id => @user.username %> |
+	<%= link_to 'Passwort ändern', :action => 'change_password', :id => @user.id %> |
 	<%= link_to 'Benutzerliste', users_path %>
 	</p>
 

@@ -94,17 +94,17 @@ protected
 			flight.effective_pilot_name             || "?",
 			flight.effective_copilot_name                 ,
 			flight.effective_club                   || "?",
-			flight.launch_type_text                       ,
-			flight.effective_launch_time_text             ,
+			flight.launch_method_text                     ,
+			flight.effective_departure_time_text          ,
 			flight.effective_landing_time_text            ,
 			flight.effective_duration                     ,
 			flight.effective_landing_time_text_towflight  ,
 			flight.effective_duration_towflight           ,
-			flight.anzahl_landungen                       ,
-			flight.startort                               ,
-			flight.zielort                                ,
+			flight.num_landings                           ,
+			flight.departure_location                     ,
+			flight.landing_location                       ,
 			flight.effective_destination_towflight        ,
-			flight.bemerkung
+			flight.comments
 		] }
 
 		{ :columns => columns, :rows => rows, :data => flights }

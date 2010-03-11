@@ -8,7 +8,7 @@ class PilotLogController < ApplicationController
 
 	def index
 		user=current_user
-		@person=user.associated_person
+		@person=user.person
 
 		if !@person
 			flash[:error]="Es kann kein Flugbuch angezeigt werden, da dem Benutzer #{user.username} keine Person zugeordnet ist."
@@ -24,7 +24,7 @@ class PilotLogController < ApplicationController
 
 	def show
 		user=current_user
-		@person=user.associated_person
+		@person=user.person
 
 		if !@person
 			flash[:error]="Es kann kein Flugubch angezeigt werden, da dem Benutzer #{user.username} keine Person zugeordnet ist."
@@ -36,11 +36,11 @@ class PilotLogController < ApplicationController
 
 		condition=case params['flight_instructor_mode']
 			when 'strict' then
-				"pilot=:person OR (begleiter=:person AND typ=:type)"
+				"pilot_id=:person OR (copilot_id=:person AND type=:type)"
 			when 'loose' then
-				"pilot=:person OR begleiter=:person"
+				"pilot_id=:person OR copilot_id=:person"
 			else
-				"pilot=:person"
+				"pilot_id=:person"
 		end
 		condition_values={:person=>@person.id, :type=>Flight::TYPE_TRAINING_2}
 
@@ -92,20 +92,20 @@ protected
 		rows=flights.each_with_index.map { |flight, index|
 			comments=[]
 			comments << "#{flight.effective_towplane_registration} #{flight.effective_duration_towflight}" if flight.is_airtow?
-			comments << flight.bemerkung if !flight.bemerkung.blank?
+			comments << flight.comments if !flight.comments.blank?
 		
 			[
 			date_formatter(german_format, true).call(flight.effective_date),
-			flight.the_plane.typ                              ,
-			flight.the_plane.kennzeichen                      ,
-			flight.effective_pilot_name             || "?",
-			flight.effective_copilot_name                 ,
-			flight.launch_type_pilot_log_designator || "?",
-			flight.startort                               ,
-			flight.zielort                                ,
-			flight.effective_launch_time_text       || "?",
-			flight.effective_landing_time_text      || "?",
-			flight.effective_duration               || "?",
+			flight.plane.type                               ,
+			flight.plane.registration                       ,
+			flight.effective_pilot_name               || "?",
+			flight.effective_copilot_name                   ,
+			flight.launch_method_log_string           || "?",
+			flight.departure_location                       ,
+			flight.landing_location                         ,
+			flight.effective_departure_time_text      || "?",
+			flight.effective_landing_time_text        || "?",
+			flight.effective_duration                 || "?",
 			comments.join('; ')
 		] }
 

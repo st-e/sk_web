@@ -91,8 +91,8 @@ class Prawn::Document
 
 
 			clip_box cx+ox, cy+oy, w, h, true do
-				# draw_text is significantly faster than text :at=> (at least
-				# it was when it was still called text_at)
+				# text :at=> does not work as of Prawn 0.8.4. text_at, now
+				# draw_text, is significantly faster anyway.
 				draw_text(value.to_s, :at=>[cx+horizontal_margin, cy-h+vertical_margin+descender])
 			end
 

@@ -105,39 +105,39 @@ protected
 			last_date=date
 			number+=1
 
-			plane=flight.the_plane
-			pilot=flight.the_pilot
-			copilot=flight.the_copilot
+			plane=flight.plane
+			pilot=flight.pilot
+			copilot=flight.copilot
 			
 			[
 				date                                   ,
 				number                                 ,
 				flight.effective_plane_registration    ,
 				flight.effective_plane_type            ,
-				(plane)?(plane.verein):("")            ,
-				(pilot)?(pilot.nachname):("")          ,
-				(pilot)?(pilot.vorname):("")           ,
-				(pilot)?(pilot.verein):("")            ,
-				(pilot)?(pilot.vereins_id):("")        ,
-				(copilot)?(copilot.nachname):("")      ,
-				(copilot)?(copilot.vorname):("")       ,
-				(copilot)?(copilot.verein):("")        ,
-				(copilot)?(copilot.vereins_id):("")    ,
+				(plane)?(plane.club):("")              ,
+				(pilot)?(pilot.last_name):("")         ,
+				(pilot)?(pilot.first_name):("")        ,
+				(pilot)?(pilot.club):("")              ,
+				(pilot)?(pilot.club_id):("")           ,
+				(copilot)?(copilot.last_name):("")     ,
+				(copilot)?(copilot.first_name):("")    ,
+				(copilot)?(copilot.club):("")          ,
+				(copilot)?(copilot.club_id):("")       ,
 				flight.flight_type_text                ,
-				flight.anzahl_landungen                ,
+				flight.num_landings                    ,
 				flight.mode_text                       ,
-				flight.effective_launch_time_text      ,
+				flight.effective_departure_time_text   ,
 				flight.effective_landing_time_text     ,
 				flight.effective_duration              ,
-				flight.launch_type_text                ,
+				flight.launch_method_text              ,
 				flight.effective_towplane_registration ,
 				flight.mode_text_towflight             ,
 				flight.effective_landing_time_text_towflight,
-				flight.startort                        ,
-				flight.zielort                         ,
-				flight.zielort_sfz                     ,
-				flight.bemerkung                       ,
-				flight.abrechnungshinweis              ,
+				flight.departure_location              ,
+				flight.landing_location                ,
+				flight.towflight_landing_location      ,
+				flight.comments                        ,
+				flight.accounting_notes                ,
 				flight.id                              
 		] }
 

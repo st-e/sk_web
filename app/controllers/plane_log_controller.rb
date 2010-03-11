@@ -19,7 +19,7 @@ class PlaneLogController < ApplicationController
 
 		@plane_log=Hash.new { |hash, key| hash[key]=[] }
 		PlaneLog.create_for_flights(@flights).each_pair { |plane, log_entries|
-			@plane_log[plane.verein]+=log_entries
+			@plane_log[plane.club]+=log_entries
 		}
 
 		@tables={}

@@ -40,8 +40,8 @@ class SpecialUser
 	# Instance methods
 	def username; self.class.username; end
 	def has_permission?(permission); false; end
-	def person; 0; end
-	def associated_person; nil; end
+	def person_id; 0; end
+	def person; nil; end
 	def special?; true; end
 	def club; ""; end
 end
