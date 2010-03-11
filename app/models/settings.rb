@@ -1,12 +1,20 @@
+require 'fileutils'
+
 class Settings
 	include Singleton
 
-	Filename=Rails.root.join('config', 'sk_web.yml')
+	Filename=Rails.root.join('config', 'sk_web.yml').to_s
+	DistFilename=Filename+".dist"
 
 	attr_accessor :location
 	attr_accessor :local_addresses
 
 	def initialize
+		# This should probably be done in environment.rb, along with Database.yml
+		if (!File.exist?(Filename) && File.exist?(DistFilename))
+			FileUtils.cp DistFilename, Filename
+		end
+
 		if (File.exist? Filename)
 			yaml=YAML.load(ERB.new(File.new(Filename).read).result)
 			config=yaml['config']
