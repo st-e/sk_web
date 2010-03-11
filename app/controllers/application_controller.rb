@@ -45,12 +45,6 @@ class ApplicationController < ActionController::Base
 		render 'session/login'
 	}
 
-	rescue_from(Settings::ConfigFileNotFound) { |ex|
-		# Need failsafe layout because otherwise, the template will also need
-		# the settings instance (for getting the location)
-		render_error h "Konfigurationsdatei nicht gefunden", :layout=>"failsafe"
-	}
-
 	def current_username
 		session[:username]
 	end

@@ -1,38 +1,22 @@
 class Settings
 	include Singleton
 
-	class ConfigFileNotFound <Exception
-	end
+	Filename=Rails.root.join('config', 'sk_web.yml')
 
-	attr_reader :location
-
-	def config_filename
-		[
-			"#{RAILS_ROOT}/config/startkladde.conf",
-			"#{ENV['HOME']}/.startkladde.conf"
-		].find { |file| File.exist? file }
-	end
-			
+	attr_accessor :location
+	attr_accessor :local_addresses
 
 	def initialize
-		@location="???"
-		@local_addresses=[]
+		if (File.exist? Filename)
+			yaml=YAML.load(ERB.new(File.new(Filename).read).result)
+			config=yaml['config']
 
-		filename=config_filename
-		raise Settings::ConfigFileNotFound if filename.nil?
+			@location        = config['location']
+			@local_addresses = config['local_addresses']
+		end
 
-		puts "Reading configuration from #{filename}"
-		File.new(filename).each_line { |line|
-			line.strip!
-
-			if !(line =~ /^#/) && !line.blank?
-				if (line =~ /ort (.*)/i)
-					@location=$1.strip
-				elsif (line =~ /local_hosts (.*)/i)
-					@local_addresses+=$1.split(',').map { |address| address.strip.split('.') }
-				end
-			end
-		}
+		@location        ||= "???"
+		@local_addresses ||= []
 	end
 
 	# address is an array of 4 strings
@@ -42,7 +26,7 @@ class Settings
 
 	# address is a string
 	def address_is_local?(address)
-		@local_addresses.any? { |spec| address_matches spec, address.strip.split('.') }
+		@local_addresses.any? { |spec| address_matches spec.strip.split('.'), address.strip.split('.') }
 	end
 end
 
