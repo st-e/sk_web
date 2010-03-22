@@ -20,7 +20,7 @@
 
 				<% person_formatter=lambda { |p| "#{p.formal_name} (#{p.id})" } %>
 				<% table.body { |body, user| %>
-					<% person=user.associated_person %>
+					<% person=user.person %>
 					<%= body.cell link_to(user.username, user)                                    %>
 					<%= body.text user.club                                                       %>
 					<%= body.cell((person)?link_to(person_formatter.call(person), person):h("-")) %>

@@ -20,9 +20,9 @@
 				<% user=person.user %>
 				<%= body.cell link_to(person.last_name, person)               %>
 				<%= body.cell link_to(person.first_name, person)              %>
-				<%= body.text person.verein                                   %>
-				<%= body.text person.vereins_id                               %>
-				<%= body.text person.bemerkung                                %>
+				<%= body.text person.club                                     %>
+				<%= body.text person.club_id                                  %>
+				<%= body.text person.comments                                 %>
 				<%= body.cell((user)?link_to(user.username, user):h("-"))     %>
 				<%= body.cell link_to(person.id, person)                      %>
 				<%#= body.text yesno(person.used?)     %>

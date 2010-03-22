@@ -1,17 +1,31 @@
 require_dependency 'duration'
 
 class Flight < ActiveRecord::Base
-	# Status flags used in the database
-	STATUS_STARTED=1
-	STATUS_LANDED=2
-	STATUS_TOWPLANE_LANDED=4
+	belongs_to :plane
+	belongs_to :towplane, :class_name => "Plane"
 
-	set_table_name "flug_temp" 
+	belongs_to :pilot   , :class_name => "Person"
+	belongs_to :copilot , :class_name => "Person"
+	belongs_to :towpilot, :class_name => "Person"
 
-	belongs_to :the_plane   , :class_name => "Plane" , :foreign_key => "flugzeug" 
-	belongs_to :the_pilot   , :class_name => "Person", :foreign_key => "pilot"
-	belongs_to :the_copilot , :class_name => "Person", :foreign_key => "begleiter"
-	belongs_to :the_towplane, :class_name => "Plane" , :foreign_key => "towplane"
+	belongs_to :launch_method
+
+	# Rails sez:
+	# The single-table inheritance mechanism failed to locate the subclass:
+	# 'normal'. This error is raised because the column 'type' is reserved for
+	# storing the class in case of inheritance. Please rename this column if
+	# you didn't intend it to be used for storing the inheritance class or
+	# overwrite Flight.inheritance_column to use another column for that
+	# information.
+	def Flight.inheritance_column
+		"class_type"
+	end
+
+	# Hack to allow a type column
+	def type
+		attributes['type']
+	end
+
 
 	def incomplete_name(last_name, first_name)
 		if last_name.blank? && first_name.blank?
@@ -27,34 +41,34 @@ class Flight < ActiveRecord::Base
 	end
 
 	def effective_pilot_name
-		return the_pilot.formal_name if the_pilot
-		incomplete_name(pnn, pvn)
+		return pilot.formal_name if pilot
+		incomplete_name(pilot_last_name, pilot_first_name)
 	end
 
 	def effective_copilot_name
-		return the_copilot.formal_name if the_copilot
-		incomplete_name(bnn, bvn)
+		return copilot.formal_name if copilot
+		incomplete_name(copilot_last_name, copilot_first_name)
 	end
 
 	def effective_towpilot_name
-		return the_towpilot.formal_name if the_towpilot
-		incomplete_name(tpnn, tpvn)
+		return towpilot.formal_name if towpilot
+		incomplete_name(towpilot_last_name, towpilot_first_name)
 	end
 
 	def effective_club
-		return the_pilot.verein if the_pilot
-		return the_plane.verein if the_plane
+		return pilot.club if pilot
+		return plane.club if plane
 		nil
 	end
 
 	def effective_plane_registration
-		return nil if !the_plane
-		the_plane.kennzeichen
+		return nil if !plane
+		plane.registration
 	end
 
 	def effective_plane_type
-		return nil if !the_plane
-		the_plane.typ
+		return nil if !plane
+		plane.type
 	end
 
 	def self.mode_text(mode)
@@ -67,118 +81,92 @@ class Flight < ActiveRecord::Base
 	end
 
 	def mode_text
-		Flight.mode_text(modus)
+		Flight.mode_text(mode)
 	end
 
 	def mode_text_towflight
-		Flight.mode_text(modus_sfz)
+		Flight.mode_text(towflight_mode)
 	end
 
-	TYPE_NORMAL=2
-	TYPE_TRAINING_2=3
-	TYPE_TRAINING_1=4
-	TYPE_GUEST_PRIVATE=6
-	TYPE_GUEST_EXTERNAL=8
-	TYPE_TOW=7
-
-	# The towpilot columns may or may not exist (to be fixed in a future
-	# database schema version)
-	def towpilot; self[:towpilot] || 0 ; end
-	def tpvn    ; self[:tpvn]     || ""; end
-	def tpnn    ; self[:tpnn]     || ""; end
-	def self.has_towpilot?; Flight.columns_hash.keys.include? 'towpilot'; end
+	TYPE_NORMAL        ='normal'
+	TYPE_TRAINING_2    ='training_2'
+	TYPE_TRAINING_1    ='training_1'
+	TYPE_GUEST_PRIVATE ='guest_private'
+	TYPE_GUEST_EXTERNAL='guest_external'
+	TYPE_TOW           ='tow'
 
 	def self.flight_type_text(flight_type)
 		case flight_type
-			when Flight::TYPE_NORMAL; return "Normalflug"
-			when Flight::TYPE_TRAINING_2; return "Schulung (2)"
-			when Flight::TYPE_TRAINING_1; return "Schulung (1)"
-			when Flight::TYPE_GUEST_PRIVATE; return "Gastflug (P)"
+			when Flight::TYPE_NORMAL        ; return "Normalflug"
+			when Flight::TYPE_TRAINING_2    ; return "Schulung (2)"
+			when Flight::TYPE_TRAINING_1    ; return "Schulung (1)"
+			when Flight::TYPE_GUEST_PRIVATE ; return "Gastflug (P)"
 			when Flight::TYPE_GUEST_EXTERNAL; return "Gastflug (E)"
-			when Flight::TYPE_TOW; return "Schlepp"
+			when Flight::TYPE_TOW           ; return "Schlepp"
 			else; nil
 		end
 	end
 
 	def is_training?
-		self.typ==TYPE_TRAINING_1 || self.typ==TYPE_TRAINING_2
+		self.type==TYPE_TRAINING_1 || self.type==TYPE_TRAINING_2
 	end
 
 	def is_towflight?
-		typ=Flight::TYPE_TOW
+		type=Flight::TYPE_TOW
 	end
 
 	def flight_type_text
-		Flight.flight_type_text(typ)
+		Flight.flight_type_text(type)
 	end
 
 	def is_local?
-		modus=="l"
+		mode=="l"
 	end
 
-	def starts_here?
-		modus=="l" || modus=="g"
+	def departs_here?
+		mode=="l" || mode=="g"
 	end
 
 	def lands_here?
-		modus=="l" || modus=="k"
+		mode=="l" || mode=="k"
 	end
 
 	def towflight_lands_here?
-		modus_sfz=="l" || modus_sfz=="k"
+		towflight_mode=="l" || towflight_mode=="k"
 	end
 
-	def started?
-		(status & STATUS_STARTED)!=0
+	def departed?
+		self.departed
 	end
 
 	def landed?
-		(status & STATUS_LANDED)!=0
+		self.landed
 	end
 
 	def towflight_landed?
-		(status & STATUS_TOWPLANE_LANDED)!=0
-	end
-
-	def set_status(started, landed, towflight_landed)
-		s=0
-		s|=STATUS_STARTED         if started
-		s|=STATUS_LANDED          if landed
-		s|=STATUS_TOWPLANE_LANDED if towflight_landed
-		self.status=s.to_s # the self. is important
-	end
-
-	def launch_type
-		LaunchType.find(startart)
-	end
-
-	def launch_type=(lt)
-		if lt
-			self.startart=lt.id # self.!
-		else
-			self.startart=0 # self.!
-		end
+		self.towflight_landed
 	end
 
 	def is_airtow?
-		return nil if !launch_type
-		launch_type.is_airtow?
+		return nil if !departs_here?
+		return nil if !launch_method
+		launch_method.is_airtow?
 	end
 
-	def launch_type_text
-		return nil if !starts_here?
-		return nil if !launch_type
-		launch_type.short_name
+	def launch_method_text
+		return nil if !departs_here?
+		return nil if !launch_method
+		launch_method.short_name
 	end
 
-	def launch_type_pilot_log_designator
-		return nil if !starts_here?
-		return nil if !launch_type
-		launch_type.pilot_log_designator
+	def launch_method_log_string
+		return nil if !departs_here?
+		return nil if !launch_method
+		launch_method.log_string
 	end
 
-	def launch_time_valid?
-		starts_here? and started?
+	def departure_time_valid?
+		departs_here? and departed?
 	end
 
 	def landing_time_valid?
@@ -190,18 +178,18 @@ class Flight < ActiveRecord::Base
 		time.strftime('%H:%M')
 	end
 
-	def effective_launch_time
-		return nil if !launch_time_valid?
-		startzeit
+	def effective_departure_time
+		return nil if !departure_time_valid?
+		departure_time
 	end
 
-	def effective_launch_time_text
-		time_text(effective_launch_time)
+	def effective_departure_time_text
+		time_text(effective_departure_time)
 	end
 
 	def effective_landing_time
 		return nil if !landing_time_valid?
-		landezeit
+		landing_time
 	end
 
 	def effective_landing_time_text
@@ -209,42 +197,42 @@ class Flight < ActiveRecord::Base
 	end
 
 	def duration
-		return nil if !starts_here?
+		return nil if !departs_here?
 		return nil if !lands_here?
-		return nil if !started?
+		return nil if !departed?
 		return nil if !landed?
-		landezeit-startzeit
+		landing_time-departure_time
 	end
 
 	def effective_duration
-		return nil if !starts_here?
+		return nil if !departs_here?
 		return nil if !lands_here?
-		return nil if !started?
+		return nil if !departed?
 		return nil if !landed?
-		format_duration(landezeit-startzeit, false)
+		format_duration(landing_time-departure_time, false)
 	end
 
 	def effective_towplane_registration
 		return nil if !is_airtow?
-		# We now know that launch_type is not nil
-		return launch_type.registration if launch_type.towplane_known?
-		return the_towplane.kennzeichen if the_towplane
+		# We now know that launch_method is not nil
+		return launch_method.towplane_registration if launch_method.towplane_known?
+		return towplane.registration if towplane
 	end
 
-	def towplane_id
-		lt=launch_type
+	def effective_towplane_id
+		lm=launch_method
 
-		return 0 if !lt
-		return 0 if !lt.is_airtow?
+		return 0 if !lm
+		return 0 if !lm.is_airtow?
 
-		if lt.towplane_known?
-			# The registration of the towplane is known from the launch type
-			plane=Plane.first(:conditions => {:kennzeichen=>lt.registration}, :readonly=>true)
+		if lm.towplane_known?
+			# The registration of the towplane is known from the launch method
+			plane=Plane.first(:conditions => {:registration=>lm.towplane_registration}, :readonly=>true)
 			return 0 if !plane
 			plane.id
 		else
 			# Other towplane - the id of the towplane is stored in the flight
-			towplane
+			towplane_id
 		end
 	end
 
@@ -252,7 +240,7 @@ class Flight < ActiveRecord::Base
 		return nil if !is_airtow?
 		return nil if !towflight_lands_here?
 		return nil if !towflight_landed?
-		land_schlepp
+		towflight_landing_time
 	end
 
 	def effective_landing_time_text_towflight
@@ -262,20 +250,20 @@ class Flight < ActiveRecord::Base
 
 	def effective_duration_towflight
 		return nil if !is_airtow?
-		return nil if !starts_here?
-		return nil if !started?
+		return nil if !departs_here?
+		return nil if !departed?
 		return nil if !towflight_lands_here?
 		return nil if !towflight_landed?
-		format_duration(land_schlepp-startzeit, false)
+		format_duration(towflight_landing_time-departure_time, false)
 	end
 
 	def effective_destination_towflight
 		return nil if !is_airtow?
-		zielort_sfz
+		towflight_landing_location
 	end
 
 	def num_people
-		if the_copilot
+		if copilot
 			2
 		else
 			1
@@ -283,10 +271,10 @@ class Flight < ActiveRecord::Base
 	end
 
 	def effective_time
-		if starts_here? && started?
-			startzeit
+		if departs_here? && departed?
+			departure_time
 		elsif lands_here? && landed?
-			landezeit
+			landing_time
 		else
 			# Prepared flight
 			nil
@@ -303,17 +291,17 @@ class Flight < ActiveRecord::Base
 		return false if !prev
 
 		# Cannot merge entries of different planes
-		return false unless the_plane.kennzeichen == prev.the_plane.kennzeichen
+		return false unless plane.registration == prev.plane.registration
 
 		# Can only merge if both flights are local, return to the departure
 		# airfield and are at the same airfield.
-		return false unless (is_local? && prev.is_local?)  # Both flights are local
-		return false unless startort == zielort            # This flight is returning
-		return false unless prev.startort == prev.zielort  # The previous flight is returning
-		return false unless startort == prev.startort      # The flights are at the same airfield
+		return false unless (is_local? && prev.is_local?)                     # Both flights are local
+		return false unless departure_location == landing_location            # This flight is returning
+		return false unless prev.departure_location == prev.landing_location  # The previous flight is returning
+		return false unless departure_location == prev.departure_location     # The flights are at the same airfield
 		
 		# For motor planes: only allow merging of towflights
-		return true if the_plane && (the_plane.glider? || the_plane.motorglider?)
+		return true if plane && (plane.glider? || plane.motorglider?)
 		return true if is_towflight? && prev.is_towflight?
 
 		false
@@ -324,7 +312,7 @@ class Flight < ActiveRecord::Base
 		begin_time=range.begin.midnight
 		end_time  =range.end  .midnight; end_time=end_time+1.day unless range.exclude_end?
 
-		condition="(startzeit>=:begin_time AND startzeit<:end_time) OR (landezeit>=:begin_time AND landezeit<:end_time)"
+		condition="(departure_time>=:begin_time AND departure_time<:end_time) OR (landing_time>=:begin_time AND landing_time<:end_time)"
 		condition_values={ :begin_time=>begin_time, :end_time=>end_time }
 
 		if additional_conditions
@@ -355,43 +343,45 @@ class Flight < ActiveRecord::Base
 		towflight.id=id
 
 		# The plane of the towflight is the towplane of the flight
-		towflight.flugzeug=towplane_id
+		towflight.plane_id=effective_towplane_id
 
 		# The pilot of the towflight is the towpilot of the flight; the
 		# towflight has not copilot or towpilot
-		towflight.pilot=towpilot
+		towflight.pilot_id=towpilot_id
 		# towflight.copilot
 		# towflight.towpilot
-		towflight.pvn=tpvn
-		towflight.pnn=tpnn
-		#towflight.bvn
-		#towflight.bnn
-		#towflight.tpvn
-		#towflight.tpnn
+		towflight.pilot_first_name=towpilot_first_name
+		towflight.pilot_last_name=towpilot_last_name
+		#towflight.copilot_first_name
+		#towflight.copilot_last_name
+		#towflight.towpilot_first_name
+		#towflight.towpilot_last_name
 		
-		# The launch time of the towflight is the launch time of the flight;
+		# The departure time of the towflight is the departure time of the flight;
 		# the landing time of the towflight is the towflight landing time of
 		# the flight
-		towflight.startzeit=startzeit
-		towflight.landezeit=land_schlepp
-		# towflight.land_schlepp
+		towflight.departure_time=departure_time
+		towflight.landing_time=towflight_landing_time
+		# towflight.towflight_landing_time
 
-		towflight.launch_type=LaunchType.self_launch
-		towflight.typ=TYPE_TOW
+		towflight.launch_method=LaunchMethod.self_launch
+		towflight.type=TYPE_TOW
 
-		towflight.startort=startort
-		towflight.zielort=zielort_sfz
-		# towflight.zielort_sfz
+		towflight.departure_location=departure_location
+		towflight.landing_location=towflight_landing_location
+		# towflight.towflight_landing_location
 
-		towflight.anzahl_landungen=(towflight_lands_here? && towflight_landed?)?1:0
+		towflight.num_landings=(towflight_lands_here? && towflight_landed?)?1:0
 
-		towflight.bemerkung="Schleppflug für Flug Nr. #{id}"
-		#towflight.abrechnungshinweis
-		towflight.modus=modus_sfz
-		#towflight.modus_sfz
-		#towflight.towplane=nil
+		towflight.comments="Schleppflug für Flug Nr. #{id}"
+		#towflight.accounting_notes
+		towflight.mode=towflight_mode
+		#towflight.towflight_mode
+		#towflight.towplane_id=nil
 
-		towflight.set_status started?, towflight_landed?, false
+		towflight.departed         = departed
+		towflight.landed           = towflight_landed
+		towflight.towflight_landed = false
 
 		towflight
 	end

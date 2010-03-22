@@ -1,5 +1,4 @@
-class Plane < ActiveRecord::Base
-	has_many :flights
+class LaunchMethod < ActiveRecord::Base
 
 	# Rails sez:
 	# The single-table inheritance mechanism failed to locate the subclass:
@@ -8,7 +7,7 @@ class Plane < ActiveRecord::Base
 	# you didn't intend it to be used for storing the inheritance class or
 	# overwrite Flight.inheritance_column to use another column for that
 	# information.
-	def Plane.inheritance_column
+	def LaunchMethod.inheritance_column
 		"class_type"
 	end
 
@@ -17,32 +16,16 @@ class Plane < ActiveRecord::Base
 		attributes['type']
 	end
 
-	
-	# Categories:
-	#   - airplane
-	#   - glider
-	#   - motorglider
-	#   - ultralight
-	#   - other
 
-	#def used?
-	#	!users.empty? || UnixUser.find_by_unix_group_id(id) != nil
-	#end
-
-	def glider?
-		category=='glider'
+	def is_airtow?
+		type=='airtow'
 	end
 
-	def sep?
-		category=='airplane'
+	def towplane_known?
+		!towplane_registration.blank?
 	end
 
-	def motorglider?
-		category=='motorglider'
-	end
-
-	def ultralight?
-		category=='ultralight'
+	def LaunchMethod.self_launch
+		find_by_type 'self'
 	end
 end
-

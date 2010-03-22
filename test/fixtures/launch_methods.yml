@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  short_name: MyString
+  log_string: MyString
+  keyboard_shortcut: MyString
+  type: MyString
+  towplane_registration: MyString
+  person_required: 
+  comments: MyString
+
+two:
+  name: MyString
+  short_name: MyString
+  log_string: MyString
+  keyboard_shortcut: MyString
+  type: MyString
+  towplane_registration: MyString
+  person_required: 
+  comments: MyString

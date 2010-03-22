@@ -29,7 +29,7 @@ class PlaneLog
 	# Returns a hash from planes to arrays of entries
 	def PlaneLog.create_for_flights(flights)
 		result={}
-		flights.array_hash_by { |flight| flight.the_plane }.each_pair { |plane, flights|
+		flights.array_hash_by { |flight| flight.plane }.each_pair { |plane, flights|
 			result[plane]=PlaneLog.create_for_plane(flights.sort_by { |flight| flight.effective_time })
 		}
 		result

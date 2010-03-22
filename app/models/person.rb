@@ -1,26 +1,21 @@
 class Person < ActiveRecord::Base
-	# Table settings
-	set_table_name "person_temp" 
-	 
 	# Associations
-	has_one :user, :foreign_key => 'person'
-
-	# Attribute aliases
-	alias_attribute :last_name , :nachname
-	alias_attribute :first_name, :vorname
-	alias_attribute :club      , :verein
-	alias_attribute :club_id   , :vereins_id
-	alias_attribute :comments  , :bemerkung
+	has_one :user
 
 	# Validations
 	# The club ID must be unique within the club unless it is empty or no club
 	# is given.
-	validates_uniqueness_of :vereins_id, :scope => :verein, :if => :club_and_club_id_present,
+	validates_uniqueness_of :club_id, :scope => :club, :if => :club_and_club_id_present,
 		:message => 'ist in diesem Verein schon vergeben (und nicht leer)'
 
 	# Human names for attributes
-	attr_human_name :verein     => 'Verein'
-	attr_human_name :vereins_id => 'Vereins-ID'
+	# Unfortunately, .label of form_helper does not use this
+	#attr_human_name 'last_name' => 'Nachname'
+	#attr_human_name :first_name => 'Vorname'
+	#attr_human_name :club       => 'Verein'
+	#attr_human_name :club_id    => 'Vereins-ID'
+	#attr_human_name :nickname   => 'Verein'
+	#attr_human_name 'comments'  => 'Bemerkungen'
 
 	# Callbacks
 	# Prevent destruction of people that are in use.
@@ -29,14 +24,14 @@ class Person < ActiveRecord::Base
 
 	def full_name(with_nickname=false)
 		if with_nickname
-			"#{vorname} \"#{spitzname}\" #{nachname}"
+			"#{first_name} \"#{last_name}\" #{nickname}"
 		else
-			"#{vorname} #{nachname}"
+			"#{first_name} #{last_name}"
 		end
 	end
 
 	def formal_name
-		"#{nachname}, #{vorname}"
+		"#{last_name}, #{first_name}"
 	end
 
 	def destroy
@@ -50,10 +45,10 @@ class Person < ActiveRecord::Base
 	end
 
 	def used?
-		User  .exists?(:person    =>id)||
-		Flight.exists?(:pilot     =>id)||
-		Flight.exists?(:begleiter =>id)||
-		(Flight.has_towpilot? && Flight.exists?(:towpilot  =>id))
+		User  .exists?(:person_id  =>id)||
+		Flight.exists?(:pilot_id   =>id)||
+		Flight.exists?(:cliplot_id =>id)||
+		Flight.exists?(:towpilot_id=>id)
 	end
 	
 
@@ -97,7 +92,7 @@ class Person < ActiveRecord::Base
 			def identify
 				if !@old_club_id.blank?
 					# Old club ID given - identify by old club ID
-					candidates=Person.all(:conditions => { :verein => @club, :vereins_id => @old_club_id }, :readonly=>true)
+					candidates=Person.all(:conditions => { :club => @club, :club_id => @old_club_id }, :readonly=>true)
 					case candidates.size
 					when 0: @id=nil; @error_message="Keine Person mit der angegebenen alten Vereins-ID im Verein \"#{@club}\" gefunden"
 					when 1: @id=candidates[0].id
@@ -105,7 +100,7 @@ class Person < ActiveRecord::Base
 					end
 				elsif !@club_id.blank?
 					# Club ID given - identify by club ID
-					candidates=Person.all(:conditions => { :verein => @club, :vereins_id => @club_id }, :readonly=>true)
+					candidates=Person.all(:conditions => { :club => @club, :club_id => @club_id }, :readonly=>true)
 					case candidates.size
 					when 0: @id=0 # Not found - create new
 					when 1: @id=candidates[0].id
@@ -113,7 +108,7 @@ class Person < ActiveRecord::Base
 					end
 				else
 					# Neither old nor current club ID given - identify by name
-					candidates=Person.all(:conditions => { :verein => @club, :nachname => @last_name, :vorname => @first_name }, :readonly=>true)
+					candidates=Person.all(:conditions => { :club => @club, :last_name => @last_name, :first_name => @first_name }, :readonly=>true)
 					case candidates.size
 					when 0: @id=0 # Not found - create new
 					when 1: @id=candidates[0].id
@@ -148,11 +143,11 @@ class Person < ActiveRecord::Base
 			def attribute_hash
 				# The attribute hash only includes values that are not nil.
 				result={}
-				result['vorname'   ]=@first_name if @first_name
-				result['nachname'  ]=@last_name  if @last_name
-				result['verein'    ]=@club       if @club
-				result['vereins_id']=@club_id    if @club_id
-				result['bemerkung' ]=@comments   if @comments
+				result['first_name']=@first_name if @first_name
+				result['last_name' ]=@last_name  if @last_name
+				result['club'      ]=@club       if @club
+				result['club_id'   ]=@club_id    if @club_id
+				result['comments'  ]=@comments   if @comments
 				result
 			end
 		end
@@ -283,7 +278,7 @@ class Person < ActiveRecord::Base
 protected
 	def ensure_not_used
 		if used?
-			errors.add_to_base "Person wird nocht benutzt"
+			errors.add_to_base "Person wird noch benutzt"
 			return false # return exactly false
 		end
 	end

@@ -1,6 +1,7 @@
 require 'rubygems'
 
 require 'prawn'
+require 'prawn/layout'
 require "prawn/measurement_extensions"
 require "prawn/table"
 
@@ -11,15 +12,15 @@ class Prawn::Document
 	attr_accessor :left_footer, :centered_footer, :right_footer
 
 	def left_text(y, t)
-		text_at t, :at => [bounds.left, y]
+		draw_text t, :at => [bounds.left, y]
 	end
 
 	def right_text(y, t)
-		text_at t, :at => [bounds.right-width_of(t), y]
+		draw_text t, :at => [bounds.right-width_of(t), y]
 	end
 
 	def centered_text(y, t)
-		text_at t, :at => [bounds.left+bounds.width/2-width_of(t)/2, y]
+		draw_text t, :at => [bounds.left+bounds.width/2-width_of(t)/2, y]
 	end
 
 	def     left_header_text(t);     left_text(bounds.   top-font.ascender,  t) if t; end
@@ -32,8 +33,8 @@ class Prawn::Document
 
 	def headings_box
 		canvas do
-			l=bounds.left+@margins[:left]
-			r=bounds.right-@margins[:right]
+			l=bounds.left+@page.margins[:left]
+			r=bounds.right-@page.margins[:right]
 			t=bounds.top-(@header_margin||0)
 			b=bounds.bottom+(@footer_margin||0)
 			bounding_box([l,t], :width=>(r-l), :height=>(t-b)) do
@@ -90,8 +91,9 @@ class Prawn::Document
 
 
 			clip_box cx+ox, cy+oy, w, h, true do
-				# text_at is significantly faster than text :at=>
-				text_at(value.to_s, :at=>[cx+horizontal_margin, cy-h+vertical_margin+descender])
+				# text :at=> does not work as of Prawn 0.8.4. text_at, now
+				# draw_text, is significantly faster anyway.
+				draw_text(value.to_s, :at=>[cx+horizontal_margin, cy-h+vertical_margin+descender])
 			end
 
 			# Move to the next cell

@@ -1,51 +1,30 @@
+require 'fileutils'
+
 class Settings
 	include Singleton
 
-	class ConfigFileNotFound <Exception
-	end
+	Filename=Rails.root.join('config', 'sk_web.yml').to_s
+	DistFilename=Filename+".dist"
 
-	attr_reader :location, :launch_types
-
-	def config_filename
-		[
-			"#{RAILS_ROOT}/config/startkladde.conf",
-			"#{ENV['HOME']}/.startkladde.conf"
-		].find { |file| File.exist? file }
-	end
-			
+	attr_accessor :location
+	attr_accessor :local_addresses
 
 	def initialize
-		@location="???"
-		@launch_types=[]
-		@local_addresses=[]
+		# This should probably be done in environment.rb, along with Database.yml
+		if (!File.exist?(Filename) && File.exist?(DistFilename))
+			FileUtils.cp DistFilename, Filename
+		end
 
-		filename=config_filename
-		raise Settings::ConfigFileNotFound if filename.nil?
+		if (File.exist? Filename)
+			yaml=YAML.load(ERB.new(File.new(Filename).read).result)
+			config=yaml['config']
 
-		puts "Reading configuration from #{filename}"
-		File.new(filename).each_line { |line|
-			line.strip!
+			@location        = config['location']
+			@local_addresses = config['local_addresses']
+		end
 
-			if !(line =~ /^#/) && !line.blank?
-				if (line =~ /^startart (.*), (.*), (.*), (.*), (.*), (.*), (.*), (.*)/i)
-					id                   =$1.strip.to_i
-					type                 =$2.strip
-					registration         =$3.strip # winch, airtow, self, other
-					name                 =$4.strip
-					short_name           =$5.strip
-					keyboard_shortcut    =$6.strip
-					pilot_log_designator =$7.strip
-					person_required      =$8.strip.to_b
-
-					launch_type=LaunchType.new(id, type, registration, name, short_name, keyboard_shortcut, pilot_log_designator, person_required)
-					@launch_types << launch_type
-				elsif (line =~ /ort (.*)/i)
-					@location=$1.strip
-				elsif (line =~ /local_hosts (.*)/i)
-					@local_addresses+=$1.split(',').map { |address| address.strip.split('.') }
-				end
-			end
-		}
+		@location        ||= "???"
+		@local_addresses ||= []
 	end
 
 	# address is an array of 4 strings
@@ -55,7 +34,7 @@ class Settings
 
 	# address is a string
 	def address_is_local?(address)
-		@local_addresses.any? { |spec| address_matches spec, address.strip.split('.') }
+		@local_addresses.any? { |spec| address_matches spec.strip.split('.'), address.strip.split('.') }
 	end
 end
 
