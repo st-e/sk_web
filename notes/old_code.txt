@@ -1,0 +1,22 @@
+Delete user: not self, own club
+
+// Import master data:
+	// Check the persons for errors.
+	QList<Database::import_message> messages;
+	db.import_check (persons, messages);
+	db.import_identify (persons, messages);
+
+		db.import_persons (persons);
+
+Permissions:
+
+person:
+  - edit, delete, create, merge => club_admin
+  - import_master_data => club_admin (and associated user for club (?))
+user:
+  - list => club_admin
+  - delete, edit => matching_club_admin, not_self
+  - grant_permission => sk_admin
+  - change_password => matching_club_admin
+flight_db:
+  - read_flight_db

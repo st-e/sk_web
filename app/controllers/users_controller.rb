@@ -2,7 +2,7 @@ require_dependency 'attempt'
 
 class UsersController < ApplicationController
 	filter_parameter_logging :password # Filter parameters containing "password"
-
+	
 	require_permission :club_admin, :index, :show, :new, :create, :edit, :update, :destroy, :change_password
 	require_login :change_own_password
 
