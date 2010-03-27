@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+	set_primary_key "username"
+
 	# Associations
 	belongs_to :person
 
