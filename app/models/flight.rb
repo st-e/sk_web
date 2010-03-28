@@ -73,9 +73,9 @@ class Flight < ActiveRecord::Base
 
 	def self.mode_text(mode)
 		case mode
-			when "l"; "Lokal"
-			when "k"; "Kommt"
-			when "g"; "Geht"
+			when "local"  ; "Lokal"
+			when "coming" ; "Kommt"
+			when "leaving"; "Geht"
 			else; nil
 		end
 	end
@@ -120,19 +120,19 @@ class Flight < ActiveRecord::Base
 	end
 
 	def is_local?
-		mode=="l"
+		mode=="local"
 	end
 
 	def departs_here?
-		mode=="l" || mode=="g"
+		mode=="local" || mode=="leaving"
 	end
 
 	def lands_here?
-		mode=="l" || mode=="k"
+		mode=="local" || mode=="coming"
 	end
 
 	def towflight_lands_here?
-		towflight_mode=="l" || towflight_mode=="k"
+		towflight_mode=="local" || towflight_mode=="coming"
 	end
 
 	def departed?
