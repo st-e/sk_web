@@ -1,19 +1,38 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  kennzeichen: MyText
-  verein: MyString
-  typ: MyText
-  sitze: 
-  gattung: MyText
-  wettbewerbskennzeichen: MyText
-  bemerkung: MyText
+1234:
+  registration: D-1234
+  club: Akaflieg Karlsruhe
+  num_seats: 2
+  type: ASK-21
+  category: glider
+  callsign: FK
+  comments:
 
-two:
-  kennzeichen: MyText
-  verein: MyString
-  typ: MyText
-  sitze: 
-  gattung: MyText
-  wettbewerbskennzeichen: MyText
-  bemerkung: MyText
+EIAV:
+  registration: D-EIAV
+  club: Akaflieg Karlsruhe
+  num_seats: 4
+  type: DR400
+  category: airplane
+  callsign: 
+  comments:
+
+KLMN:
+  registration: D-KLMN
+  club: LSV Albgau
+  num_seats: 2
+  type: Super Dimona
+  category: motorglider
+  callsign: 
+  comments:
+
+
+#two:
+#  kennzeichen: MyText
+#  verein: MyString
+#  typ: MyText
+#  sitze: 
+#  gattung: MyText
+#  wettbewerbskennzeichen: MyText
+#  bemerkung: MyText

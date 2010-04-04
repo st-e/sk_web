@@ -1,17 +1,31 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  startort: MyText
-  zielort: MyText
-  anzahl_landungen: 
-  startzeit: 2009-12-10 19:07:09
-  landezeit: 2009-12-10 19:07:09
-  typ: 
+  pilot: andreas
+  copilot: anna
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 1
+  departure_time: <%= Date.today %> 12:34
+  landing_time: <%= Date.today %> 12:45
+  launch_method: wa
+  towflight_landing_time:
+  type: normal
+  comments: Seilrissübung
+  plane: 1234
+  departed: true
+  landed: true
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
 
-two:
-  startort: MyText
-  zielort: MyText
-  anzahl_landungen: 
-  startzeit: 2009-12-10 19:07:09
-  landezeit: 2009-12-10 19:07:09
-  typ: 

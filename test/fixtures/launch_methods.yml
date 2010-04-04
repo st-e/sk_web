@@ -1,21 +1,42 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  name: MyString
-  short_name: MyString
-  log_string: MyString
-  keyboard_shortcut: MyString
-  type: MyString
-  towplane_registration: MyString
-  person_required: 
-  comments: MyString
+wa:
+  name: Winde Akaflieg
+  short_name: WA
+  log_string: W
+  keyboard_shortcut: A
+  type: winch
+  towplane_registration: 
+  person_required: true
+  comments: 
 
-two:
-  name: MyString
-  short_name: MyString
-  log_string: MyString
-  keyboard_shortcut: MyString
-  type: MyString
-  towplane_registration: MyString
-  person_required: 
-  comments: MyString
+wl:
+  name: Winde LSV
+  short_name: WL
+  log_string: W
+  keyboard_shortcut: L
+  type: winch
+  towplane_registration: 
+  person_required: true
+  comments: 
+
+av:
+  name: D-EIAV
+  short_name: AV
+  log_string: F
+  keyboard_shortcut: V
+  type: airtow
+  towplane_registration: D-EIAV
+  person_required: true
+  comments: 
+
+self:
+  name: Eigenstart
+  short_name: ES
+  log_string: E
+  keyboard_shortcut: E
+  type: self
+  towplane_registration: 
+  person_required: false
+  comments: 
+

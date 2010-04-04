@@ -1,15 +1,59 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  vorname: MyString
-  nachname: MyString
-  verein: MyString
-  vereins_id: MyString
-  bemerkung: MyString
+andreas:
+  last_name: Müller
+  first_name: Andreas
+  club: Akaflieg Karlsruhe
 
-two:
-  vorname: MyString
-  nachname: MyString
-  verein: MyString
-  vereins_id: MyString
-  bemerkung: MyString
+anna:
+  last_name: Schmidt
+  first_name: Anna
+  club: Akaflieg Karlsruhe
+
+peter:
+  last_name: Schneider
+  first_name: Peter
+  club: Akaflieg Karlsruhe
+
+eva:
+  last_name: Fischer
+  first_name: Eva
+  club: Akaflieg Karlsruhe
+
+sebastian:
+  last_name: Weber
+  first_name: Sebastian
+  club: FSV Karlsruhe
+
+sabine:
+  last_name: Meier
+  first_name: Sabine
+  club: FSV Karlsruhe
+
+thomas:
+  last_name: Wagner
+  first_name: Thomas
+  club: FSV Karlsruhe
+
+katharina:
+  last_name: Becker
+  first_name: Katharina
+  club: LSV Albgau
+
+florian:
+  last_name: Schulz
+  first_name: Florian
+  club: LSV Albgau
+
+veronika:
+  last_name: Hoffmann
+  first_name: Veronika
+  club: LSV Albgau
+
+
+
+# http://de.wikipedia.org/wiki/Liste_der_h%C3%A4ufigsten_Familiennamen_in_Deutschland
+# http://de.wikipedia.org/wiki/Kategorie:M%C3%A4nnlicher_Vorname
+# http://de.wikipedia.org/wiki/Kategorie:Weiblicher_Vorname
+# http://de.wikipedia.org/wiki/Liste_der_bairischen_Vornamen
+

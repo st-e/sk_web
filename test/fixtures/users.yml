@@ -1,11 +1,17 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  username: MyText
-  password: MyText
-  club: MyText
+  username: eimer
+  password: *XXXX
+  perm_club_admin: false
+  perm_read_flight_db: false
+  club: Akaflieg Karlsruhe
+  person: eimer
+  comments: test
 
-two:
-  username: MyText
-  password: MyText
-  club: MyText
+
+#two:
+#  username: MyText
+#  password: MyText
+#  club: MyText
+
