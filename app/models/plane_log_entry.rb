@@ -77,9 +77,9 @@ class PlaneLogEntry
 			flight.num_people,
 			flight.departure_location,
 			flight.landing_location,
-			flight.departure_time,
-			flight.landing_time,
-			flight.num_landings,
+			(flight.departs_here?)?(flight.departure_time):nil,
+			(flight.  lands_here?)?(flight.  landing_time):nil,
+			(flight.  lands_here?)?(flight.num_landings):nil,
 			flight.duration,
 			flight.comments)
 	end
