@@ -17,16 +17,27 @@ class PlaneLogController < ApplicationController
 
 		format=params['format'] || @default_format
 
+		# Hash from club to (entries of planes of this club)
 		@plane_log=Hash.new { |hash, key| hash[key]=[] }
+		
 		PlaneLog.create_for_flights(@flights).each_pair { |plane, log_entries|
-			@plane_log[plane.club]+=log_entries
+			entry_club=plane.club
+		                                                
+			if entry_club.blank?
+				entry_club="Kein Verein"
+			end
+		                                                
+			@plane_log[entry_club]+=log_entries
 		}
 
 		@tables={}
-		@plane_log.each_pair { |club, entries|
-			@tables[club]=make_table(entries)
-		}
 
+		clubs=@plane_log.keys
+		# Improvement: move the "No club" entry to the bottom of the list
+		clubs.each { |club|
+			@tables[club]=make_table(@plane_log[club])
+		}
+		
 		respond_to do |format|
 			format.html { render 'plane_log'           ; set_filename "bordbuecher_#{date_range_filename(@date_range)}.html" }
 			format.pdf  { @faux_template='plane_log';
