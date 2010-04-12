@@ -3,7 +3,7 @@
 andreas:
   last_name: Müller
   first_name: Andreas
-  club: Akaflieg Karlsruhe
+  club: FSV Dingenskirchen
 
 anna:
   last_name: Schmidt
@@ -18,39 +18,62 @@ peter:
 eva:
   last_name: Fischer
   first_name: Eva
-  club: Akaflieg Karlsruhe
+  club: FSV Dingenskirchen
 
 sebastian:
   last_name: Weber
   first_name: Sebastian
-  club: FSV Karlsruhe
+  club: Akaflieg Karlsruhe
 
 sabine:
   last_name: Meier
   first_name: Sabine
-  club: FSV Karlsruhe
+  club: Akaflieg Karlsruhe
 
 thomas:
   last_name: Wagner
   first_name: Thomas
-  club: FSV Karlsruhe
+  club: FSV Dingenskirchen
 
 katharina:
   last_name: Becker
   first_name: Katharina
-  club: LSV Albgau
+  club: Akaflieg Karlsruhe
 
 florian:
   last_name: Schulz
   first_name: Florian
-  club: LSV Albgau
+  club: Akaflieg Karlsruhe
 
 veronika:
   last_name: Hoffmann
   first_name: Veronika
-  club: LSV Albgau
+  club: Akaflieg Karlsruhe
 
+friedrich:
+  last_name: Schäfer
+  first_name: Friedrich
+  club: Akaflieg Karlsruhe
 
+maria:
+  last_name: Koch
+  first_name: Maria
+  club: FSV Dingenskirchen
+
+georg:
+  last_name: Bauer
+  first_name: Georg
+  club: FSV Dingenskirchen
+
+elisabeth:
+  last_name: Richter
+  first_name: Elisabeth
+  club: FSV Dingenskirchen
+
+christian:
+  last_name: Klein
+  first_name: Christian
+  club: Akaflieg Karlsruhe
 
 # http://de.wikipedia.org/wiki/Liste_der_h%C3%A4ufigsten_Familiennamen_in_Deutschland
 # http://de.wikipedia.org/wiki/Kategorie:M%C3%A4nnlicher_Vorname

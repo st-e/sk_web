@@ -1,7 +1,7 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 1234:
-  registration: D-1234
+  registration: D-6789
   club: Akaflieg Karlsruhe
   num_seats: 2
   type: ASK-21
@@ -10,7 +10,7 @@
   comments:
 
 EIAV:
-  registration: D-EIAV
+  registration: D-EVNI
   club: Akaflieg Karlsruhe
   num_seats: 4
   type: DR400
@@ -19,20 +19,92 @@ EIAV:
   comments:
 
 KLMN:
-  registration: D-KLMN
-  club: LSV Albgau
+  registration: D-KYZA
+  club: FSV Dingenskirchen
   num_seats: 2
   type: Super Dimona
   category: motorglider
   callsign: 
   comments:
 
+1804:
+  registration: D-6359
+  club: FSV Dingenskirchen
+  num_seats: 2
+  type: ASK-21
+  category: glider
+  callsign: 
+  comments:
 
-#two:
-#  kennzeichen: MyText
-#  verein: MyString
-#  typ: MyText
-#  sitze: 
-#  gattung: MyText
-#  wettbewerbskennzeichen: MyText
-#  bemerkung: MyText
+3296:
+  registration: D-8741
+  club: Akaflieg Karlsruhe
+  num_seats: 2
+  type: ASK-21
+  category: glider
+  callsign: 
+  comments:
+
+3543:
+  registration: D-8098
+  club: Akaflieg Karlsruhe
+  num_seats: 2
+  type: DG-1000
+  category: glider
+  callsign: KJ
+  comments:
+
+MFSV:
+  registration: D-MSFI
+  club: Akaflieg Karlsruhe
+  num_seats: 2
+  type: GY41
+  category: ultralight
+  callsign: 
+  comments:
+
+3688:
+  registration: D-5133
+  club: Akaflieg Karlsruhe
+  num_seats: 2
+  type: Cirrus
+  category: glider
+  callsign: 88
+  comments:
+
+9605:
+  registration: D-4150
+  club: Akaflieg Karlsruhe
+  num_seats: 2
+  type: Ak-5b
+  category: glider
+  callsign: FT
+  comments:
+
+4213:
+  registration: D-9768
+  club: FSV Dingenskirchen
+  num_seats: 2
+  type: Duo Discus
+  category: glider
+  callsign: SO
+  comments:
+
+3043:
+  registration: D-8598
+  club: FSV Dingenskirchen
+  num_seats: 2
+  type: DG-100
+  category: glider
+  callsign: SM
+  comments:
+
+4264:
+  registration: D-9719
+  club: FSV Dingenskirchen
+  num_seats: 2
+  type: Astir
+  category: glider
+  callsign: 
+  comments:
+

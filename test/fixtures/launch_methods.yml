@@ -10,27 +10,27 @@ wa:
   person_required: true
   comments: 
 
-wl:
-  name: Winde LSV
-  short_name: WL
+wf:
+  name: Winde FSV
+  short_name: WF
   log_string: W
-  keyboard_shortcut: L
+  keyboard_shortcut: F
   type: winch
   towplane_registration: 
   person_required: true
   comments: 
 
 av:
-  name: D-EIAV
-  short_name: AV
+  name: D-EVNI
+  short_name: NI
   log_string: F
-  keyboard_shortcut: V
+  keyboard_shortcut: N
   type: airtow
-  towplane_registration: D-EIAV
+  towplane_registration: D-EVNI
   person_required: true
   comments: 
 
-self:
+es:
   name: Eigenstart
   short_name: ES
   log_string: E

@@ -1,20 +1,497 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  pilot: andreas
+# TODO:
+#   - F-Schlepps (fliegend und gelandet)
+#   - UL: coming/leaving
+
+<%
+def mktime(t)
+    dt=Time.now-Time.parse("14:14Z")
+    time=Time.parse(t+"Z")+dt
+    time.iso8601
+end
+%>
+
+f3:
+  pilot: sabine
   copilot: anna
   departure_location: Rheinstetten
   landing_location: Rheinstetten
   num_landings: 1
-  departure_time: <%= Date.today %> 12:34
-  landing_time: <%= Date.today %> 12:45
+  departure_time: <%= mktime "12:11" %>
+  landing_time: <%= mktime "12:34" %>
   launch_method: wa
   towflight_landing_time:
   type: normal
-  comments: Seilrissübung
-  plane: 1234
+  comments: 
+  plane: 3543
   departed: true
   landed: true
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f4:
+  pilot: 
+  copilot: 
+  departure_location: Rheinstetten
+  landing_location: Speyer
+  num_landings: 1
+  departure_time: <%= mktime "12:16" %>
+  landing_time: 
+  launch_method: es
+  towflight_landing_time:
+  type: normal
+  comments: 
+  plane: MFSV
+  departed: true
+  landed: true
+  towflight_landed: false
+  mode: leaving
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f5:
+  pilot: veronika
+  copilot: 
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 1
+  departure_time: <%= mktime "12:19" %>
+  landing_time: <%= mktime "12:34" %>
+  launch_method: wa
+  towflight_landing_time:
+  type: normal
+  comments: 
+  plane: 3688
+  departed: true
+  landed: true
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f6:
+  pilot: friedrich
+  copilot: 
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 1
+  departure_time: <%= mktime "12:49" %>
+  landing_time: <%= mktime "13:00" %>
+  launch_method: wa
+  towflight_landing_time:
+  type: normal
+  comments: 
+  plane: 9605
+  departed: true
+  landed: true
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f7:
+  pilot: maria
+  copilot: 
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 1
+  departure_time: <%= mktime "12:36" %>
+  landing_time: <%= mktime "13:24" %>
+  launch_method: av
+  towflight_landing_time: <%= mktime "12:48" %>
+  type: guest_private
+  comments: 
+  plane: 4213
+  departed: true
+  landed: true
+  towflight_landed: true
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location: Rheinstetten
+  accounting_notes:
+  towplane:
+  towpilot: christian
+  towpilot_last_name:
+  towpilot_first_name:
+
+f8:
+  pilot: thomas
+  copilot: andreas
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 1
+  departure_time: <%= mktime "12:55" %>
+  landing_time: <%= mktime "12:57" %>
+  launch_method: wf
+  towflight_landing_time:
+  type: training_2
+  comments: Seilrissübung
+  plane: 1804
+  departed: true
+  landed: true
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f9:
+  pilot: georg
+  copilot: 
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 1
+  departure_time: <%= mktime "13:14" %>
+  landing_time: <%= mktime "13:20" %>
+  launch_method: wa
+  towflight_landing_time:
+  type: normal
+  comments: 
+  plane: 3043
+  departed: true
+  landed: true
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f10:
+  pilot: katharina
+  copilot: anna
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 1
+  departure_time: <%= mktime "13:07" %>
+  landing_time: <%= mktime "13:24" %>
+  launch_method: 
+  towflight_landing_time:
+  type: normal
+  comments: 
+  plane: 3543
+  departed: true
+  landed: true
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f11:
+  pilot: florian
+  copilot: peter
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 1
+  departure_time: <%= mktime "13:09" %>
+  landing_time: <%= mktime "13:13" %>
+  launch_method: wf
+  towflight_landing_time:
+  type: normal
+  comments: 
+  plane: 3296
+  departed: true
+  landed: true
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f12:
+  pilot: thomas
+  copilot: 
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 1
+  departure_time: <%= mktime "13:24" %>
+  landing_time: <%= mktime "13:29" %>
+  launch_method: wf
+  towflight_landing_time:
+  type: normal
+  comments: 
+  plane: 4264
+  departed: true
+  landed: true
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f13:
+  pilot: florian
+  copilot: peter
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 1
+  departure_time: <%= mktime "13:33" %>
+  landing_time: <%= mktime "13:41" %>
+  launch_method: wf
+  towflight_landing_time:
+  type: normal
+  comments: 
+  plane: 3296
+  departed: true
+  landed: true
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f14:
+  pilot: elisabeth
+  copilot: thomas
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 0
+  departure_time: <%= mktime "13:41" %>
+  landing_time: 
+  launch_method: av
+  towflight_landing_time:
+  type: normal
+  comments: 
+  plane: 4213
+  departed: true
+  landed: false
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode: local
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f15:
+  pilot: florian
+  copilot: peter
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 0
+  departure_time: <%= mktime "14:01" %>
+  landing_time: 
+  launch_method: wa
+  towflight_landing_time:
+  type: normal
+  comments: 
+  plane: 3296
+  departed: true
+  landed: false
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f15_2:
+  pilot: 
+  copilot: 
+  departure_location: Speyer
+  landing_location: Rheinstetten
+  num_landings: 1
+  departure_time: 
+  landing_time: <%= mktime "14:08" %>
+  launch_method:
+  towflight_landing_time:
+  type: normal
+  comments: 
+  plane: MFSV
+  departed: true
+  landed: true
+  towflight_landed: false
+  mode: coming
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+
+f16:
+  pilot: eva
+  copilot: andreas
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 0
+  departure_time: <%= mktime "14:10" %>
+  landing_time: 
+  launch_method: wa
+  towflight_landing_time:
+  type: training_2
+  comments: 
+  plane: 1804
+  departed: true
+  landed: false
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f17:
+  pilot: sebastian
+  copilot: 
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 0
+  departure_time: 
+  landing_time: 
+  launch_method: wa
+  towflight_landing_time:
+  type: normal
+  comments: 
+  plane: 3296
+  departed: false
+  landed: false
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f18:
+  pilot: elisabeth
+  copilot: 
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 0
+  departure_time: 
+  landing_time: 
+  launch_method: wa
+  towflight_landing_time:
+  type: training_1
+  comments: 
+  plane: 1804
+  departed: false
+  landed: false
   towflight_landed: false
   mode: local
   pilot_first_name:
