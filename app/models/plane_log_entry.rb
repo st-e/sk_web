@@ -102,8 +102,8 @@ class PlaneLogEntry
 			flights.last.landing_location,
 			flights.first.departure_time,
 			flights.last.landing_time,
-			flights.inject(0) { |sum, flight| sum+flight.num_landings },
-			flights.inject(0) { |sum, flight| sum+flight.duration },
+			flights.inject(0) { |sum, flight| sum+ flight.num_landings   },
+			flights.inject(0) { |sum, flight| sum+(flight.duration || 0) },
 			flights.map { |flight| flight.comments }.reject { |comment| comment.blank? }.join('; '))
 	end
 end

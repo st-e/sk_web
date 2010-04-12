@@ -1,0 +1,3 @@
+#!/bin/bash
+
+(find app -iname \*.rb; find app -iname \*.erb; find lib -iname \*.rb) |xargs wc -l
