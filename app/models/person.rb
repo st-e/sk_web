@@ -47,7 +47,7 @@ class Person < ActiveRecord::Base
 	def used?
 		User  .exists?(:person_id  =>id)||
 		Flight.exists?(:pilot_id   =>id)||
-		Flight.exists?(:cliplot_id =>id)||
+		Flight.exists?(:copilot_id =>id)||
 		Flight.exists?(:towpilot_id=>id)
 	end
 	

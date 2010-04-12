@@ -149,7 +149,7 @@ class PeopleController < ApplicationController
 		# 3. perform the operation
 
 		# Update users and flights
-		User  .all(:conditions => { :person     => wrong_person_id }).each { |user|   user.person_id    = correct_person_id; user  .save }
+		User  .all(:conditions => { :person_id  => wrong_person_id }).each { |user|   user.person_id    = correct_person_id; user  .save }
 		Flight.all(:conditions => { :pilot_id   => wrong_person_id }).each { |flight| flight.pilot_id   = correct_person_id; flight.save }
 		Flight.all(:conditions => { :copilot_id => wrong_person_id }).each { |flight| flight.copilot_id = correct_person_id; flight.save }
 		Flight.all(:conditions => { :towpilot_id=> wrong_person_id }).each { |flight| flight.towpilot_id= correct_person_id; flight.save }
