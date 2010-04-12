@@ -295,10 +295,10 @@ class Flight < ActiveRecord::Base
 
 		# Can only merge if both flights are local, return to the departure
 		# airfield and are at the same airfield.
-		return false unless (is_local? && prev.is_local?)                     # Both flights are local
-		return false unless departure_location == landing_location            # This flight is returning
-		return false unless prev.departure_location == prev.landing_location  # The previous flight is returning
-		return false unless departure_location == prev.departure_location     # The flights are at the same airfield
+		return false unless (is_local? && prev.is_local?)                                 # Both flights are local
+		return false unless      departure_location.strip.downcase ==        landing_location.strip.downcase  # This flight is returning
+		return false unless prev.departure_location.strip.downcase ==   prev.landing_location.strip.downcase  # The previous flight is returning
+		return false unless      departure_location.strip.downcase == prev.departure_location.strip.downcase  # The flights are at the same airfield
 		
 		# For motor planes: only allow merging of towflights
 		return true if plane && (plane.glider? || plane.motorglider?)
