@@ -131,6 +131,7 @@ class UsersController < ApplicationController
 	def change_own_password
 		@user=current_user(readonly=false)
 		@display_current_password_field=true
+		@no_links=true
 
 		render_error h "Das Passwort des Spezialbenutzers #{@user.username} kann nicht geändert werden." and return if @user.special?
 
