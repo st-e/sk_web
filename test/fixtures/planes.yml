@@ -6,7 +6,7 @@
   num_seats: 2
   type: ASK-21
   category: glider
-  callsign: FK
+  callsign: SX
   comments:
 
 EIAV:
@@ -51,7 +51,7 @@ KLMN:
   num_seats: 2
   type: DG-1000
   category: glider
-  callsign: KJ
+  callsign: XW
   comments:
 
 MFSV:
@@ -69,7 +69,7 @@ MFSV:
   num_seats: 2
   type: Cirrus
   category: glider
-  callsign: 88
+  callsign: 33
   comments:
 
 9605:
@@ -78,7 +78,7 @@ MFSV:
   num_seats: 2
   type: Ak-5b
   category: glider
-  callsign: FT
+  callsign: SG
   comments:
 
 4213:
@@ -87,7 +87,7 @@ MFSV:
   num_seats: 2
   type: Duo Discus
   category: glider
-  callsign: SO
+  callsign: FB
   comments:
 
 3043:
@@ -96,7 +96,7 @@ MFSV:
   num_seats: 2
   type: DG-100
   category: glider
-  callsign: SM
+  callsign: FZ
   comments:
 
 4264:

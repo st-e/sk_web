@@ -45,6 +45,16 @@ florian:
   first_name: Florian
   club: Akaflieg Karlsruhe
 
+maximilian:
+  last_name: Schulz
+  first_name: Maximilian
+  club: Akaflieg Karlsruhe
+
+hannelore:
+  last_name: Schulz
+  first_name: Hannelore
+  club: FSV Dingenskirchen
+
 veronika:
   last_name: Hoffmann
   first_name: Veronika
