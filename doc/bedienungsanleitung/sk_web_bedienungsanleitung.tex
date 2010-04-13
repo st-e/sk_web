@@ -1,0 +1,481 @@
+\documentclass[a4paper]{scrartcl}
+% TODO: \menu für Menüpunkte verwenden/\link einführen
+% Packages      {{{
+\usepackage{SIunits}
+%\usepackage{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{caption}
+\usepackage{icomma}
+\usepackage{graphicx}
+%\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage[hyphens,T1]{url}
+\usepackage{colortbl}
+\usepackage{ae}
+\usepackage[bookmarksopen=true,linkcolor=blue,citecolor=red,colorlinks]{hyperref}
+%}}}
+
+% Settings	{{{
+%\setlength{\parindent}{0pt}
+
+\renewcommand{\captionfont}{\normalfont\sffamily\itshape\footnotesize}
+\renewcommand{\captionlabelfont}{\normalfont\sffamily\bfseries\footnotesize}
+
+\makeatletter
+\@addtoreset{table}{section}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+\makeatother
+% }}}
+
+% Commands {{{
+% \pic{filename}{label}{caption}{[width=]}
+\newcommand{\pic}[4]{%
+\begin{figure}
+\begin{center}
+\includegraphics#4{#1}
+\caption{#3}
+\label{#2}
+\end{center}
+\end{figure}
+}
+
+%TODO für \menu nehmen
+\newcommand{\verbat}[1]{\texttt{#1}}
+\newcommand{\taste}[1]{\textit{#1}}				% Taste/Tastenkombination
+\newcommand{\menu}[1]{\textit{#1}}					% Menüeintrag
+\newcommand{\perm}[1]{\textit{#1}}					% Berechtigung
+\newcommand{\option}[1]{\textit{#1}}					% Option
+\newcommand{\subm}{\ensuremath{\rightarrow}}	% Untermenü
+\newcommand{\beispiel}[1]{,,#1``}				% Beispiel
+\newcommand{\zb}[1]{zum Beispiel \beispiel{#1}}	% Zum Beispiel
+\newcommand{\secref}[1]{Abschnitt \ref{#1}}		% Abschnitt #
+\newcommand{\lbl}[1]{,,#1``}					% Label im Programm
+\newcommand{\wert}[1]{,,#1``}					% Wert eines Felds
+\newcommand{\button}[1]{,,#1``}					% Schaltfläche
+%}}}
+
+\newcommand{\achtung}{\textbf{Achtung}}
+
+\begin{document}
+
+\title{Startkladde\\Benutzerdokumentation Webinterface}%{{{
+\author{Martin Herrmann}
+\date{Stand: \today}
+\maketitle
+
+\tableofcontents
+
+\clearpage
+%}}}
+
+
+\section{Übersicht} 
+
+Dieses Dokument beschreibt die Benutzung der Webschnittstelle des
+Starterfassungsprogramms ,,Startkladde``. Der Zugriff auf die Webschnittstelle
+erfolgt mittels Web-Browser über das lokale Netzwerk oder über das Internet.
+
+Funktionen:
+\begin{itemize}
+\item{Bordbücher für Flugzeuge (mit Sammeleinträgen für Segelflugzeuge)}
+\item{persönliches Flugbuch}
+\item{Startlisten eines Tages}
+\item{Startlisten eines Zeitraums (zur Abrechnung)}
+\item{Pflege von Personendaten}
+\end{itemize}
+
+Für einige Aktionen ist eine Anmeldung mit Benutzername und Passwort
+erforderlich. Aus dem lokalen Netzwerk sind einige Aktionen auch ohne Anmeldung
+möglich. Beim Zugriff über das Internet ist grundsätzlich eine Anmeldung
+notwendig.
+
+
+\section{Navigation}
+
+Die Navigation erfolgt über das Menü am oberen Rand der Seite. Menüeinträge mit
+einem Untermenü sind durch drei Punkte ($\ldots$) gekennzeichnet. Das Untermenü
+erscheint bei Überfahren des Menüeintrags mit der Maus.
+
+
+\section{Benutzeranmeldung}
+
+Für den Zugriff auf die Daten über das Internet ist eine Anmeldung mit
+Benutzernamen und Kennwort erforderlich. Die Zugänge werden von den jeweiligen
+Ansprechpartnern im Verein eingerichtet (siehe auch Abschnitt
+\ref{sec.user}).
+
+Aus dem lokalen Netzwerk sind einige Aktionen (zum Beispiel Abrufen der
+Startlisten) auch ohne Anmeldung möglich. Für andere Aktionen (zum Beispiel
+Abrufen von Flugbüchern oder editieren von Personen) ist auch hier eine
+Anmeldung erforderlich.
+
+Beim Zugriff auf eine Aktion, die eine Anmeldung erfordert, wird automatisch
+nach den Zugangsdaten (Benutzername und Kennwort) gefragt. Die Anmeldung ist
+auch über das Menü \menu{Sitzung \subm Anmeldung} möglich. Die Abmeldung
+erfolgt über das Menü \menu{Sitzung \subm Abmeldung}.
+
+Der aktuell angemeldete Benutzer wird in der oberen rechten Ecke angezeigt.
+Dort befindet sich - je nach Anmeldestatus - auch ein Link zum An- oder
+Abmelden.
+
+
+\subsection{Passwort ändern} 
+
+Das eigene Passwort kann über das Menü \menu{Sitzung \subm Passwort ändern}
+geändert werden. Für den Fall, dass das Passwort vergessen wurde, kann auch vom
+Vereinsadministrator ein neues Passwort vergeben werden.
+
+
+\section{Abrufen von Daten}
+
+\subsection{Formate}
+
+Die abgerufenen Daten stehen in verschiedenen Formaten zur Verfügung:
+\begin{itemize}
+\item{HTML: Webseite zum direkten Ansehen}
+\item{PDF: PDF-Datei, zum Beispiel zur Archivierung oder zum Ausdrucken}
+\item{CSV: CSV-Datei zur Weiterverarbeitung, zum Beispiel zur Auswertung oder Abrechnung}
+\end{itemize}
+
+Aus Datenschutzgründen stehen die Formate HTML und CSV bei manchen Daten nur
+für angemeldete Benutzer mit der entsprechenden Berechtigung zur Verfügung.
+
+
+\subsection{Startlisten}
+
+Die Startlisten eines einzelnen Tages können über das Menü \menu{Flüge \subm
+Startliste} abgerufen werden. In dem folgenden Formular kann das Datum
+ausgewählt oder eingegeben werden.
+
+
+\subsection{Bordbücher}
+
+Die Bordbücher aller Flugzeuge für einen einzelnen Tag können über das Menü
+\menu{Flüge \subm Bordbücher} abgerufen werden. In dem folgenden Formular kann
+das Datum ausgewählt oder eingegeben werden.
+
+Die Bordbücher sind nach Verein gruppiert. Für Segelflugzeuge werden
+automatisch Sammeleinträge mit aufsummierten Zeiten erzeugt, sofern das möglich
+ist (Lokalflüge). In diesem Fall enthält die Spalte ,,Pilot`` den Namen des
+letzten Piloten.
+
+
+\subsection{Flugbücher}
+
+Das Flugbuch eines Piloten kann über das Menü \menu{Flüge \subm Flugbuch}
+abgerufen werden. Hierzu ist in jedem Fall eine Anmeldung notwendig. In dem
+folgenden Formular kann ein einzelnes Datum oder ein Datumsbereich ausgewählt
+werden.
+
+Üblicherweise sind nur Flüge als Pilot von Interesse, nicht aber Flüge als
+Begleiter. Bei Fluglehrern sind auch Flüge als Fluglehrer relevant. Daher
+bestehen unter \option{Fluglehrermodus} die folgenden Auswahlmöglichkeiten:
+
+\begin{itemize}
+\item{\option{Nein} (Voreinstellung): nur Flüge als Pilot werden angezeigt}
+\item{\option{Streng}: es werden auch Flüge als Begleiter (Fluglehrer) angezeigt,
+	sofern als Flugtyp ,,Schulungsflug`` eingetragen ist}
+\item{\option{Locker}: es werden alle Flüge als Pilot oder Begleiter angezeigt,
+	unabhängig vom Flugtyp}
+\end{itemize}
+
+
+\subsection{Flugdatenbank}\label{sec.flight_db}
+
+Die Flugdatenbank kann unter \menu{Flüge \subm Flugdatenbank} abgerufen, sofern
+der angemeldete Benutzer über die Berechtigung \perm{Flugdatenbank abrufen}
+verfügt. In dem folgenden Formular kann ein einzelnes Datum oder ein
+Datumsbereich ausgewählt werden.
+
+Normalerweise wird bei F-Schlepps die Landezeit in der Spalte ,,Landezeit
+Schleppflugzeug`` des geschleppten Flugs ausgegeben. Für die Abrechnung
+kann es sinnvoll sein, F-Schlepps als separate Flüge darzustellen. Dazu kann
+das Optionsfeld \option{Schleppflüge einzeln} ausgewählt werden.
+
+Die Reihenfolge und der Inhalt der Spalten in der Datei kann über Plugins
+konfiguriert werden, um zum Beispiel die Anpassung an ein bestimmtes
+Abrechnungsprogramm zu ermöglichen. Die verfügbaren Optionen können unter
+\option{Datenformat} ausgewählt werden.
+
+
+\section{Administration}
+
+\subsection{Berechtigungen}
+
+Benutzern können die folgenden Berechtigungen erteilt werden:
+\begin{itemize}
+	\item{\perm{Vereinsadministrator}: Zugriff auf Administrationsfunktionen}
+	\item{\perm{Flugdatenbank lesen}: Zugriff auf die Flugdatenbank (siehe Abschnitt \ref{sec.flight_db})}
+\end{itemize}
+
+
+\subsection{Personenverwaltung}
+
+Über das Menü \menu{Personen} können die Personendaten verwaltet werden. Diese
+Funktionen stehen nur für angemeldete Benutzer mit der Berechtigung
+\perm{Vereinsadministrator} zur Verfügung.
+
+Über \menu{Personen \subm Personenliste} kann die Liste aller bekannten
+Personen aufgerufen werden. Hier besteht auch die Möglichkeit, Benutzer zu
+bearbeiten und zu löschen. Personen, die verwendet werden (zum Beispiel
+Personen, die als Pilot eines Flugs eingetragen sind) können nicht gelöscht
+werden.
+
+Über \menu{Personen \subm Anlegen} kann eine neue Person eingetragen werden.
+Die neue Person muss dann nicht mehr vom Startschreiber angelegt werden.
+
+
+\subsubsection{Zusammenfassen von Personen}
+
+Es kann vorkommen, dass vom Startschreiber der Name einer Person falsch
+eingetragen und eine neue Person mit dem falschen Namen angelegt wird. Dies
+kann in der Benutzerliste (\menu{Benutzer \subm Benutzerliste}) korrigiert
+werden.
+
+Dazu benutzt man bei der fehlerhaften Person den Link \option{Überschreiben}.
+In der folgenden Liste wählt man die korrekte Person aus. Bevor eine Änderung
+vorgenommen wird, wird nochmals eine Zusammenfassung angezeigt. Nach
+Bestätigung durch den Benutzer werden automatisch alle Referenzen auf die
+falsche Person durch die richtige ersetzt und die falsche Person gelöscht.
+
+
+\subsubsection{Exportieren von Personen}
+
+Unter dem Menüpunkt \menu{Benutzer \subm Exportieren} kann die Liste aller
+Personen oder aller Personen eines bestimmten Vereins im CSV-Format
+heruntergeladen werden.
+
+\subsubsection{Importieren von Personen}
+
+Unter \menu{Personen \subm Importieren} kann eine Personenliste, zum Beispiel
+aus einem Personenverwaltungsprogramm, importiert werden. Das Importieren von
+Personen ist in Abschnitt \ref{sec.import} ausführlich beschrieben.
+
+
+\subsection{Benutzerverwaltung}\label{sec.user}
+
+Zum Anmelden ist ein Benutzername und ein Passwort erforderlich. Für die
+Flugbuchabfrage ist es zusätzlich erforderlich, dass dem Benutzer eine Person
+zugeordnet ist.
+
+Die Benutzerliste kann unter \menu{Benutzer \subm Benutzerliste} abgerufen
+werden. Hier können Benutzer auch bearbeitet, Berechtigungen vergeben und
+Passwörter geändert werden.
+
+Benutzernamen dürfen nur aus Buchstaben, Ziffern, Punkten, Bindestrichen und
+Unterstrichen bestehen.
+
+
+\subsubsection{Erstmalige Anmeldung}
+
+Für den Fall, dass noch kein Benutzer angelegt wurde, ist die Anmeldung am
+Webinterface auch mit den Zugangsdaten des Datenbankbenutzers möglich. Dieser
+Benutzer verfügt über alle Berechtigungen und kann genutzt werden, um andere
+Benutzer anzulegen.
+
+
+
+
+\section{Importieren von Personen}\label{sec.import}
+
+\subsection{Übersicht}
+
+Vereinsadministratoren können die Personendatenbank mit einer eigenen Datenbank
+abgleichen. Dieses Verfahren ist auch dazu geeignet, nach der Installation alle
+Mitglieder in die Datenbank zu schreiben, so dass nicht jeder einzelne Person
+manuell angelegt werden muss. Dazu wird vom Vereinsadministrator eine CSV-Datei
+eingespielt, die die Personendaten enthält.
+
+
+\subsection{Identifikation von Personen}
+
+Personen werden durch die Vereinszugehörigkeit und ihren vollen Namen
+identifiziert\footnote{Datenbankintern werden Benutzer durch eine eindeutige
+Kennung identifiziert. Diese wird allerdings vom Datenbanksystem vergeben; der
+Benutzer hat keinen Einfluss darauf. Die Kennung hat für Benutzer und
+Vereinsadministratoren keine Bedeutung.}. Da mehrere Personen den gleichen
+Namen haben können, kann zur Identifikation auch die so genannte ,,Vereins-ID``
+verwendet werden.
+
+Die Vereins-ID ist ein Freitextfeld, das für jede Person innerhalb des Vereins
+eindeutig sein muss. Es kann zum Beispiel eine Mitgliedsnummer verwendet
+werden. Vereinsübergreifend muss die Vereins-ID \emph{nicht} eindeutig sein: es
+ist möglich, dass zwei Personen die gleiche Vereins-ID haben, wenn sie in
+unterschiedlichen Vereinen sind. Mehrere Vereins müssen also die Vergabe von
+Vereins-IDs nicht untereinander koordinieren.
+
+Ist für eine Person keine Vereins-ID vorhanden, wird die Person durch ihren
+Namen identifiziert. In diesem Fall darf es im gleichen Verein keine weitere
+Person mit dem gleichen Namen geben\footnote{Personen mit gleichem Namen in
+unterschiedlichen Vereinen sind weiterhin erlaubt}.
+
+Die Mischung der beiden Identifikationsverfahren ist möglich, es ist also
+möglich, dass alle Personen mit eindeutigem Namen keine Vereins-ID haben und
+eine Vereins-ID lediglich bei Personen mit nicht eindeutigem Namen vergeben
+wird. Gibt es keine zwei Personen mit dem gleichen Namen, kann auf die
+Vereins-ID völlig verzichtet werden.
+
+
+\subsection{Funktionsweise des Datenabgleichs}%{{{
+
+Um die Personen zu importieren, wird unter dem Menüpunkt \menu{Personen \subm
+Personen importieren} eine CSV-Datei
+%(siehe Abschnitt \ref{sec.csv})
+hochgeladen, die aktuelle Personendaten enthält.
+
+Die Datei muss die folgende Datenfelder enthalten:
+\begin{itemize}
+\item{Nachname: der Nachname der Person}
+\item{Vorname: der Vorname der Person}
+\end{itemize}
+
+Außerdem können folgende Felder vorhanden sein:
+\begin{itemize}
+\item{Bemerkungen: ein beliebiger Text}
+\item{Vereins-ID: die aktuelle Vereins-ID der Person (darf leer sein, wenn der
+	Name eindeutig ist)}
+\item{Vereins-ID\_alt: die alte Vereins-ID, siehe unten.}
+\end{itemize}
+
+Nachdem die CSV-Datei hochgeladen wurde, wird sie auf Fehler geprüft. Werden
+Probleme festgestellt, zum Beispiel, dass eine Vereins-ID nicht eindeutig ist,
+dann werden diese angezeigt. Ansonsten wird die erzeugte Tabelle nochmals dem
+Benutzer zur Überprüfung angezeigt. \achtung: Diese Tabelle sollte sorgfältig
+auf Korrektheit überprüft werden, da Fehler an dieser Stelle weitreichende
+Folgen haben können und die Aktion nicht rückgängig gemacht werden kann.
+
+Ist die Tabelle in Ordnung, werden die enthaltenen Personen in die Datenbank
+aufgenommen. Personen, die bereits vorhanden sind, werden ggf. aktualisiert
+(zum Beispiel, wenn sich der Name geändert hat), ansonsten nicht geändert.
+Flüge der Person bleiben erhalten. Auf diese Weise aufgenommene Personen
+werden automatisch auf ,,nicht editierbar`` gesetzt.
+
+Das Feld ,,Vereins-ID\_alt`` spielt nur dann eine Rolle, wenn die Vereins-ID von
+Personen geändert werden soll. Dazu muss unter ,,Vereins-ID\_alt`` die alte und
+unter ,,Vereins-ID`` die neue Vereins-ID eingetragen werden. Dann wird der
+Datenbankeintrag entsprechend angepasst. In der Regel ist dieses Feld nicht
+erforderlich.
+
+\achtung: es ist unbedingt darauf zu achten, dass die Vereins-ID der Personen
+korrekt ist, sofern sie verwendet wird, da bei Fehlern leicht schwerwiegende
+Fehlereinträge in der Datenbank entstehen können.
+%}}}
+
+\subsection{Beispiele zum Einspielen von Stammdaten}%{{{
+
+Um die Vorgänge beim Einspielen zu verdeutlichen, einige Beispiele für
+Situationen, die auftreten können und wie sie zu behandeln sind:
+
+\begin{itemize}
+	\item{Eine Person ist neu in den Verein eingetreten: Die Person wird, wie
+		oben beschrieben, in der Datei aufgeführt. Es ist nichts spezielles zu
+		beachten.}
+	\item{Eine Person, die bereits vom Startschreiber eingetragen wurde, wird
+		aufgenommen: Auch hier ist nichts spezielles zu beachten. Die Namen der
+		vom Startschreiber aufgenommenen Person und derer in der Datei müssen
+		übereinstimmen. Die Person wird anschließend auf ,,nicht editierbar``
+		gesetzt.}
+	\item{Eine Person hat den Namen geändert: Wenn die Person eine Vereins-ID
+		hat, dann ist nichts weiter zu beachten; der neue Name wird
+		eingetragen. Falls nicht, dann ist die automatische Änderung nicht
+		möglich. Entweder der Name der Person muss manuell geändert werden oder
+		es wird eine neue Person mit dem neuen Namen angelegt. Die beiden
+		Einträge können dann nachträglich noch zu einem zusammengefasst
+		werden.}
+	\item{Die Vereins-ID einer Person soll geändert werden: Die alte Vereins-ID
+		wird als ,,Vereins-ID\_alt`` die neue als ,,Vereins-ID`` eingetragen.
+		Dieses Verfahren ist auch dann anzuwenden, wenn die neue Vereins-ID
+		leer sein (also entfernt werden) soll oder wenn eine Person, die bis
+		jetzt keine Vereins-ID hatte, eine bekommen soll.}
+\end{itemize}
+%}}}
+
+
+
+%\section{Beschreibung des CSV-Formats}\label{sec.csv}
+%
+%\subsection{Überblick}%{{{
+%Für Datenaustausch mit anderen Programmen oder Benutzern wird das Dateiformat
+%CSV verwendet. Dies ist ein Standard-Format, das von praktisch allen
+%Tabellenkalkulations- und Datenbankprogrammen gelesen bzw. geschrieben werden
+%kann. Dieser Abschnitt beschreibt das genaue Dateiformat, das verwendet wird.
+%Dieses Format wird auch für Datenimport verwendet.
+%%}}}
+%
+%\subsection{Kurzzusammenfassung}%{{{
+%
+%\begin{itemize}
+%\item{Zeichensatz: UTF8}
+%\item{Feldtrenner: , (Komma)}
+%\item{Quote-Zeichen: \textquotedbl{} (Doppeltes Anführungszeichen)}
+%\item{Zeilentrenner: LF (Unix) oder CRLF (Windows)}
+%\end{itemize}
+%%}}}
+%
+%\subsection{Ausführliche Beschreibung}%{{{
+%
+%CSV steht für ,,comma separated values`` Das Dateiformat ist Klartext
+%(Zeichensatz ISO-8859-1) mit einem Datensatz pro Zeile. Die einzelnen Felder
+%des Datensatzes sind durch ein Komma getrennt.
+%
+%Wenn ein Datenfeld ein Komma enthält, dann wird das gesamte Feld in
+%Anführungszeichen gesetzt, damit das Komma nicht als Datensatztrenner
+%interpretiert wird.
+%
+%Wenn ein Datenfeld ein Anführungszeichen enthält, dann wird das Feld ebenfalls
+%in Anführungszeichen gesetzt, zusätzlich wird das Anführungszeichen, das in dem
+%Feld vorkommt, verdoppelt, damit es nicht als Feldende interpretiert wird.
+%Leere Datenfelder können mit oder ohne Anführungszeichen angegeben werden.
+%
+%Die Bedeutung von Anführungszeichen in Feldern, die nicht von Anführungszeichen
+%begrenzt sind, ist undefiniert. Dieser Fall darf nicht vorkommen.
+%Es ist erlaubt, Felder ohne besondere Zeichen in Anführungszeichen zu setzen.
+%
+%Die erste Zeile der Datei ist eine Kopfzeile, die die Namen der einzelnen
+%Datenfelder festlegt. Das Format der Kopfzeile ist das gleiche wie das von
+%Datenzeilen.
+%Die Datenfelder der Datensätze dürfen in beliebiger Reihenfolge vorkommen, die
+%Reihenfolge muss allerdings bei allen Datensätzen einer Datei identisch sein.
+%Die Kopfzeile muss die Feldnamen in der gleichen Reihenfolge enthalten.
+%%}}}
+%
+%\subsection{Beispiele}%{{{
+%
+%Einige Beispiele zur Verdeutlichung:
+%
+%\begin{itemize}
+%\item{Zur Reihenfolge von Datenfeldern: Eine Datei soll die Datenfelder
+%	,,Vorname`` und ,,Nachname`` enthalten. Es sind drei Datensätze vorhanden.
+%	Folgende Darstellungen sind möglich:
+%	\begin{itemize}
+%		\item{\begin{verbatim}
+%Nachname,Vorname
+%Müller,Hans
+%Meier,Klaus
+%Bauer,Franz
+%		\end{verbatim}}
+%		\item{\begin{verbatim}
+%Vorname,Nachname
+%Hans,Müller
+%Klaus,Meier
+%Franz,Bauer
+%		\end{verbatim}}
+%	\end{itemize}
+%	Beide Dateien werden gleich interpretiert.
+%	}
+%\item{Sonderzeichen und leere Felder:
+%	\begin{verbatim}
+%Name,Bemerkungen,Vereins-ID
+%Hans,"Fluglehrer, Flugleiter",0001
+%Klaus,,"0002"
+%Peter,"",0003
+%Franz,"Bemerkung mit ""Anführungszeichen""",0004
+%	\end{verbatim}}
+%\end{itemize}
+%%}}}
+
+
+\end{document}
+
