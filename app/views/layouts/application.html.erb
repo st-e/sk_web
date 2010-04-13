@@ -13,10 +13,10 @@
 		debug_on  =  session[:debug]
 
 		               menu.entry               "Startseite", root_path
-		flights_menu = menu.entry               "Flüge"     , nil
-		people_menu  = menu.entry_if logged_in, "Personen"  , nil
-		users_menu   = menu.entry_if logged_in, "Benutzer"  , nil
-		session_menu = menu.entry               "Sitzung"   , nil
+		flights_menu = menu.entry               "Flüge…"     , nil
+		people_menu  = menu.entry_if logged_in, "Personen…"  , nil
+		users_menu   = menu.entry_if logged_in, "Benutzer…"  , nil
+		session_menu = menu.entry               "Sitzung…"   , nil
 
 		flights_menu.entry "Startliste"    , :controller => 'flightlist'
 		flights_menu.entry "Bordbücher"    , :controller => 'plane_log'

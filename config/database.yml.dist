@@ -43,7 +43,7 @@ production:
   reconnect: false
   database: startkladde
   pool: 5
-  username: sk_admin
-  password: moobertshausen
+  username: startkladde
+  password: moobert
   host: localhost
 
