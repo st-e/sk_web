@@ -6,7 +6,9 @@ RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
-puts "Starting up in #{RAILS_ENV} mode"
+# Don't enable this, it adds extra output to script/runner invocations. Modify
+# script/server or script/console instead if required.
+#puts "Starting up in #{RAILS_ENV} mode"
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.

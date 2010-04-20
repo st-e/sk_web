@@ -2,7 +2,8 @@
 # Likewise, all the methods added will be available for all controllers.
 
 # Hack
-puts "Loading extensions"
+# Don't output anything, it adds extra output to script/runner invocations
+#puts "Loading extensions"
 Dir[File.join(Rails.root, "lib", "extensions", "*.rb")].each {|l| require_dependency l }
 
 class ApplicationController < ActionController::Base

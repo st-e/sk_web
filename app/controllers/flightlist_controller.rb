@@ -16,7 +16,7 @@ class FlightlistController < ApplicationController
 		@flights=Flight.find_by_date_range(@date_range, :readonly=>true).sort_by { |flight| flight.effective_time }
 
 		format=params['format'] || @default_format
-		@table=make_table(@flights, format=='tex' || format =='pdf') # Ugly
+		@table=self.make_table(@flights, format=='tex' || format =='pdf') # Ugly
 
 		#f=File.new("/home/martin/tmp/ruby/table.marshal", 'w')
 		#t={:columns=>@table[:columns], :rows=>@table[:rows]}
@@ -35,6 +35,24 @@ class FlightlistController < ApplicationController
 			#format.xml  { render :xml => @flights    ; set_filename "startkladde_#{date_range_filename(@date_range)}.xml"  }
 			#format.json { render :json => @flights   ; set_filename "startkladde_#{date_range_filename(@date_range)}.json" }
 		end
+	end
+
+	def self.dump_flightlist_today
+		dh=Object.new
+		dh.class_eval do
+			include DateHandling
+		end
+
+		@date_range=dh.date_range('today')
+		@flights=Flight.find_by_date_range(@date_range, :readonly=>true).sort_by { |flight| flight.effective_time }
+		@table=make_table(@flights, false)
+
+		puts make_csv { |csv|
+			csv << @table[:columns].map { |column| column[:title] }
+			@table[:rows].each { |row|
+				csv << row
+			}
+		}
 	end
 
 protected
@@ -66,7 +84,7 @@ protected
 		end
 	end
 
-	def make_table(flights, short=false)
+	def self.make_table(flights, short=false)
 		columns = [
 			{ :title => (short)?'Nr.'         :'Nr.'                   , :width =>  5 },
 			{ :title => (short)?'Kennz.'      :'Kennzeichen'           , :width => 16 },
