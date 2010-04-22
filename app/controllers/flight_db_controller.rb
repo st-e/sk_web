@@ -25,6 +25,7 @@ class FlightDbController < ApplicationController
 
 		@flights=Flight.find_by_date_range(@date_range, :readonly=>true)
 		@flights+=Flight.make_towflights(@flights) if params['towflights_extra'].to_b
+		@flights.reject! { |flight| !flight.effective_time }
 		@flights=@flights.sort_by { |flight| flight.effective_time }
 
 		@data_format=params['data_format']

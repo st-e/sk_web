@@ -19,7 +19,8 @@ class PilotLogController < ApplicationController
 		@format=params['format'] || @default_format
 		@formats=formats
 		@flight_instructor_mode=params['flight_instructor_mode'] unless params['flight_instructor_mode']==@default_flight_instructor_mode
-		redirect_to_with_date :action=>'show', :format=>@format, :flight_instructor_mode=>@flight_instructor_mode
+		@gliders_only          =params['gliders_only'          ]
+		redirect_to_with_date :action=>'show', :format=>@format, :flight_instructor_mode=>@flight_instructor_mode, :gliders_only=>@gliders_only
 	end
 
 	def show
@@ -27,7 +28,7 @@ class PilotLogController < ApplicationController
 		@person=user.person
 
 		if !@person
-			flash[:error]="Es kann kein Flugubch angezeigt werden, da dem Benutzer #{user.username} keine Person zugeordnet ist."
+			flash[:error]="Es kann kein Flugbuch angezeigt werden, da dem Benutzer #{user.username} keine Person zugeordnet ist."
 			redirect_to :back
 			return
 		end
@@ -46,6 +47,12 @@ class PilotLogController < ApplicationController
 
 		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true}, [condition, condition_values]).sort_by { |flight| flight.effective_time }
 
+		if params['gliders_only']
+			# Reject all flights where the plane (exist and) is not a glider
+			@flights.reject! { |flight|
+				flight.plane && !flight.plane.glider?
+			}
+		end
 
 		format=params['format'] || @default_format
 
