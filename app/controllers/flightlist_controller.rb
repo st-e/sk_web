@@ -16,7 +16,7 @@ class FlightlistController < ApplicationController
 		@flights=Flight.find_by_date_range(@date_range, :readonly=>true).sort_by { |flight| flight.effective_time }
 
 		format=params['format'] || @default_format
-		@table=self.make_table(@flights, format=='tex' || format =='pdf') # Ugly
+		@table=self.class.make_table(@flights, format=='tex' || format =='pdf') # Ugly
 
 		#f=File.new("/home/martin/tmp/ruby/table.marshal", 'w')
 		#t={:columns=>@table[:columns], :rows=>@table[:rows]}
