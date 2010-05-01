@@ -23,7 +23,7 @@ class FlightDbController < ApplicationController
 
 		@date_range=date_range(params['date'])
 
-		@flights=Flight.find_by_date_range(@date_range, :readonly=>true)
+		@flights=Flight.find_by_date_range(@date_range, :readonly=>true, :include=>[:pilot, :copilot, :towpilot, :plane, :towplane, :launch_method])
 		@flights+=Flight.make_towflights(@flights) if params['towflights_extra'].to_b
 		@flights.reject! { |flight| !flight.effective_time }
 		@flights=@flights.sort_by { |flight| flight.effective_time }
@@ -106,9 +106,9 @@ protected
 			last_date=date
 			number+=1
 
-			plane=flight.plane
-			pilot=flight.pilot
-			copilot=flight.copilot
+			plane=(flight.plane unless flight.plane_id=0)
+			pilot=(flight.pilot unless flight.pilot_id=0)
+			copilot=(flight.copilot unless flight.copilot_id=0)
 			
 			[
 				date                                   ,
