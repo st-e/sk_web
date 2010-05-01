@@ -281,6 +281,7 @@ class Flight < ActiveRecord::Base
 		end
 	end
 
+	# Note that this method is relatively slow
 	def effective_date
 		time=effective_time
 		return nil if !time
@@ -312,7 +313,9 @@ class Flight < ActiveRecord::Base
 		begin_time=range.begin.midnight
 		end_time  =range.end  .midnight; end_time=end_time+1.day unless range.exclude_end?
 
-		condition="(departure_time>=:begin_time AND departure_time<:end_time) OR (landing_time>=:begin_time AND landing_time<:end_time)"
+		# Note that the departure/landing time of a flight may be in range but
+		# insignificant (for example, if the flight does not depart here).
+		condition="(departure_time>=:begin_time AND departure_time<:end_time AND (mode='local' OR mode='leaving') AND departed) OR (landing_time>=:begin_time AND landing_time<:end_time AND (mode='local' OR mode='coming') AND landed)"
 		condition_values={ :begin_time=>begin_time, :end_time=>end_time }
 
 		if additional_conditions
@@ -321,11 +324,7 @@ class Flight < ActiveRecord::Base
 		end
 
 		query_args=options.merge({ :conditions => [condition, condition_values] })
-		# It is possible that the start/landing time of a flight is in range,
-		# but insignificant (for example, for a leaving flight). Thus, we have
-		# to filter out all flights where the effective date is not in the
-		# range.
-		Flight.all(query_args).select { |flight| range.include? flight.effective_date }
+		Flight.all(query_args)
 	end
 
 	def make_towflight

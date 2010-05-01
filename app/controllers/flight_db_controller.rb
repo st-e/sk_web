@@ -28,6 +28,7 @@ class FlightDbController < ApplicationController
 		@flights.reject! { |flight| !flight.effective_time }
 		@flights=@flights.sort_by { |flight| flight.effective_time }
 
+		# slow!!
 		@data_format=params['data_format']
 		if !@data_format
 			@table=make_table(@flights)
@@ -36,7 +37,7 @@ class FlightDbController < ApplicationController
 			@table=@data_format_plugin.make_table(@flights)
 		end
 
-
+		# slow!
 		respond_to do |format|
 			format.html { render 'flight_db'        ; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.html" }
 			#format.pdf  { render_pdf 'flight_db.tex'; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.pdf"  }
