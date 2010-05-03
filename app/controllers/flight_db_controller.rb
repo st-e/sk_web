@@ -107,9 +107,9 @@ protected
 			last_date=date
 			number+=1
 
-			plane=(flight.plane unless flight.plane_id=0)
-			pilot=(flight.pilot unless flight.pilot_id=0)
-			copilot=(flight.copilot unless flight.copilot_id=0)
+			plane=(flight.plane unless flight.plane_id==0)
+			pilot=(flight.pilot unless flight.pilot_id==0)
+			copilot=(flight.copilot unless flight.copilot_id==0)
 			
 			[
 				date                                   ,
