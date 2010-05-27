@@ -9,3 +9,12 @@ foo:
   person: veronika
   comments: "Passwort: bar"
 
+sabine:
+  username: sabine
+  password: "*E8D46CE25265E545D225A8A6F1BAF642FEBEE5CB" # bar
+  perm_club_admin: true
+  perm_read_flight_db: true
+  club: Akaflieg Karlsruhe
+  person: sabine
+  comments: "Passwort: bar"
+

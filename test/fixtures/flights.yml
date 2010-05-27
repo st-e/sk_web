@@ -1,8 +1,9 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-# TODO:
-#   - F-Schlepps (fliegend und gelandet)
-#   - UL: coming/leaving
+# Funktioniert so:
+# Die Zeiten für die Flüge werden durch mktime so berechnet, dass sie am
+# aktuellen Tag liegen und dass der letzte Start gerade 4 Minuten zurück liegt
+# (zu dem Zeitpunkt, wo diese Datei geladen wird).
 
 <%
 def mktime(t)
@@ -11,6 +12,64 @@ def mktime(t)
     time.iso8601
 end
 %>
+
+f1:
+  pilot: sabine
+  copilot: anna
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 1
+  departure_time: <%= mktime "11:42" %>
+  landing_time: <%= mktime "11:48" %>
+  launch_method: wa
+  towflight_landing_time:
+  type: normal
+  comments: 
+  plane: 3543
+  departed: true
+  landed: true
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
+
+f2:
+  pilot: sabine
+  copilot: anna
+  departure_location: Rheinstetten
+  landing_location: Rheinstetten
+  num_landings: 1
+  departure_time: <%= mktime "11:54" %>
+  landing_time: <%= mktime "11:59" %>
+  launch_method: wa
+  towflight_landing_time:
+  type: normal
+  comments: 
+  plane: 3543
+  departed: true
+  landed: true
+  towflight_landed: false
+  mode: local
+  pilot_first_name:
+  pilot_last_name:
+  copilot_first_name:
+  copilot_last_name:
+  towflight_mode:
+  towflight_landing_location:
+  accounting_notes:
+  towplane:
+  towpilot:
+  towpilot_last_name:
+  towpilot_first_name:
 
 f3:
   pilot: sabine
@@ -47,7 +106,7 @@ f4:
   departure_location: Rheinstetten
   landing_location: Speyer
   num_landings: 1
-  departure_time: <%= mktime "12:16" %>
+  departure_time: <%= mktime "12:02" %>
   landing_time: 
   launch_method: es
   towflight_landing_time:
