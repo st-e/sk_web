@@ -21,7 +21,7 @@ development:
   database: startkladde
   pool: 5
   username: startkladde
-  password: moobert
+  password: sk
   host: localhost
 
 # Warning: The database defined as "test" will be erased and
@@ -34,7 +34,7 @@ test:
   database: startkladde_test
   pool: 5
   username: startkladde
-  password: moobert
+  password: sk
   host: localhost
 
 production:
@@ -44,6 +44,6 @@ production:
   database: startkladde
   pool: 5
   username: startkladde
-  password: moobert
+  password: sk
   host: localhost
 
