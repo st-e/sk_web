@@ -1,13 +1,13 @@
 Critical (before release):
+
+Bugs:
+* export/import - some are "changed", although identical
+
+Major (important changes):
 * make sure that towpilot works: pilot log, flight list
-* rhst: export/import - some are "changed", although identical
 * Better error documents
 * Custom log albgen style
 * Use table_for plugin
-* Use new schema
-* remove old config file
-
-Major (important changes):
 * people list is extremely slow, even though paginated, probably due to user
   (overwrite select is way faster)
 * overwrite perform is also slow
