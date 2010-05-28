@@ -1,4 +1,5 @@
 require 'rexml/document'
+require 'mysql'
 
 class Version
 	include Singleton
@@ -16,7 +17,7 @@ class Version
 		@name="sk_web"
 		@base_version="2.0"
 		@revision=svn_revision!
-		@version=("#{@base_version} (rev. #{@revision})" if @revision) or @base_version
+		@version=("#{@base_version} (rev. #{@revision})" if @revision) || @base_version
 
 		@ruby=RUBY_VERSION
 		@rails=Rails::VERSION::STRING
@@ -46,10 +47,15 @@ class Version
 
 	def svn_revision!
 		svn_info=`svn info --xml`
+		return nil if $?.exitstatus!=0
 		return nil if svn_info.blank?
 
 		svn_xml=REXML::Document.new(svn_info)
-		entry=svn_xml.elements['info'].elements['entry']
+
+		info=svn_xml.elements['info']
+		return nil if !info
+
+		entry=info.elements['entry']
 		return nil if !entry
 
 		entry.attributes['revision']
