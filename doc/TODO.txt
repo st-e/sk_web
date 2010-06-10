@@ -105,6 +105,8 @@ Major (important changes):
   * Move functionality from people controller to model
 
 Minor (less important changes or much work):
+* autogenerate database.yml if it does not exist (copy from .dist or let the
+  user enter the data)
 * Templates
   * Layout for "box in stretcher"?
 * Style

@@ -47,6 +47,9 @@ class Version
 
 	def svn_revision!
 		svn_info=`svn info --xml`
+
+		# No svn revision if either this is not a working copy or svn is not
+		# installed.
 		return nil if $?.exitstatus!=0
 		return nil if svn_info.blank?
 
