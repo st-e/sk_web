@@ -161,14 +161,29 @@ div.box.title div { color: black; } /* Too little contrast otherwise */
 
 
 /** Links **/
-a         { color: #000; }
-a:visited { color: #666; }
-a:hover   { color: #fff; background-color:#333; }
+/*
+0 1 2 3 4 5 6 7 8 9 a b c d e f
+                          * * * body
+                    *   *     * borders, box title
+              *     *         * page title, visited links
+*       *           *           links
+*/
 
+/* Regular links */
+a         { color: #04a; }
+a:visited { color: #7af; }
+a:hover   { color: #37f; background-color: #def; }
+
+/* Links in the title cannot be blue as the title is blue */
+div.title a         { color: #000; }
+div.title a:visited { color: #666; }
+div.title a:hover   { background: #def; color: black; }
 
 /** Menus **/
 ul.menu         { background: #acf; } /* Menu bar */
 ul.menu li      { background: #acf; } /* All menu items (menu bar, first level menus and submenus) */
+ul.menu a         { color: #000; }
+ul.menu a:visited { color: #666; }
 ul.menu a:hover { background: #def; color: black; }
 ul.menu > li  { border-right-color: #def; } /* Menu bar entries */
 ul.menu ul li { border-color:       white; } /* Menu items (first level and submenu) */

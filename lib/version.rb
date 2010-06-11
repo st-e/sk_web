@@ -46,6 +46,8 @@ class Version
 	end
 
 	def svn_revision!
+		return nil if !File.directory? ".svn"
+
 		svn_info=`svn info --xml`
 
 		# No svn revision if either this is not a working copy or svn is not
