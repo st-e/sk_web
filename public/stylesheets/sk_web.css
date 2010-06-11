@@ -166,13 +166,14 @@ div.box.title div { color: black; } /* Too little contrast otherwise */
                           * * * body
                     *   *     * borders, box title
               *     *         * page title, visited links
-*       *           *           links
+*       *         *             links
+*   *       *                   visited links
 */
 
 /* Regular links */
-a         { color: #04a; }
-a:visited { color: #7af; }
-a:hover   { color: #37f; background-color: #def; }
+a         { color: #049; }
+a:visited { color: #026; }
+a:hover   { color: #049; background-color: #def; }
 
 /* Links in the title cannot be blue as the title is blue */
 div.title a         { color: #000; }
