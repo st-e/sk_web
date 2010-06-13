@@ -31,7 +31,7 @@ class FlightDbController < ApplicationController
 		# slow!!
 		@data_format=params['data_format']
 		if !@data_format
-			@table=make_table(@flights)
+			@table=self.class.make_table(@flights)
 		else
 			@data_format_plugin=DataFormatPlugin.registered_plugins[@data_format]
 			@table=@data_format_plugin.make_table(@flights)
@@ -56,6 +56,24 @@ class FlightDbController < ApplicationController
 		}
 	end
 
+	def self.dump_flight_db_today
+		dh=Object.new
+		dh.class_eval do
+			include DateHandling
+		end
+
+		@date_range=dh.date_range('today')
+		@flights=Flight.find_by_date_range(@date_range, :readonly=>true).sort_by { |flight| flight.effective_time }
+		@table=make_table(@flights)
+
+		puts make_csv { |csv|
+			csv << @table[:columns].map { |column| column[:title] }
+			@table[:rows].each { |row|
+				csv << row
+			}
+		}
+	end
+
 protected
 	def formats
 		[
@@ -65,7 +83,7 @@ protected
 	end
 
 
-	def make_table(flights)
+	def self.make_table(flights)
 		columns = [
 			{ :title => 'Datum'                       },
 			{ :title => 'Nummer'                      },
