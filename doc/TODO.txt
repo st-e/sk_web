@@ -4,6 +4,7 @@ Bugs:
 * export/import - some are "changed", although identical
 
 Major (important changes):
+* remove font files (require the user to install them)
 * make sure that towpilot works: pilot log, flight list
 * Better error documents
 * Custom log albgen style

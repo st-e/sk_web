@@ -1,5 +1,10 @@
 # Be sure to restart your server when you modify this file
 
+local_environment=File.join(File.dirname(__FILE__), 'local_environment.rb')
+if File.exist? local_environment
+	require local_environment
+end
+
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '>=2.3.5' unless defined? RAILS_GEM_VERSION
 
@@ -11,49 +16,59 @@ require File.join(File.dirname(__FILE__), 'boot')
 #puts "Starting up in #{RAILS_ENV} mode"
 
 Rails::Initializer.run do |config|
-  # Settings in config/environments/* take precedence over those specified here.
-  # Application configuration should go into files in config/initializers
-  # -- all .rb files in that directory are automatically loaded.
+	# Some paths may be set from the environment:
+	# This is relevant for installing the application to /usr/share/
+	# See also initializers/session_store.rb
+	config.cache_store = :file_store, ENV['SK_WEB_CACHE']                                        if ENV['SK_WEB_CACHE']
+	config.database_configuration_file = File.join(ENV['SK_WEB_ETC'], 'database.yml')            if ENV['SK_WEB_ETC']
+	# Note that some "log_tailer" still tries to access log/*.log
+	config.log_path                    = File.join(ENV['SK_WEB_LOG'], "#{ENV['RAILS_ENV']}.log") if ENV['SK_WEB_LOG']
 
-  # Add additional load paths for your own custom dirs
-  # config.load_paths += %W( #{RAILS_ROOT}/extras )
+	# Settings in config/environments/* take precedence over those specified here.
+	# Application configuration should go into files in config/initializers
+	# -- all .rb files in that directory are automatically loaded.
 
-  # Specify gems that this application depends on and have them installed with rake gems:install
-  # config.gem "bj"
-  # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
-  # config.gem "sqlite3-ruby", :lib => "sqlite3"
-  # config.gem "aws-s3", :lib => "aws/s3"
+	# Add additional load paths for your own custom dirs
+	# config.load_paths += %W( #{RAILS_ROOT}/extras )
 
-  config.gem 'mysql'
-  config.gem 'will_paginate', :version => '~> 2.3.11'#, :source => 'http://gemcutter.org'
-  # If there are problems with PDF rendering, try setting this to '= 0.8.4', or
-  # read the Prawn change log.
-  config.gem 'prawn', :version => '~> 0.8.4'
+	# Specify gems that this application depends on and have them installed with rake gems:install
+	# config.gem "bj"
+	# config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
+	# config.gem "sqlite3-ruby", :lib => "sqlite3"
+	# config.gem "aws-s3", :lib => "aws/s3"
 
-  # Not required for testing with mongrel, and requires the library & headers
-  # to be installed (also, we can install it from a package)
-  #config.gem 'fcgi'
+	config.gem 'will_paginate', :version => '~> 2.3.11'#, :source => 'http://gemcutter.org'
+	# If there are problems with PDF rendering, try setting this to '= 0.8.4', or
+	# read the Prawn change log.
+	config.gem 'prawn', :version => '~> 0.8.4'
 
-  # Only load the plugins named here, in the order given (default is alphabetical).
-  # :all can be used as a placeholder for all plugins not explicitly named
-  # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
+	# We do not require the fcgi and mysql gems here because
+	#   - they have a native component and thus cannot be unpacked
+	#   - they are available as a package (at least in Ubuntu)
+	# Also, for fcgi is not required for running with mongrel
+	#config.gem 'fcgi'
+	#config.gem 'mysql'
 
-  # Skip frameworks you're not going to use. To use Rails without a database,
-  # you must remove the Active Record framework.
-  # config.frameworks -= [ :active_record, :active_resource, :action_mailer ]
+	# Only load the plugins named here, in the order given (default is alphabetical).
+	# :all can be used as a placeholder for all plugins not explicitly named
+	# config.plugins = [ :exception_notification, :ssl_requirement, :all ]
 
-  # Activate observers that should always be running
-  # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
+	# Skip frameworks you're not going to use. To use Rails without a database,
+	# you must remove the Active Record framework.
+	# config.frameworks -= [ :active_record, :active_resource, :action_mailer ]
 
-  # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-  # Run "rake -D time" for a list of tasks for finding time zone names.
-  config.time_zone = 'UTC'
+	# Activate observers that should always be running
+	# config.active_record.observers = :cacher, :garbage_collector, :forum_observer
 
-  # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-  # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
-  # config.i18n.default_locale = :de
+	# Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
+	# Run "rake -D time" for a list of tasks for finding time zone names.
+	config.time_zone = 'UTC'
 
-  # Automatically set in config/initializers/!fix_relative_url_root.rb
-  #config.action_controller.relative_url_root = "/startkladde"
+	# The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
+	# config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
+	# config.i18n.default_locale = :de
+
+	# Automatically set in config/initializers/!fix_relative_url_root.rb
+	#config.action_controller.relative_url_root = "/startkladde"
 end
 

@@ -1,9 +1,13 @@
 require 'fileutils'
 
+# TODO should not be a model, move to lib
 class Settings
 	include Singleton
 
-	Filename=Rails.root.join('config', 'sk_web.yml').to_s
+	# TODO: this should be done in environment.rb, where all of the other
+	# SK_WEB_X environment variables are read
+	Filename=Rails.root.join('config', 'sk_web.yml').to_s unless ENV['SK_WEB_ETC']
+	Filename=File.join(ENV['SK_WEB_ETC'], 'sk_web.yml')   if     ENV['SK_WEB_ETC']
 	DistFilename=Filename+".dist"
 
 	attr_accessor :location

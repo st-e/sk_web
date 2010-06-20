@@ -7,7 +7,11 @@
 
 # Create a session secret if it does not already exist in
 # config/session_secret.txt
-secret_file=File.join(RAILS_ROOT, "config", "session_secret.txt")
+
+config_dir=File.join(RAILS_ROOT, "config")
+config_dir=File.join(ENV['SK_WEB_ETC']) if ENV['SK_WEB_ETC'] # Probably /etc/startkladde
+
+secret_file=File.join(config_dir, "session_secret.txt")
 if File.exist?(secret_file)
 	# The secret file exists - read the secret from the file
 	secret=File.open(secret_file, 'r') { |file| file.readline.strip }
