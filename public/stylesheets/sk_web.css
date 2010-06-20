@@ -171,9 +171,14 @@ div.box.title div { color: black; } /* Too little contrast otherwise */
 */
 
 /* Regular links */
+a         { color: #000; }
+a:visited { color: #666; }
+a:hover   { color: #fff; background-color:#333; }
+/*
 a         { color: #049; }
 a:visited { color: #026; }
 a:hover   { color: #049; background-color: #def; }
+*/
 
 /* Links in the title cannot be blue as the title is blue */
 div.title a         { color: #000; }
