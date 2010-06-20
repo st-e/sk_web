@@ -1,0 +1,4 @@
+2.0.2 (2010-06-20)
+	- Removed mysql and fcgi gem dependencies
+	- Allowed changing some directories
+

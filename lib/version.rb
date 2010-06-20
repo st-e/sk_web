@@ -15,7 +15,7 @@ class Version
 
 	def initialize
 		@name="sk_web"
-		@base_version="2.0.1"
+		@base_version="2.0.2"
 		@revision=svn_revision!
 		@version=("#{@base_version} (rev. #{@revision})" if @revision) || @base_version
 
