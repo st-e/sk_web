@@ -42,6 +42,9 @@ Rails::Initializer.run do |config|
 	# read the Prawn change log.
 	config.gem 'prawn', :version => '~> 0.8.4'
 
+	# This is a dependency of Rails, but is looks like it's not getting unpacked
+	config.gem 'rack', :version => '~> 1.1.0'
+
 	# We do not require the fcgi and mysql gems here because
 	#   - they have a native component and thus cannot be unpacked
 	#   - they are available as a package (at least in Ubuntu)
