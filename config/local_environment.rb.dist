@@ -1,6 +1,6 @@
 # Put local environment settings here and rename the file to local_environment.rb
-ENV['SK_WEB_ETC'] ||= "/etc/startkladde"
-ENV['SK_WEB_LOG'] ||= "/var/log/startkladde"
-ENV['SK_WEB_VAR'] ||= "/var/lib/startkladde"
-ENV['SK_WEB_CACHE'] ||= "/var/cache/startkladde"
+ENV['SK_WEB_ETC'] ||= "/etc/sk_web"
+ENV['SK_WEB_LOG'] ||= "/var/log/sk_web"
+ENV['SK_WEB_VAR'] ||= "/var/lib/sk_web"
+ENV['SK_WEB_CACHE'] ||= "/var/cache/sk_web"
 
