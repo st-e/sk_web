@@ -1,3 +1,5 @@
+	- Added local main page file name to default local main page
+
 2.0.2 (2010-06-20)
 	- Removed mysql and fcgi gem dependencies
 	- Allowed changing some directories
