@@ -1,3 +1,4 @@
+	- session_secret.txt is stored in SK_WEB_VAR instead of SK_WEB_ETC
 	- Added local main page file name to default local main page
 
 2.0.2 (2010-06-20)

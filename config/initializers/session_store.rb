@@ -9,7 +9,7 @@
 # config/session_secret.txt
 
 config_dir=File.join(RAILS_ROOT, "config")
-config_dir=File.join(ENV['SK_WEB_ETC']) if ENV['SK_WEB_ETC'] # Probably /etc/sk_web
+config_dir=File.join(ENV['SK_WEB_VAR']) if ENV['SK_WEB_VAR'] # Probably /var/lib/sk_web
 
 secret_file=File.join(config_dir, "session_secret.txt")
 if File.exist?(secret_file)
