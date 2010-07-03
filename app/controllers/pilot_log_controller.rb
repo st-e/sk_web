@@ -35,16 +35,10 @@ class PilotLogController < ApplicationController
 
 		@date_range=date_range(params['date'])
 
-		condition=case params['flight_instructor_mode']
-			when 'strict' then
-				"pilot_id=:person OR (copilot_id=:person AND type=:type)"
-			when 'loose' then
-				"pilot_id=:person OR copilot_id=:person"
-			else
-				"pilot_id=:person"
-		end
-		condition_values={:person=>@person.id, :type=>Flight::TYPE_TRAINING_2}
-
+		# Get all flights where the person was involved, either as pilot,
+		# copilot or towpilot
+		condition="pilot_id=:person OR copilot_id=:person OR towpilot_id=:person"
+		condition_values={:person=>@person.id}
 		@flights=Flight.find_by_date_range(@date_range, {:readonly=>true}, [condition, condition_values]).sort_by { |flight| flight.effective_time }
 
 		if params['gliders_only']
@@ -52,7 +46,37 @@ class PilotLogController < ApplicationController
 			@flights.reject! { |flight|
 				flight.plane && !flight.plane.glider?
 			}
+		else
+			# Add the towflights (towflights are never glider flights)
+			@flights+=Flight.make_towflights(@flights)
 		end
+
+		# Select only those flights where the person is the pilot or, according
+		# to the flight instructor mode, the copilot.
+		# The towflights have been added to the list with the pilot the person. 
+		@flights=@flights.select { |flight|
+			if flight.pilot_id==@person.id
+				# Person is pilot
+				true
+			elsif flight.copilot_id==@person.id
+				# Person is copilot
+				case params['flight_instructor_mode']
+				when 'strict' then
+					# Include flights as copilot if the type is training
+					flight.type==Flight::TYPE_TRAINING_2
+				when 'loose' then
+					# Include flights as copilot
+					true
+				else
+					# Don't include flights as copilot
+					false
+				end
+			else
+				# Person is neither pilot nor copilot
+				false
+			end
+		}
+
 
 		format=params['format'] || @default_format
 
