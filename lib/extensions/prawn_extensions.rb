@@ -176,7 +176,7 @@ class Prawn::Document
 			go_to_page(page)
 		 
 			headings_box do
-				font_size (@header_size) do
+				font_size(@header_size) do
 					yield page
 				end
 			end

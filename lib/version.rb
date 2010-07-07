@@ -52,6 +52,7 @@ class Version
 
 		# No svn revision if either this is not a working copy or svn is not
 		# installed.
+		return nil if !$? # Seems like this can happen on windows
 		return nil if $?.exitstatus!=0
 		return nil if svn_info.blank?
 

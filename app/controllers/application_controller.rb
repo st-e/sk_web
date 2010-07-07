@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	rescue_from(DummyError) { |ex|
-		render_error h "DummyError wurde ausgelöst"
+		render_error h("DummyError wurde ausgelöst")
 	}
 
 	# Handle exceptions during rendering like other exceptions
@@ -163,7 +163,7 @@ private
 
 		# Complain if no permissions have been set
 		permissions=self.class.required_permissions_for action
-		render_error(h "Fehler: Für diese Aktion wurden keine Zugriffsrechte gesetzt.") and return if !permissions
+		render_error(h("Fehler: Für diese Aktion wurden keine Zugriffsrechte gesetzt.")) and return if !permissions
 
 		# Other actions require login
 		redirect_to_login and return unless logged_in?
@@ -178,12 +178,12 @@ private
 		if current_user.has_permission? permission
 			yield if block_given?
 		else
-			render_error(h "Der Benutzer #{current_user.username} verfügt nicht über die Berechtigung \"#{permission}\", die für diese Aktion erforderlich ist.")
+			render_error(h("Der Benutzer #{current_user.username} verfügt nicht über die Berechtigung \"#{permission}\", die für diese Aktion erforderlich ist."))
 		end
 	end
 
 	def render_permission_denied
-		render_error h "Zugriff verweigert"
+		render_error h("Zugriff verweigert")
 	end
 
 	# Filter that redirects to SSL unless the request comes from a local address
