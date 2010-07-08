@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
 
+# Default to production, can be overridden by setting RAILS_ENV
+#ENV['RAILS_ENV'] ||= 'production'
+
 require File.expand_path('../../config/boot',  __FILE__)
 require 'commands/server'
