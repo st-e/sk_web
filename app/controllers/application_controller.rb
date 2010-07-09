@@ -188,10 +188,12 @@ private
 
 	# Filter that redirects to SSL unless the request comes from a local address
 	def require_ssl
+		return if request.ssl?
 		return if local_request? # Don't require SSL from localhost
 		return if RAILS_ENV=='development' # Don't require SSL in development mode
+		return if params[:proxy_https]=='on'
 
-		redirect_to :protocol => "https://" and flash.keep unless request.ssl?
+		redirect_to :protocol => "https://" and flash.keep
 	end
 
 	

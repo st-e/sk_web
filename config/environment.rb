@@ -71,7 +71,10 @@ Rails::Initializer.run do |config|
 	# config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
 	# config.i18n.default_locale = :de
 
-	# Automatically set in config/initializers/!fix_relative_url_root.rb
-	#config.action_controller.relative_url_root = "/startkladde"
+	# If you're not using Apache with fastcgi/fcgid, you may have to set this
+	# to the path where the application is deployed.
+	# With Apache, it should be automatically set in
+	# config/initializers/!fix_relative_url_root.rb
+	config.action_controller.relative_url_root = "/startkladde"
 end
 
