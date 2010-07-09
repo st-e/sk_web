@@ -1,3 +1,7 @@
+	- Autocreate database.yml from database.yml.dist
+	- Added proxy_ssl parameter
+	- Added fix for cookie problem with mongrel_rails and rails 2.3.8
+	- Added environment variable configuration of relative_url_root
 	- Include towflights in pilot and plane logs
 	- session_secret.txt is stored in SK_WEB_VAR instead of SK_WEB_ETC
 	- Added local main page file name to default local main page
