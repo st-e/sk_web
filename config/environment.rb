@@ -24,6 +24,8 @@ Rails::Initializer.run do |config|
 	# Note that some "log_tailer" still tries to access log/*.log
 	config.log_path                    = File.join(ENV['SK_WEB_LOG'], "#{ENV['RAILS_ENV']}.log") if ENV['SK_WEB_LOG']
 
+	config.action_controller.relative_url_root = ENV['RAILS_RELATIVE_URL_ROOT']                  if ENV['RAILS_RELATIVE_URL_ROOT']
+
 	# Settings in config/environments/* take precedence over those specified here.
 	# Application configuration should go into files in config/initializers
 	# -- all .rb files in that directory are automatically loaded.
@@ -71,10 +73,5 @@ Rails::Initializer.run do |config|
 	# config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
 	# config.i18n.default_locale = :de
 
-	# If you're not using Apache with fastcgi/fcgid, you may have to set this
-	# to the path where the application is deployed.
-	# With Apache, it should be automatically set in
-	# config/initializers/!fix_relative_url_root.rb
-	config.action_controller.relative_url_root = "/startkladde"
 end
 
