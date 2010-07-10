@@ -4,7 +4,9 @@ class Settings
 	attr_accessor :location
 	attr_accessor :local_addresses
 
-	cattr_accessor :configuration_file
+	class <<self
+		attr_accessor :configuration_file
+	end
 	self.configuration_file=Rails.root.join('config', 'sk_web.yml').to_s
 
 	def initialize

@@ -8,8 +8,6 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 
 
-require_dependency 'settings'
-
 # If template is nil, '.dist' is appended to file
 def initialize_config_file(file, template=nil)
 	return if  File.exist? file
@@ -30,6 +28,8 @@ def initialize_config_file(file, template=nil)
 end
 
 Rails::Initializer.run do |config|
+	require 'settings'
+
 	# Some paths may be set from the environment:
 	# This is relevant for installing the application to /usr/share/
 	# See also initializers/session_store.rb
