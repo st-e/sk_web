@@ -1,3 +1,5 @@
+	- Cleaned up database.yml.dist
+	- Added debug_controller for dump_environment and delay
 	- Autocreate database.yml from database.yml.dist
 	- Added proxy_ssl parameter
 	- Added fix for cookie problem with mongrel_rails and rails 2.3.8

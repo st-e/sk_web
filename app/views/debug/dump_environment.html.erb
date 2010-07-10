@@ -5,7 +5,7 @@
 	</style>
 <% end %>
 
-<% page_title "CGI environment dumper" do %>
+<% page_title "Environment dumper" do %>
 	<% heading "Location" do %>
 		<p><%= h (`whoami`||"?").chomp %>@<%= h (`hostname`||"?").chomp %>:<%= h Dir.pwd %></p>
 	<% end %>

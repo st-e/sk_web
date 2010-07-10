@@ -17,6 +17,7 @@ end
 # database yet.
 # TODO settings.rb has the same thing. Make a function and move here.
 # Also for local main page and local environment
+# FIXME database.yml may be in SK_WEB_ETC etc.
 DatabaseConfigFile=Rails.root.join('config', 'database.yml').to_s
 if (!File.exist? DatabaseConfigFile)
 	# This may run as root (sudo rake gems:install), so preserve

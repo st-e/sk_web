@@ -1,10 +1,7 @@
 class HomeController < ApplicationController
-	allow_public :index, :dump_environment
+	allow_public :index
 
 	def index
-	end
-
-	def dump_environment
 	end
 end
 
