@@ -1,13 +1,21 @@
 # Put local environment settings here and rename the file to
 # local_environment.rb
+# The purpose of this file is to provide a way to set values of environment
+# variables when it's inconvenient to actually set the environment variables.
+# As such, this file is read at the very beginning of boot.rb, except when
+# ENV['RAILS_ENV'] is 'test'.
 
 #ENV['SK_WEB_ETC'] ||= "/etc/sk_web"
 #ENV['SK_WEB_LOG'] ||= "/var/log/sk_web"
 #ENV['SK_WEB_VAR'] ||= "/var/lib/sk_web"
 #ENV['SK_WEB_CACHE'] ||= "/var/cache/sk_web"
 
-# If you're not using Apache with FastCGI, you may have to set this to the web
-# path where the application is deployed. With Apache and FastCGI, it should
-# be automatically set in config/initializers/!fix_relative_url_root.rb
-# ENV['RAILS_RELATIVE_URL_ROOT']='/startkladde'
+# If the application is deployed in some other path than /, the root path must
+# be set.
+# If you are using Apache and FastCGI, it should be automatically set in
+# config/initializers/fix_relative_url_root.rb. Otherwise, set it here.
+# ENV['RAILS_RELATIVE_URL_ROOT'] ||= '/startkladde'
+
+# For development, enable this
+#ENV['RAILS_ENV'] ||= 'development'
 

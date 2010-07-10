@@ -1,3 +1,9 @@
+	- All dispatchers default to production mode
+	- Initialize database config, app config and local main page from dist files
+	  if they do not exist
+	- Added RAILS_ENV to local_environment.rb.dist
+	- Moved Settings class to lib/
+	- Cleaned up Settings class
 	- Cleaned up database.yml.dist
 	- Added debug_controller for dump_environment and delay
 	- Autocreate database.yml from database.yml.dist

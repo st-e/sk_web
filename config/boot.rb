@@ -1,3 +1,18 @@
+# Safeguard: in test mode, don't touch the environment
+unless ENV['RAILS_ENV']=='test'
+	# Read the local environment if it exists
+	local_environment=File.join(File.dirname(__FILE__), 'local_environment.rb')
+	if File.exist? local_environment
+		require local_environment
+	end
+
+	# Default to production if the environment has not been set, so the application
+	# is not accidentally run in development mode.
+	# This must be done in boot.rb because sometimes boot.rb is read before
+	# environment.rb and RAILS_ENV is fixed in Rails.boot!
+	ENV['RAILS_ENV'] ||= 'production'
+end
+
 # Don't change this file!
 # Configure your app in config/environment.rb and config/environments/*.rb
 
