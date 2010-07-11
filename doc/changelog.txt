@@ -1,3 +1,4 @@
+	- Misc. Windows related fixes
 	- Fixed format handling for flight data downloads
 	- Improved environment dumper
 	- Removed proxy_https hack in favor of X_FORWARDED_PROTO

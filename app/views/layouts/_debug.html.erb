@@ -23,13 +23,13 @@
 				<tr>
 					<th>id</th>
 					<td>:</td>
-					<td><%= "#{`id -u -n`.chomp}:#{`id -g -n`.chomp}" %></td>
+					<td><%= "#{(`id -u -n`||'?').chomp}:#{(`id -g -n`||'?').chomp}" %></td>
 				</tr>
 				<% if false %>
 				<tr>
 					<th>groups</th>
 					<td>:</td>
-					<td><%= "#{`id -G -n`.chomp}" %></td>
+					<td><%= "#{(`id -G -n`||'?').chomp}" %></td>
 				</tr>
 				<% end %>
 			</table>
