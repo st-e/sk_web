@@ -82,9 +82,9 @@ class PilotLogController < ApplicationController
 		respond_to do |format|
 			filename_base="flugbuch_#{date_range_filename(@date_range)}"
 
-			format.html {                             render 'plane_log'           ; set_filename "#{filename_base}.html" }
+			format.html {                             render 'pilot_log'           ; set_filename "#{filename_base}.html" }
 			format.pdf  { @faux_template='pilot_log'; render 'layouts/faux_layout' ; set_filename "#{filename_base}.pdf"  }
-			format.csv  {                             render 'plane_log'           ; set_filename "#{filename_base}.csv"  }
+			format.csv  {                             render 'pilot_log'           ; set_filename "#{filename_base}.csv"  }
 		end
 	end
 
