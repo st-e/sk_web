@@ -14,6 +14,15 @@ class ApplicationController < ActionController::Base
 	class DummyError <Exception
 	end
 
+	#class ErrorMessage <Exception
+	#	attr_accessor :message
+	#
+	#	def initialize(message)
+	#		@message=message
+	#	end
+	#end
+
+
 	helper :all # include all helpers, all the time
 	protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
@@ -31,6 +40,10 @@ class ApplicationController < ActionController::Base
 			headers['Pragma'] = 'public'
 		end
 	end
+
+	#rescue_from(ErrorMessage) { |ex|
+	#	render_error h(ex.message)
+	#}
 
 	rescue_from(DummyError) { |ex|
 		render_error h("DummyError wurde ausgelöst")
@@ -133,6 +146,26 @@ protected
 		end
 	end
 
+	def render_if_allowed(template, format, filename, options={})
+		if format_available? format
+			if (format=='pdf')
+				# PDF is special
+				@faux_template=template
+				@page_layout=options[:page_layout]
+				render 'layouts/faux_layout'
+			else
+				render template
+			end
+
+			set_filename filename
+		else
+			p performed?
+			render_permission_denied
+			p performed?
+		end
+	end
+
+
 private
 	def self.public_action?(action)
 		@public_actions.include? action
@@ -192,8 +225,12 @@ private
 		return if local_request? # Don't require SSL from localhost
 		return if RAILS_ENV=='development' # Don't require SSL in development mode
 
-		redirect_to :protocol => "https://" and flash.keep
-		#redirect_to(url_for(params.merge({:protocol => 'https://'}))) and flash.keep
+		# redirect_to :protocol=>"https://" loses the format (try loading
+		# http://.../today.pdf) in production mode
+		# Note that if someone POSTs a form with http, he'll probably get a GET
+		# redirect with the parameters (bad for passwords). OTOH, this should
+		# not happen normally because the forms are all https.
+		redirect_to(params.merge({:protocol => 'https://'})) and flash.keep
 	end
 
 	

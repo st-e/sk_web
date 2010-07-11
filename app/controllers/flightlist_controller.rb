@@ -12,28 +12,26 @@ class FlightlistController < ApplicationController
 	end
 
 	def show
+		# Check for format errors outside of the respond_to block because we
+		# cannot output an error message within the block because we can't
+		# override the format to HTML. We still check if the format is allowed 
+		# within the respond_to block because respond_to may take more
+		# information in account than just params['format'].
+		format=params[:format]
+		(render_error "Kein Format angegeben" and return) if !format
+		(render_permission_denied             and return) if !format_available?(format)
+
 		@date_range=date_range(params['date'])
 		@flights=Flight.find_by_date_range(@date_range, :readonly=>true).sort_by { |flight| flight.effective_time }
-
-		format=params['format'] || @default_format
-		@table=self.class.make_table(@flights, format=='tex' || format =='pdf') # Ugly
-
-		#f=File.new("/home/martin/tmp/ruby/table.marshal", 'w')
-		#t={:columns=>@table[:columns], :rows=>@table[:rows]}
-		#Marshal.dump t, f
-		#f.close
-
-		render_permission_denied and return if !format_available? format
+		@table=self.class.make_table(@flights, format=='pdf') # Ugly
 
 		respond_to do |format|
-			format.html { render 'flightlist'          ; set_filename "startkladde_#{date_range_filename(@date_range)}.html" }
-			format.pdf  { @faux_template='flightlist'; @page_layout=:landscape;
-				          render 'layouts/faux_layout' ; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
-			format.csv  { render 'flightlist'          ; set_filename "startkladde_#{date_range_filename(@date_range)}.csv"  }
-#			format.pdf  { render_pdf_latex 'flightlist.tex'; set_filename "startkladde_#{date_range_filename(@date_range)}.pdf"  }
-			#format.tex  { render 'flightlist'        ; set_filename "startkladde_#{date_range_filename(@date_range)}.tex"  }
-			#format.xml  { render :xml => @flights    ; set_filename "startkladde_#{date_range_filename(@date_range)}.xml"  }
-			#format.json { render :json => @flights   ; set_filename "startkladde_#{date_range_filename(@date_range)}.json" }
+			filename_base="startkladde_#{date_range_filename(@date_range)}"
+
+			format.html { render_if_allowed 'flightlist', 'html', "#{filename_base}.html" }
+			format.pdf  { render_if_allowed 'flightlist', 'pdf' , "#{filename_base}.pdf" , :page_layout=>:landscape }
+			format.csv  { render_if_allowed 'flightlist', 'csv' , "#{filename_base}.csv"  }
+			format.any  { render_permission_denied }
 		end
 	end
 
@@ -56,11 +54,6 @@ class FlightlistController < ApplicationController
 	end
 
 protected
-#	def generate_flightlist_prawn
-#		generate_pdf_prawn do |pdf|
-#		end
-#	end
-
 	def available_formats
 		formats.select { |format| format_available? format[1] }
 	end

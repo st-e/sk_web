@@ -19,7 +19,10 @@ class FlightDbController < ApplicationController
 	end
 
 	def show
-		format=params['format'] || @default_format
+		# See flightlist_controller
+		format=params[:format]
+		(render_error "Kein Format angegeben" and return) if !format
+		(render_permission_denied             and return) if !format_available?(format)
 
 		@date_range=date_range(params['date'])
 
@@ -37,14 +40,12 @@ class FlightDbController < ApplicationController
 			@table=@data_format_plugin.make_table(@flights)
 		end
 
-		# slow!
 		respond_to do |format|
-			format.html { render 'flight_db'        ; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.html" }
-			#format.pdf  { render_pdf 'flight_db.tex'; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.pdf"  }
-			#format.tex  { render 'flight_db'        ; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.tex"  }
-			format.csv  { render 'flight_db'        ; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.csv"  }
-			#format.xml  { render :xml => @flights   ; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.xml"  }
-			#format.json { render :json => @flights  ; set_filename "flugdatenbank_#{date_range_filename(@date_range)}.json" }
+			filename_base="flugdatenbank_#{date_range_filename(@date_range)}"
+
+			format.html { render_if_allowed 'flight_db', 'html', "#{filename_base}.html" }
+			format.csv  { render_if_allowed 'flight_db', 'csv' , "#{filename_base}.csv"  }
+			format.any  { render_permission_denied }
 		end
 	end
 

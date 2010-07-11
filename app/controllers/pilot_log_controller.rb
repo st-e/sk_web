@@ -77,20 +77,14 @@ class PilotLogController < ApplicationController
 			end
 		}
 
-
-		format=params['format'] || @default_format
-
 		@table=make_table(@flights)
 
 		respond_to do |format|
-			format.html { render 'pilot_log'           ; set_filename "flugbuch_#{date_range_filename(@date_range)}.html" }
-			format.pdf  { @faux_template='pilot_log';
-				          render 'layouts/faux_layout' ; set_filename "flugbuch_#{date_range_filename(@date_range)}.pdf"  }
-			format.csv  { render 'pilot_log'           ; set_filename "flugbuch_#{date_range_filename(@date_range)}.csv"  }
-			#format.pdf  { render_pdf_latex 'pilot_log.tex'; set_filename "flugbuch_#{date_range_filename(@date_range)}.pdf"  }
-			#format.tex  { render 'pilot_log'        ; set_filename "flugbuch_#{date_range_filename(@date_range)}.tex"  }
-			#format.xml  { render :xml => @flights   ; set_filename "flugbuch_#{date_range_filename(@date_range)}.xml"  }
-			#format.json { render :json => @flights  ; set_filename "flugbuch_#{date_range_filename(@date_range)}.json" }
+			filename_base="flugbuch_#{date_range_filename(@date_range)}"
+
+			format.html {                             render 'plane_log'           ; set_filename "#{filename_base}.html" }
+			format.pdf  { @faux_template='pilot_log'; render 'layouts/faux_layout' ; set_filename "#{filename_base}.pdf"  }
+			format.csv  {                             render 'plane_log'           ; set_filename "#{filename_base}.csv"  }
 		end
 	end
 

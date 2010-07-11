@@ -1,7 +1,13 @@
 module Rendering
 	# The message will not be escaped
+	# Note: this does not work in a respond_to block
 	def render_error(message, options={})
 		flash.now[:error]=message
+
+		# Always render as HTML, regardless of format
+		# Note: this does not not work in an respond_to block. How can we do
+		# this?
+		params['format']='html'
 		render({:text=>"", :layout=>true}.merge(options))
 	end
 
