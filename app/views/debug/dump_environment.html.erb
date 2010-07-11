@@ -50,6 +50,32 @@
 		<% end %>
 	<% end %>
 
+	<% heading "Request" do %>
+		<% heading "Properties" do %>
+			<table>
+				<tr>
+					<th>ssl?</th>
+					<td><%= h request.ssl? %></td>
+				</tr>
+			</table>
+		<% end %>
+
+		<% heading "Environment" do %>
+			<table>
+				<tr>
+					<th>Name</th>
+					<th>Value</th>
+				</tr>
+				<% request.env.sort.each { |a| %>
+					<tr>
+						<td><%= h a[0] %></td>
+						<td><%= h a[1] %></td>
+					</tr>
+				<% } %>
+			</table>
+		<% end %>
+	<% end %>
+
 	<% heading "Environment" do %>
 		<table>
 			<tr>

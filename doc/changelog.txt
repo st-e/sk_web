@@ -1,3 +1,5 @@
+	- Improved environment dumper
+	- Removed proxy_https hack in favor of X_FORWARDED_PROTO
 	- All dispatchers default to production mode
 	- Initialize database config, app config and local main page from dist files
 	  if they do not exist
