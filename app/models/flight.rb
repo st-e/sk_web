@@ -71,6 +71,10 @@ class Flight < ActiveRecord::Base
 		plane.type
 	end
 
+	def effective_mode
+		mode || "local"
+	end
+
 	def self.mode_text(mode)
 		case mode
 			when "local"  ; "Lokal"
@@ -81,7 +85,7 @@ class Flight < ActiveRecord::Base
 	end
 
 	def mode_text
-		Flight.mode_text(mode)
+		Flight.mode_text(effective_mode)
 	end
 
 	def mode_text_towflight
@@ -120,15 +124,15 @@ class Flight < ActiveRecord::Base
 	end
 
 	def is_local?
-		mode=="local"
+		effective_mode=="local"
 	end
 
 	def departs_here?
-		mode=="local" || mode=="leaving"
+		effective_mode=="local" || effective_mode=="leaving"
 	end
 
 	def lands_here?
-		mode=="local" || mode=="coming"
+		effective_mode=="local" || effective_mode=="coming"
 	end
 
 	def towflight_lands_here?
@@ -296,7 +300,9 @@ class Flight < ActiveRecord::Base
 
 		# Can only merge if both flights are local, return to the departure
 		# airfield and are at the same airfield.
-		return false unless (is_local? && prev.is_local?)                                 # Both flights are local
+		return false unless (is_local?          and prev.is_local?         ) # Both flights are local
+		return false unless (departure_location and prev.departure_location) # Both flights have a departure location
+		return false unless (landing_location   and prev.landing_location  ) # Both flights have a landing location
 		return false unless      departure_location.strip.downcase ==        landing_location.strip.downcase  # This flight is returning
 		return false unless prev.departure_location.strip.downcase ==   prev.landing_location.strip.downcase  # The previous flight is returning
 		return false unless      departure_location.strip.downcase == prev.departure_location.strip.downcase  # The flights are at the same airfield

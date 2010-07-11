@@ -30,7 +30,7 @@ class PlaneLog
 	def PlaneLog.create_for_flights(flights)
 		result={}
 		flights.array_hash_by { |flight| flight.plane }.each_pair { |plane, flights|
-			result[plane]=PlaneLog.create_for_plane(flights.sort_by { |flight| flight.effective_time })
+			result[plane]=PlaneLog.create_for_plane(flights.select { |flight| flight.effective_time }.sort_by { |flight| flight.effective_time })
 		}
 		result
 	end

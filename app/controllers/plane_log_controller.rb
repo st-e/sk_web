@@ -18,6 +18,8 @@ class PlaneLogController < ApplicationController
 		# Add the towflights
 		@flights+=Flight.make_towflights(@flights)
 
+		@flights.each { |f| p f.effective_time }
+
 		# Hash from club to (entries of planes of this club)
 		@plane_log=Hash.new { |hash, key| hash[key]=[] }
 		
