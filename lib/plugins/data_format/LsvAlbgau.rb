@@ -48,17 +48,17 @@ DataFormatPlugin.define "lsv_albgau" do
 
 	def column_values(flights)
 		flights.map { |flight|
-			plane  =flight.the_plane
-			pilot  =flight.the_pilot
-			copilot=flight.the_copilot
+			plane  =flight.plane
+			pilot  =flight.pilot
+			copilot=flight.copilot
 
-			pilot_last_name  =(pilot)?(pilot.nachname  ):flight.pnn
-			pilot_first_name =(pilot)?(pilot.vorname   ):flight.pvn
-			pilot_code       =(pilot)?(pilot.vereins_id):nil
-			pilot_club       =(pilot)?(pilot.verein    ):nil
-			copilot_last_name  =(copilot)?(copilot.nachname  ):flight.bnn
-			copilot_first_name =(copilot)?(copilot.vorname   ):flight.bvn
-			copilot_code       =(copilot)?(copilot.vereins_id):nil
+			pilot_last_name  =(pilot)?(pilot.last_name ):flight.pilot_last_name
+			pilot_first_name =(pilot)?(pilot.first_name):flight.pilot_first_name
+			pilot_code       =(pilot)?(pilot.club_id   ):nil
+			pilot_club       =(pilot)?(pilot.club      ):nil
+			copilot_last_name  =(copilot)?(copilot.last_name  ):flight.copilot_last_name
+			copilot_first_name =(copilot)?(copilot.first_name ):flight.copilot_first_name
+			copilot_code       =(copilot)?(copilot.club_id    ):nil
 
 			training=flight.is_training?
 
@@ -71,27 +71,27 @@ DataFormatPlugin.define "lsv_albgau" do
 				  [copilot_last_name,    copilot_first_name,    copilot_code]
 			end
 
-			launch_type=(flight.starts_here?)?(flight.launch_type):nil
-			if launch_type
-				launch_type_text=case launch_type.type
+			launch_method=(flight.departs_here?)?(flight.launch_method):nil
+			if launch_method
+				launch_method_text=case launch_method.type
 					when 'airtow': 'FS'
 					when 'self'  : 'SS'
-					when 'winch' : launch_type.short_name
+					when 'winch' : launch_method.short_name
 					when 'other' : 'SO'
 					else           'SO'
 				end
 			else
-				launch_type_text="???"
+				launch_method_text="???"
 			end
 
 			flight_type_text=
-				case flight.abrechnungshinweis
+				case flight.accounting_notes
 				when /Bezahlt/i       : "B"
 				when /Werkstattflug/i : "W"
 				when /Pauschal/i      : "P"
 				when /Kinderfliegen/i : "K"
 				else \
-					case flight.typ
+					case flight.type
 					when Flight::TYPE_NORMAL         : 'Ü'
 					when Flight::TYPE_TRAINING_2     : 'S'
 					when Flight::TYPE_TRAINING_1     : 'E'
@@ -104,19 +104,19 @@ DataFormatPlugin.define "lsv_albgau" do
 
 			date=flight.effective_date
 
-			launch_time=flight.effective_launch_time
+			departure_time=flight.effective_departure_time
 			landing_time=flight.effective_landing_time
 
 			[
 				(date)?(date.strftime('%Y%m%d')):"",
-				(launch_time)?(launch_time.hour):"",
-				(launch_time)?(launch_time.min):"",
+				(departure_time)?(departure_time.hour):"",
+				(departure_time)?(departure_time.min):"",
 				(landing_time)?(landing_time.hour):"",
 				(landing_time)?(landing_time.min):"",
-				(plane)?(plane.kennzeichen):nil,
-				(plane)?(plane.verein):nil,
+				(plane)?(plane.registration):nil,
+				(plane)?(plane.club):nil,
 				flight_type_text,
-				launch_type_text,
+				launch_method_text,
 				(training)?(instructor_last_name ):(pilot_last_name   ),
 				(training)?(instructor_first_name):(pilot_first_name  ),
 				(training)?(student_code         ):(pilot_code        ),
@@ -124,8 +124,8 @@ DataFormatPlugin.define "lsv_albgau" do
 				(training)?(student_last_name    ):(copilot_last_name ),
 				(training)?(student_first_name   ):(copilot_first_name),
 				(training)?(instructor_code      ):(copilot_code      ),
-				flight.bemerkung,
-				flight.abrechnungshinweis,
+				flight.comments,
+				flight.accounting_notes,
 				flight.id
 			].map { |value| value || "" }
 		}
