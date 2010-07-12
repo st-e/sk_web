@@ -25,4 +25,9 @@ ENV['RAILS_ENV'] ||= 'production'
 require File.dirname(__FILE__) + "/../config/environment"
 require 'fcgi_handler'
 
-RailsFCGIHandler.process!
+if ENV['SK_WEB_LOG']
+	RailsFCGIHandler.process! "#{ENV['SK_WEB_LOG']}/fcgi_crash.log"
+else
+	RailsFCGIHandler.process!
+end
+
