@@ -29,6 +29,7 @@ class ApplicationController < ActionController::Base
 	# Note that multiple filter_parameter_logging will override earlier ones.
 	filter_parameter_logging :password
 
+	before_filter :set_relative_url_root
 	before_filter :check_permissions
 	before_filter :require_ssl
 
@@ -177,6 +178,10 @@ private
 
 	def self.required_permissions_for(action)
 		@required_permissions[action]
+	end
+
+	def set_relative_url_root
+		puts ActionController::Base.relative_url_root=request.env['HTTP_X_RAILS_RELATIVE_URL_ROOT']
 	end
 
 	def check_permissions

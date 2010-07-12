@@ -1,3 +1,8 @@
+	- Allow setting relative_url_root via request header
+	  X_RAILS_RELATIVE_URL_ROOT
+	- flight_db honors incomplete person names
+	- FastCGI dispatcher honors ENV['SK_WEB_LOG']
+
 2.0.3 (2010-07-11):
 	- Misc. Windows related fixes
 	- Fixed format handling for flight data downloads

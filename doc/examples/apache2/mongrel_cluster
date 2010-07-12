@@ -6,6 +6,7 @@ ProxyRequests Off
 <Location "/startkladde">
 	ProxyPass balancer://sk_web
 	RequestHeader set X_FORWARDED_PROTO 'https' env=HTTPS
+	RequestHeader set X_RAILS_RELATIVE_URL_ROOT '/startkladde'
 </Location>
 
 <Proxy balancer://sk_web lbmethod=bybusyness>

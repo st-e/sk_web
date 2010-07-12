@@ -10,6 +10,7 @@ ProxyRequests Off
 <Location "/sk_mongrels">
 	ProxyPass balancer://sk_mongrels
 	RequestHeader set X_FORWARDED_PROTO 'https' env=HTTPS
+	RequestHeader set X_RAILS_RELATIVE_URL_ROOT '/sk_mongrels'
 </Location>
 
 <Proxy balancer://sk_mongrels lbmethod=bybusyness>
@@ -28,6 +29,7 @@ ProxyRequests Off
 <Location "/sk_mongrel">
 	ProxyPass balancer://sk_mongrel
 	RequestHeader set X_FORWARDED_PROTO 'https' env=HTTPS
+	RequestHeader set X_RAILS_RELATIVE_URL_ROOT '/sk_mongrel'
 </Location>
 
 <Proxy balancer://sk_mongrel lbmethod=bybusyness>
