@@ -1,13 +1,26 @@
 module Rendering
 	# The message will not be escaped
-	# Note: this does not work in a respond_to block
+	# Note: this does not work in or after a respond_to block when the format
+	# is something else than HTML. More precisely: in or after such a block,
+	# we can render text, but the layout will not be rendered (even if
+	# :layout=>true is specified) and the content type will not be changed.
+	# Setting response.template.template_format and deleting
+	# respons.header["Content-Disposition"] seems to yield identical outputs
+	# (including headers), but Firefox still interprets it as PDF if a PDF was
+	# requested.
 	def render_error(message, options={})
-		flash.now[:error]=message
+		# Allow doing this even after we have rendered
+		erase_results if performed?
 
 		# Always render as HTML, regardless of format
 		# Note: this does not not work in an respond_to block. How can we do
-		# this?
+		# this? erase_result does not help.
+		#response.template.template_format='html'
+		#response.headers.delete "Content-Disposition"
+		#response.content_type='text/html'
 		params['format']='html'
+
+		flash.now[:error]=message
 		render({:text=>"", :layout=>true}.merge(options))
 	end
 

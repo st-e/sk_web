@@ -148,6 +148,8 @@ protected
 	end
 
 	def render_if_allowed(template, format, filename, options={})
+		#render_error "du kommst hier nicht rein" and return
+
 		if format_available? format
 			if (format=='pdf')
 				# PDF is special
@@ -160,9 +162,7 @@ protected
 
 			set_filename filename
 		else
-			p performed?
 			render_permission_denied
-			p performed?
 		end
 	end
 
@@ -181,7 +181,7 @@ private
 	end
 
 	def set_relative_url_root
-		puts ActionController::Base.relative_url_root=request.env['HTTP_X_RAILS_RELATIVE_URL_ROOT']
+		ActionController::Base.relative_url_root=request.env['HTTP_X_RAILS_RELATIVE_URL_ROOT']
 	end
 
 	def check_permissions
