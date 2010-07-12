@@ -27,7 +27,7 @@ class Flight < ActiveRecord::Base
 	end
 
 
-	def incomplete_name(last_name, first_name)
+	def incomplete_formal_name(last_name, first_name)
 		if last_name.blank? && first_name.blank?
 			# Both blank
 			nil
@@ -42,17 +42,17 @@ class Flight < ActiveRecord::Base
 
 	def effective_pilot_name
 		return pilot.formal_name if pilot
-		incomplete_name(pilot_last_name, pilot_first_name)
+		incomplete_formal_name(pilot_last_name, pilot_first_name)
 	end
 
 	def effective_copilot_name
 		return copilot.formal_name if copilot
-		incomplete_name(copilot_last_name, copilot_first_name)
+		incomplete_formal_name(copilot_last_name, copilot_first_name)
 	end
 
 	def effective_towpilot_name
 		return towpilot.formal_name if towpilot
-		incomplete_name(towpilot_last_name, towpilot_first_name)
+		incomplete_formal_name(towpilot_last_name, towpilot_first_name)
 	end
 
 	def effective_club
