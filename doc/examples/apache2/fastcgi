@@ -1,0 +1,8 @@
+# Access sk_web via FastCGI
+# The application must be unpacked to /var/www/startkladde
+
+<Directory "/var/www/startkladde/">
+    AllowOverride All
+    Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec ExecCGI
+</Directory>
+

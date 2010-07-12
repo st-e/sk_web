@@ -1,0 +1,48 @@
+# Multiple methods of accessing sk_web
+# For development
+
+ProxyRequests Off
+
+#####################
+## Mongrel cluster ##
+#####################
+
+<Location "/sk_mongrels">
+	ProxyPass balancer://sk_mongrels
+	RequestHeader set X_FORWARDED_PROTO 'https' env=HTTPS
+</Location>
+
+<Proxy balancer://sk_mongrels lbmethod=bybusyness>
+	Order allow,deny
+	Allow from all
+	BalancerMember http://127.0.0.1:3001
+	BalancerMember http://127.0.0.1:3002
+	BalancerMember http://127.0.0.1:3003
+</Proxy>
+
+
+####################
+## Single mongrel ##
+####################
+
+<Location "/sk_mongrel">
+	ProxyPass balancer://sk_mongrel
+	RequestHeader set X_FORWARDED_PROTO 'https' env=HTTPS
+</Location>
+
+<Proxy balancer://sk_mongrel lbmethod=bybusyness>
+	Order allow,deny
+	Allow from all
+	BalancerMember http://127.0.0.1:3000
+</Proxy>
+
+
+#############
+## FastCGI ##
+#############
+
+<Directory "/var/www/sk_fcgi/">
+    AllowOverride All
+    Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec ExecCGI
+</Directory>
+
