@@ -1,3 +1,5 @@
+<% s=SystemInfo %>
+
 <% if session[:debug] %>
 	<div class="stretcher debug">
 		<div class="box_title debug">
@@ -18,20 +20,22 @@
 				<tr>
 					<th>database</th>
 					<td>:</td>
-					<td><%= h "#{Version.instance.database_string} (Server version #{Version.instance.mysql_server}, Client version #{Version.instance.mysql_client})" %></td>
+					<td>
+						<%= h Version.instance.database_string %>
+						(Server version <%= h Version.instance.mysql_server %>,
+						Client version <%= h Version.instance.mysql_client %>)
+					</td>
 				</tr>
 				<tr>
 					<th>id</th>
 					<td>:</td>
-					<td><%= "#{(`id -u -n`||'?').chomp}:#{(`id -g -n`||'?').chomp}" %></td>
+					<td><%= h s.username||"?" %>:<%= h s.groupname||"?" %></td>
 				</tr>
-				<% if false %>
 				<tr>
 					<th>groups</th>
 					<td>:</td>
-					<td><%= "#{(`id -G -n`||'?').chomp}" %></td>
+					<td><%= h s.groupnames||"?" %></td>
 				</tr>
-				<% end %>
 			</table>
 		</div>
 	</div>

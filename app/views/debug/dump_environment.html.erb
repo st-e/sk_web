@@ -1,3 +1,5 @@
+<% s=SystemInfo %>
+
 <% content_for :head do %>
 	<style type="text/css">
 		table { border-collapse: collapse; }
@@ -7,7 +9,7 @@
 
 <% page_title "Environment dumper" do %>
 	<% heading "Location" do %>
-		<p><%= h (`whoami`||"?").chomp %>@<%= h (`hostname`||"?").chomp %>:<%= h Dir.pwd %></p>
+		<p><%= h s.username||"?" %>@<%= h s.hostname||"?" %>:<%= h Dir.pwd %></p>
 	<% end %>
 
 	<% heading "Rails" do %>
@@ -25,11 +27,11 @@
 
 	<% heading "ID" do %>
 		<p>
-		<% `id`.split(' ').each do |x| %>
-			<%= h x.split(',').join(', ') %><br />
+		<% s.id.split(' ').each do |x| %>
+			<%= h x.gsub(',', ', ') %><br />
 		<% end %>
 		</p>
-	<% end if `id` %>
+	<% end if s.id %>
 
 	<% heading "Parameters" do %>
 		<% if params %>
