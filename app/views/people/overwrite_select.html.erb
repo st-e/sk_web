@@ -24,6 +24,8 @@
 						<%= header.text "Nachname"   %>
 						<%= header.text "Vorname"    %>
 						<%= header.text "Verein"     %>
+						<%= header.text "Medical gültig bis" %>
+						<%= header.text "Medical prüfen"     %>
 						<%= header.text "Vereins-ID" %>
 						<%= header.text "Bemerkung"  %>
 					<% } %>
@@ -34,6 +36,8 @@
 						<%= body.cell person.last_name                                %>
 						<%= body.cell person.first_name                               %>
 						<%= body.text person.club                                     %>
+						<%= body.text person.effective_medical_validity("Unbekannt")  %>
+						<%= body.text yesno(person.check_medical_validity)            %>
 						<%= body.text person.club_id                                  %>
 						<%= body.text person.comments                                 %>
 					<% } %>

@@ -4,21 +4,29 @@ andreas:
   last_name: Müller
   first_name: Andreas
   club: FSV Dingenskirchen
+  medical_validity: 2013-02-01
+  check_medical_validity: true
 
 anna:
   last_name: Schmidt
   first_name: Anna
   club: Akaflieg Karlsruhe
+  medical_validity: 2013-04-05
+  check_medical_validity: true
 
 peter:
   last_name: Schneider
   first_name: Peter
   club: Akaflieg Karlsruhe
+  medical_validity: 2014-05-06
+  check_medical_validity: false
 
 eva:
   last_name: Fischer
   first_name: Eva
   club: FSV Dingenskirchen
+  check_medical_validity: true
+  club_id: test
 
 sebastian:
   last_name: Weber

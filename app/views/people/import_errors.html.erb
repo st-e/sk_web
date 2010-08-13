@@ -14,25 +14,30 @@
 		<% table_for(single_person_errors) { |table| %>
 			<% table.header_row { |header| %>
 				<%= header.hidden                     %>
-				<%= header.text "Person", :colspan=>5 %>
+				<%= header.text "Person", :colspan=>7 %>
 			<% } %>
 
 			<% table.header_row { |header| %>
 				<%= header.text "Fehlermeldung"   %>
 				<%= header.text "Nachname"        %>
 				<%= header.text "Vorname"         %>
+				<%= header.text "Medical gültig bis" %>
+				<%= header.text "Medical prüfen"     %>
 				<%= header.text "Bemerkung"       %>
 				<%= header.text "Vereins-ID"      %>
 				<%= header.text "Alte Vereins-ID" %>
 			<% } %>
 
 			<% table.body { |body, error| %>
+				<% entry=error[:entries][0] %>
 				<%= body.text error[:message]                , :class=>'error_message' %>
-				<%= body.text error[:entries][0].last_name   %>
-				<%= body.text error[:entries][0].first_name  %>
-				<%= body.text error[:entries][0].comments    %>
-				<%= body.text error[:entries][0].club_id     %>
-				<%= body.text error[:entries][0].old_club_id %>
+				<%= body.text entry.last_name   %>
+				<%= body.text entry.first_name  %>
+				<%= body.text entry.effective_medical_validity("\"#{entry.medical_validity_text}\"")  %>
+				<%= body.text((entry.check_medical_validity.nil?)?("\"#{entry.check_medical_validity_text}\""):(yesno(entry.check_medical_validity)))            %>
+				<%= body.text entry.comments    %>
+				<%= body.text entry.club_id     %>
+				<%= body.text entry.old_club_id %>
 			<% } %>
 		<% } %>
 		</p>
@@ -43,19 +48,23 @@
 		<% table_for(two_person_errors) { |table| %>
 			<% table.header_row { |header| %>
 				<%= header.hidden                            %>
-				<%= header.text "Person"       , :colspan=>5 %>
-				<%= header.text "Andere Person", :colspan=>5 %>
+				<%= header.text "Person"       , :colspan=>7 %>
+				<%= header.text "Andere Person", :colspan=>7 %>
 			<% } %>
 
 			<% table.header_row { |header| %>
 				<%= header.text "Fehlermeldung"   %>
 				<%= header.text "Nachname"        %>
 				<%= header.text "Vorname"         %>
+				<%= header.text "Medical gültig bis" %>
+				<%= header.text "Medical prüfen"     %>
 				<%= header.text "Bemerkung"       %>
 				<%= header.text "Vereins-ID"      %>
 				<%= header.text "Alte Vereins-ID" %>
 				<%= header.text "Nachname"        %>
 				<%= header.text "Vorname"         %>
+				<%= header.text "Medical gültig bis" %>
+				<%= header.text "Medical prüfen"     %>
 				<%= header.text "Bemerkung"       %>
 				<%= header.text "Vereins-ID"      %>
 				<%= header.text "Alte Vereins-ID" %>
@@ -65,11 +74,15 @@
 				<%= body.text error[:message]                , :class=>'error_message' %>
 				<%= body.text error[:entries][0].last_name   %>
 				<%= body.text error[:entries][0].first_name  %>
+				<%= body.text error[:entries][0].effective_medical_validity("Unbekannt")  %>
+				<%= body.text yesno(error[:entries][0].check_medical_validity)            %>
 				<%= body.text error[:entries][0].comments    %>
 				<%= body.text error[:entries][0].club_id     %>
 				<%= body.text error[:entries][0].old_club_id %>
 				<%= body.text error[:entries][1].last_name   %>
 				<%= body.text error[:entries][1].first_name  %>
+				<%= body.text error[:entries][1].effective_medical_validity("Unbekannt")  %>
+				<%= body.text yesno(error[:entries][1].check_medical_validity)            %>
 				<%= body.text error[:entries][1].comments    %>
 				<%= body.text error[:entries][1].club_id     %>
 				<%= body.text error[:entries][1].old_club_id %>

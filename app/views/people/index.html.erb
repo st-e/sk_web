@@ -6,13 +6,20 @@
 	<% paginated_section @people do %>
 		<% table_for(@people) { |table| %>
 			<% table.header_row { |header| %>
-				<%= header.text "Nachname"   %>
-				<%= header.text "Vorname"    %>
-				<%= header.text "Verein"     %>
-				<%= header.text "Vereins-ID" %>
-				<%= header.text "Bemerkung"  %>
-				<%= header.text "Benutzer"   %>
-				<%= header.text "ID"         %>
+				<%= header.hidden :colspan=>3 %>
+				<%= header.text "Medical", :colspan=>2 %>
+			<% } %>
+
+			<% table.header_row { |header| %>
+				<%= header.text "Nachname"           %>
+				<%= header.text "Vorname"            %>
+				<%= header.text "Verein"             %>
+				<%= header.text "Gültig bis"         %>
+				<%= header.text "Prüfen"             %>
+				<%= header.text "Vereins-ID"         %>
+				<%= header.text "Bemerkung"          %>
+				<%= header.text "Benutzer"           %>
+				<%= header.text "ID"                 %>
 				<%#= header.text "Benutzt?"   %>
 			<% } %>
 
@@ -21,6 +28,8 @@
 				<%= body.cell link_to(person.last_name, person)               %>
 				<%= body.cell link_to(person.first_name, person)              %>
 				<%= body.text person.club                                     %>
+				<%= body.text person.effective_medical_validity("Unbekannt")  %>
+				<%= body.text yesno(person.check_medical_validity)            %>
 				<%= body.text person.club_id                                  %>
 				<%= body.text person.comments                                 %>
 				<%= body.cell((user)?link_to(user.username, user):h("-"))     %>

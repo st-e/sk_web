@@ -17,6 +17,7 @@ Major (important changes):
 * database.yml.dist
 * attempt/redo can get into endless loop; better redo_once
 * Select "Other" radio button when "other" date field is edited (javascript)
+* Invalid date check for data access (with proper error message)
 * Invocation
   * ssl redirect in htaccess, and add warning if ssl is off
   * make relative_url_root setting independent of the script name by removing
@@ -46,6 +47,7 @@ Major (important changes):
     perform
   * review: show names of unknown columns
   * columns with missing value: treat as "" instead?
+  * allow importing for multiple clubs
 * People list
   * Filter by club (also overwrite and person selection)
   * Filter a la portal

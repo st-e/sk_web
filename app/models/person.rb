@@ -1,4 +1,6 @@
 class Person < ActiveRecord::Base
+	include DateHandling
+
 	# Associations
 	has_one :user
 
@@ -8,19 +10,48 @@ class Person < ActiveRecord::Base
 	validates_uniqueness_of :club_id, :scope => :club, :if => :club_and_club_id_present,
 		:message => 'ist in diesem Verein schon vergeben (und nicht leer)'
 
+	validate :medical_validity_valid_or_blank
+	
+	def medical_validity_valid_or_blank
+		errors.add :medical_validity_text, "ist ungültig" if @medical_validity_invalid
+	end 
+	
+
 	# Human names for attributes
-	# Unfortunately, .label of form_helper does not use this
-	#attr_human_name 'last_name' => 'Nachname'
-	#attr_human_name :first_name => 'Vorname'
-	#attr_human_name :club       => 'Verein'
-	#attr_human_name :club_id    => 'Vereins-ID'
-	#attr_human_name :nickname   => 'Verein'
-	#attr_human_name 'comments'  => 'Bemerkungen'
+	# .label of form_helper does not use this, but error_messages does
+	attr_human_name 'last_name'                  => 'Nachname'
+	attr_human_name :first_name                  => 'Vorname'
+	attr_human_name :club                        => 'Verein'
+	attr_human_name :medical_validity            => 'Medical gültig bis'
+	attr_human_name :medical_validity_text       => 'Medical gültig bis'
+	attr_human_name :check_medical_validity      => 'Medical prüfen'
+	attr_human_name :check_medical_validity_text => 'Medical prüfen'
+	attr_human_name :club_id                     => 'Vereins-ID'
+	attr_human_name :nickname                    => 'Verein'
+	attr_human_name 'comments'                   => 'Bemerkungen'
 
 	# Callbacks
 	# Prevent destruction of people that are in use.
 	before_destroy :ensure_not_used
 
+	def medical_validity_text
+		if @medical_validity_invalid
+			@medical_validity_text
+		else
+			date_formatter(german_format, true).call(self.medical_validity)
+		end
+	end
+
+	def medical_validity_text=(value)
+		if value.blank?
+			self.medical_validity=nil
+		else
+			self.medical_validity=parse_date(value)
+		end
+	rescue ArgumentError
+		@medical_validity_invalid=true
+		@medical_validity_text=value
+	end
 
 	def full_name(with_nickname=false)
 		if with_nickname
@@ -32,6 +63,14 @@ class Person < ActiveRecord::Base
 
 	def formal_name
 		"#{last_name}, #{first_name}"
+	end
+
+	def effective_medical_validity(default, format=german_format, strip_leading_zeros=true)
+		if medical_validity
+			date_formatter(format, strip_leading_zeros).call(self.medical_validity)
+		else
+			default
+		end
 	end
 
 	def destroy
@@ -57,9 +96,13 @@ class Person < ActiveRecord::Base
 	end
 
 	class ImportData
+		include DateHandling
+
 		# Don't use Person here because it needs to be Marshalled
 		class Entry
-			attr_accessor :last_name, :first_name, :comments, :club_id, :old_club_id, :club
+			include DateHandling
+
+			attr_accessor :last_name, :first_name, :comments, :club_id, :old_club_id, :club, :medical_validity_text, :medical_validity, :check_medical_validity_text, :check_medical_validity
 			attr_accessor :id, :error_message
 
 			# Identifies a person, that is, determines the ID of the person in
@@ -143,12 +186,23 @@ class Person < ActiveRecord::Base
 			def attribute_hash
 				# The attribute hash only includes values that are not nil.
 				result={}
-				result['first_name']=@first_name if @first_name
-				result['last_name' ]=@last_name  if @last_name
-				result['club'      ]=@club       if @club
-				result['club_id'   ]=@club_id    if @club_id
-				result['comments'  ]=@comments   if @comments
+				result['first_name'            ]=@first_name             if @first_name
+				result['last_name'             ]=@last_name              if @last_name
+				result['club'                  ]=@club                   if @club
+				result['medical_validity'      ]=@medical_validity       if @medical_validity
+				result['check_medical_validity']=@check_medical_validity if @check_medical_validity
+				result['club_id'               ]=@club_id                if @club_id
+				result['comments'              ]=@comments               if @comments
 				result
+			end
+
+			# TODO code duplication - same method in Person
+			def effective_medical_validity(default, format=german_format, strip_leading_zeros=true)
+				if medical_validity
+					date_formatter(format, strip_leading_zeros).call(self.medical_validity)
+				else
+					default
+				end
 			end
 		end
 
@@ -175,11 +229,13 @@ class Person < ActiveRecord::Base
 			columns={}
 			header_row.each_with_index { |column, index|
 				case column.strip
-				when /^nachname$/i      : columns[:last_name  ]=index
-				when /^vorname$/i       : columns[:first_name ]=index
-				when /^bemerkungen$/i   : columns[:comments   ]=index
-				when /^vereins-id$/i    : columns[:club_id    ]=index
-				when /^vereins-id_alt$/i: columns[:old_club_id]=index
+				when /^nachname$/i                    : columns[:last_name              ]=index
+				when /^vorname$/i                     : columns[:first_name             ]=index
+				when /^medical gültig bis$/i          : columns[:medical_validity       ]=index
+				when /^medical prüfen$/i              : columns[:check_medical_validity ]=index
+				when /^bemerkungen$/i                 : columns[:comments               ]=index
+				when /^vereins-id$/i                  : columns[:club_id                ]=index
+				when /^vereins-id_alt$/i              : columns[:old_club_id            ]=index
 				end
 			}
 
@@ -211,11 +267,23 @@ class Person < ActiveRecord::Base
 				entry=Entry.new
 				# Values for non-existing (nil) columns yields nil (see the
 				# monkey patch above).
-				entry.last_name   = row[columns[:last_name  ]]
-				entry.first_name  = row[columns[:first_name ]]
-				entry.comments    = row[columns[:comments   ]]
-				entry.club_id     = row[columns[:club_id    ]]
-				entry.old_club_id = row[columns[:old_club_id]]
+				entry.last_name              = row[columns[:last_name              ]]
+				entry.first_name             = row[columns[:first_name             ]]
+				entry.medical_validity_text  = row[columns[:medical_validity       ]]
+				begin
+					entry.medical_validity       = parse_date(entry.medical_validity_text)
+				rescue ArgumentError
+					entry.medical_validity       = nil
+				end
+				entry.check_medical_validity_text  = row[columns[:check_medical_validity ]]
+				if entry.check_medical_validity_text.blank?
+					entry.check_medical_validity = false
+				else
+					entry.check_medical_validity = entry.check_medical_validity_text.to_b # nil if not recognized
+				end
+				entry.comments               = row[columns[:comments               ]]
+				entry.club_id                = row[columns[:club_id                ]]
+				entry.old_club_id            = row[columns[:old_club_id            ]]
 				entry.club=club
 
 				@entries << entry
@@ -234,6 +302,8 @@ class Person < ActiveRecord::Base
 				# First name or last name empty
 				errors << { :message=>"Vorname ist leer" , :entries=>[entry] } if entry.first_name.blank?
 				errors << { :message=>"Nachname ist leer", :entries=>[entry] } if entry.last_name .blank?
+				errors << { :message=>"Ungültiges Medical-Gültigkeitsdatum", :entries=>[entry] } if !(entry.medical_validity || entry.medical_validity_text.blank?)
+				errors << { :message=>"Ungültiges Wert für „Medical prüfen“", :entries=>[entry] } if entry.check_medical_validity.nil?
 
 				@entries.each { |other_entry|
 					if !other_entry.equal? entry

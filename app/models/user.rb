@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
 	validates_presence_of   :username,                                :message   => "darf nicht leer sein" # length will also count blanks
 	validates_uniqueness_of :username, :case_sensitive => false,      :message   => "existiert schon"
 	validates_length_of     :username, :minimum => 2,                 :too_short => "muss mindestens {{count}} Zeichen lang sein"
-	validates_format_of     :username, :with => /^[a-zA-Z0-9_.-]+$/,  :message   => "Der Benutzername darf nur Buchstaben, Ziffern, _, . und - enthalten"
+	validates_format_of     :username, :with => /^[a-zA-Z0-9_.-]+$/,  :message   => "darf nur Buchstaben, Ziffern, _, . und - enthalten"
 	validates_exclusion_of  :username, :in => reserved_usernames,     :message   => "{{value}} ist reserviert"
 
 	# Password validation
@@ -21,9 +21,9 @@ class User < ActiveRecord::Base
 	# way, we can have an edit form without password fields, but if there is a
 	# password field (e. g. on the change password page), it must be specified.
 	# In any case, if a password is given, it must match the confirmation.
-	validates_presence_of     :password, :on => :create,     :message => "darf nicht leer sein"
-	validates_presence_of     :password, :allow_nil => true, :message => "darf nicht leer sein"
-	validates_confirmation_of :password,                     :message => "stimmt nicht mit Bestätigung überein"
+	validates_presence_of     :password, :on => :create,                     :message => "darf nicht leer sein"
+	validates_presence_of     :password, :allow_nil => true, :on => :update, :message => "darf nicht leer sein"
+	validates_confirmation_of :password,                                     :message => "stimmt nicht mit Bestätigung überein"
 
 	# Human names for attributes
 	attr_human_name :username         => 'Benutzername'

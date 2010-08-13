@@ -1,0 +1,19 @@
+Nachname,Vorname,Verein,Medical gültig bis,Medical prüfen,Bemerkungen,Vereins-ID
+Schulz,Florian,Akaflieg Karlsruhe,,false,,
+Schäfer,Friedrich,Akaflieg Karlsruhe,,false,,
+Schneider,Peter,Akaflieg Karlsruhe,2014-02-31,false,Ungültiges Datum,
+Meier,Sabine,Akaflieg Karlsruhe,,false,,
+Müller,Andreas,FSV Dingenskirchen,2013-02-01,true,,
+Richter,Elisabeth,FSV Dingenskirchen,,false,,
+Wagner,Thomas,FSV Dingenskirchen,,false,,
+Klein,Christian,Akaflieg Karlsruhe,,false,,
+Schmidt,Anna,Akaflieg Karlsruhe,2013-04-05,true,,
+Weber,Sebastian,Akaflieg Karlsruhe,,false,,
+Hoffmann,Veronika,Akaflieg Karlsruhe,,false,,
+Bauer,Georg,FSV Dingenskirchen,,false,,
+Schulz,Maximilian,Akaflieg Karlsruhe,,false,,
+Fischer,Eva,FSV Dingenskirchen,,true,,test
+Schulz,Hannelore,FSV Dingenskirchen,,,Leerer Medical-Check (OK),
+Becker,Katharina,Akaflieg Karlsruhe,2010-10-10,nein,Fehlerhafter Medical-Check,
+Koch,,FSV Dingenskirchen,2010-11-12,false,Fehlender Vorname,
+

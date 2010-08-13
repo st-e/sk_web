@@ -19,17 +19,21 @@
 			<%# Note that for new people, the old club ID is always blank %>
 			<% table_for(new_people_entries) { |table| %>
 				<% table.header_row { |header| %>
-					<%= header.text "Nachname"        %>
-					<%= header.text "Vorname"         %>
-					<%= header.text "Verein"          %>
-					<%= header.text "Bemerkung"       %>
-					<%= header.text "Vereins-ID"      %>
+					<%= header.text "Nachname"           %>
+					<%= header.text "Vorname"            %>
+					<%= header.text "Verein"             %>
+					<%= header.text "Medical gültig bis" %>
+					<%= header.text "Medical prüfen"     %>
+					<%= header.text "Bemerkung"          %>
+					<%= header.text "Vereins-ID"         %>
 				<% } %>
 
 				<% table.body { |body, entry| %>
 					<%= body.text entry.last_name   %>
 					<%= body.text entry.first_name  %>
 					<%= body.text entry.club        %>
+					<%= body.text entry.effective_medical_validity("Unbekannt")  %>
+					<%= body.text yesno(entry.check_medical_validity)            %>
 					<%= body.text entry.comments    %>
 					<%= body.text entry.club_id     %>
 				<% } %>
@@ -53,12 +57,16 @@
 				<% table.header_row { |header| %>
 					<%= header.text "Nachname"        %>
 					<%= header.text "Vorname"         %>
+					<%= header.text "Medical gültig bis" %>
+					<%= header.text "Medical prüfen"     %>
 					<%= header.text "Bemerkung"       %>
 					<%= header.text "Vereins-ID"      %>
 
 					<%= header.text "ID"              %>
 					<%= header.text "Nachname"        %>
 					<%= header.text "Vorname"         %>
+					<%= header.text "Medical gültig bis" %>
+					<%= header.text "Medical prüfen"     %>
 					<%= header.text "Bemerkung"       %>
 					<%= header.text "Vereins-ID"      %>
 
@@ -70,12 +78,16 @@
 
 					<%= body.text entry.last_name   %>
 					<%= body.text entry.first_name  %>
+					<%= body.text entry.effective_medical_validity("Unbekannt")  %>
+					<%= body.text yesno(entry.check_medical_validity)            %>
 					<%= body.text entry.comments    %>
 					<%= body.text entry.club_id     %>
 
 					<%= body.text person.id          %>
 					<%= body.text person.last_name   %>
 					<%= body.text person.first_name  %>
+					<%= body.text person.effective_medical_validity("Unbekannt")  %>
+					<%= body.text yesno(person.check_medical_validity)            %>
 					<%= body.text person.comments    %>
 					<%= body.text person.club_id     %>
 
@@ -97,6 +109,8 @@
 					<%= header.text "ID"              %>
 					<%= header.text "Nachname"        %>
 					<%= header.text "Vorname"         %>
+					<%= header.text "Medical gültig bis" %>
+					<%= header.text "Medical prüfen"     %>
 					<%= header.text "Bemerkung"       %>
 					<%= header.text "Vereins-ID"      %>
 
@@ -109,6 +123,8 @@
 					<%= body.text person.id          %>
 					<%= body.text person.last_name   %>
 					<%= body.text person.first_name  %>
+					<%= body.text person.effective_medical_validity("Unbekannt")  %>
+					<%= body.text yesno(person.check_medical_validity)            %>
 					<%= body.text person.comments    %>
 					<%= body.text person.club_id     %>
 

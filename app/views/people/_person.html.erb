@@ -22,6 +22,16 @@
 	</tr>
 
 	<tr>
+		<th>Medical gültig bis:</th>
+		<td><%=h person.effective_medical_validity("Unbekannt") %></td>
+	</tr>
+
+	<tr>
+		<th>Medical prüfen:</th>
+		<td><%=h yesno(person.check_medical_validity) %></td>
+	</tr>
+
+	<tr>
 		<th>Benutzer:</th>
 		<td>
 			<% if user %>

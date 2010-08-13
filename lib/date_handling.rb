@@ -1,4 +1,12 @@
 module DateHandling
+	def parse_date(string)
+		if string
+			Date.parse(string)
+		else
+			nil
+		end
+	end
+
 	# A date specification is a string describing a date or a date range. The
 	# kind of date specification is determined from he 'date' parameter, and
 	# potentially other parameters.
@@ -78,10 +86,32 @@ module DateHandling
 		"%d.%m.%Y"
 	end
 
+	def iso_format
+		"%Y-%m-%d"
+	end
+
+	def german_month_names
+		[
+			"Januar",
+			"Februar",
+			"März",
+			"April",
+			"Mai",
+			"Juni",
+			"Juli",
+			"August",
+			"September",
+			"Oktober",
+			"November",
+			"Dezember"
+		]
+	end
+
 	def date_formatter(format, strip_leading_zeros=false)
 		lambda { |date|
+			return nil if !date
 			string=date.strftime(format)
-			string.gsub!(/(^|\.)0/, '\1') if strip_leading_zeros
+			string.gsub!(/(^|\.|-)0/, '\1') if strip_leading_zeros
 			string
 		}
 	end

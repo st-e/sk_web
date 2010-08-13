@@ -376,17 +376,21 @@ protected
 
 	def make_table(people)
 		columns = [
-			{ :title => 'Nachname'    },
-			{ :title => 'Vorname'     },
-			{ :title => 'Verein'      },
-			{ :title => 'Bemerkungen' },
-			{ :title => 'Vereins-ID'  }
+			{ :title => 'Nachname'           },
+			{ :title => 'Vorname'            },
+			{ :title => 'Verein'             },
+			{ :title => 'Medical gültig bis' },
+			{ :title => 'Medical prüfen'     },
+			{ :title => 'Bemerkungen'        },
+			{ :title => 'Vereins-ID'         }
 		]
 
 		rows=people.map { |person| [
 			person.last_name,
 			person.first_name,
 			person.club,
+			person.effective_medical_validity(nil, iso_format, false),
+			(person.check_medical_validity || false), # Make sure we get "false" even for nil
 			person.comments,
 			person.club_id
 		] }
