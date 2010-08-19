@@ -66,7 +66,7 @@ MFSV:
 3688:
   registration: D-5133
   club: Akaflieg Karlsruhe
-  num_seats: 2
+  num_seats: 1
   type: Cirrus
   category: glider
   callsign: 33
@@ -75,7 +75,7 @@ MFSV:
 9605:
   registration: D-4150
   club: Akaflieg Karlsruhe
-  num_seats: 2
+  num_seats: 1
   type: Ak-5b
   category: glider
   callsign: SG
@@ -93,7 +93,7 @@ MFSV:
 3043:
   registration: D-8598
   club: FSV Dingenskirchen
-  num_seats: 2
+  num_seats: 1
   type: DG-100
   category: glider
   callsign: FZ
@@ -102,7 +102,7 @@ MFSV:
 4264:
   registration: D-9719
   club: FSV Dingenskirchen
-  num_seats: 2
+  num_seats: 1
   type: Astir
   category: glider
   callsign: 
