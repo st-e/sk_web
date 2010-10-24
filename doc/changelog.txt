@@ -1,3 +1,5 @@
+2.1.0 (2010-10-24):
+	- Medical validity
 	- Allow setting relative_url_root via request header
 	  X_RAILS_RELATIVE_URL_ROOT
 	- flight_db honors incomplete person names
