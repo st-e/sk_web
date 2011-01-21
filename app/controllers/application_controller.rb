@@ -230,12 +230,24 @@ private
 		return if local_request? # Don't require SSL from localhost
 		return if RAILS_ENV=='development' # Don't require SSL in development mode
 
-		# redirect_to :protocol=>"https://" loses the format (try loading
-		# http://.../today.pdf) in production mode
-		# Note that if someone POSTs a form with http, he'll probably get a GET
-		# redirect with the parameters (bad for passwords). OTOH, this should
-		# not happen normally because the forms are all https.
-		redirect_to(params.merge({:protocol => 'https://'})) and flash.keep
+		# Old: loses the format (try loading http://.../today.pdf) in production mode
+		#redirect_to :protocol => "https://"
+
+		# New:
+		# Fails miserably - https://xxx/startkladde redirects to http://xxx/.
+		# Maybe a problem with a newer rails version? This should have been
+		# noticed before.
+		# Note also that if someone POSTs a form with http, he'll probably get
+		# a GET redirect with the parameters (bad for passwords). OTOH, this
+		# should not happen normally because the forms are all https.
+		#redirect_to(params.merge({:protocol => 'https://'})) and flash.keep
+
+		# Taken from the ssl_requirement gem. TODO use ssl_requirement
+		redirect_to("https://" + request.host + request.request_uri) and flash.keep
+
+		# Literature:
+		# http://stackoverflow.com/questions/1662262/rails-redirect-with-https
+		# http://blog.luckyus.net/2008/07/09/ruby-on-rails-redirect-to-a-secure-page-ssl/
 	end
 
 	
