@@ -181,7 +181,7 @@ private
 	end
 
 	def set_relative_url_root
-		ActionController::Base.relative_url_root=request.env['HTTP_X_RAILS_RELATIVE_URL_ROOT']
+		ActionController::Base.relative_url_root=request.env['HTTP_X_RAILS_RELATIVE_URL_ROOT'] if request.env['HTTP_X_RAILS_RELATIVE_URL_ROOT']
 	end
 
 	def check_permissions
