@@ -1,5 +1,6 @@
 	- Bugfix: erroneous SSL redirect
 	- Bugfix: automatically set relative_url_root overwritten
+	- Bugfix: failure to start when Rails 3.0 is installed
 
 2.1.0 (2010-10-24):
 	- Medical validity
