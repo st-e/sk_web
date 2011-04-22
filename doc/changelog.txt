@@ -1,3 +1,4 @@
+3.1.1 (2011-04-22):
 	- Bugfix: erroneous SSL redirect
 	- Bugfix: automatically set relative_url_root overwritten
 	- Bugfix: failure to start when Rails 3.0 is installed
