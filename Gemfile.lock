@@ -13,6 +13,16 @@ GEM
     activesupport (2.3.18)
     fcgi (0.9.2.1)
     mysql (2.9.1)
+    prawn (0.8.4)
+      prawn-core (>= 0.8.4, < 0.9)
+      prawn-core (>= 0.8.4, < 0.9)
+      prawn-layout (>= 0.8.4, < 0.9)
+      prawn-layout (>= 0.8.4, < 0.9)
+      prawn-security (>= 0.8.4, < 0.9)
+      prawn-security (>= 0.8.4, < 0.9)
+    prawn-core (0.8.4)
+    prawn-layout (0.8.4)
+    prawn-security (0.8.4)
     rack (1.1.6)
     rails (2.3.18)
       actionmailer (= 2.3.18)
@@ -22,6 +32,7 @@ GEM
       activesupport (= 2.3.18)
       rake (>= 0.8.3)
     rake (0.8.7)
+    will_paginate (2.3.16)
 
 PLATFORMS
   ruby
@@ -29,5 +40,7 @@ PLATFORMS
 DEPENDENCIES
   fcgi
   mysql
+  prawn (~> 0.8.4)
   rails (~> 2.3)
   rake (= 0.8.7)
+  will_paginate (~> 2.3.11)
