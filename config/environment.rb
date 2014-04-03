@@ -3,7 +3,7 @@ require 'fileutils'
 # Be sure to restart your server when you modify this file
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '~>2.3.9' unless defined? RAILS_GEM_VERSION
+#RAILS_GEM_VERSION = '~>2.3.9' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -64,13 +64,13 @@ Rails::Initializer.run do |config|
 	# config.gem "sqlite3-ruby", :lib => "sqlite3"
 	# config.gem "aws-s3", :lib => "aws/s3"
 
-	config.gem 'will_paginate', :version => '~> 2.3.11'#, :source => 'http://gemcutter.org'
+	#config.gem 'will_paginate', :version => '~> 2.3.11'#, :source => 'http://gemcutter.org'
 	# If there are problems with PDF rendering, try setting this to '= 0.8.4', or
 	# read the Prawn change log.
-	config.gem 'prawn', :version => '~> 0.8.4'
+	#config.gem 'prawn', :version => '~> 0.8.4'
 
 	# This is a dependency of Rails, but is looks like it's not getting unpacked
-	config.gem 'rack', :version => '~> 1.1.0'
+	#config.gem 'rack', :version => '~> 1.1.0'
 
 	# We do not require the fcgi and mysql gems here because
 	#   - they have a native component and thus cannot be unpacked
