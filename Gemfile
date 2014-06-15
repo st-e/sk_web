@@ -9,4 +9,6 @@ gem 'prawn', '~> 0.8.4'
 gem 'will_paginate', '~> 2.3.11'
 
 gem 'mysql'
-gem 'fcgi'
+group :production do
+  gem 'fcgi'
+end
