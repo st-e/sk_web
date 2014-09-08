@@ -12,7 +12,7 @@ GEM
       activesupport (= 2.3.18)
     activesupport (2.3.18)
     fcgi (0.9.2.1)
-    mysql (2.9.1)
+    mysql2 (0.2.23)
     prawn (0.8.4)
       prawn-core (>= 0.8.4, < 0.9)
       prawn-core (>= 0.8.4, < 0.9)
@@ -39,7 +39,7 @@ PLATFORMS
 
 DEPENDENCIES
   fcgi
-  mysql
+  mysql2 (~> 0.2.0)
   prawn (~> 0.8.4)
   rails (~> 2.3)
   rake (= 0.8.7)

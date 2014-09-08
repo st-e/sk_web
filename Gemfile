@@ -8,7 +8,7 @@ gem 'rake', '0.8.7'
 gem 'prawn', '~> 0.8.4'
 gem 'will_paginate', '~> 2.3.11'
 
-gem 'mysql'
+gem 'mysql2', '~> 0.2.0'
 group :production do
   gem 'fcgi'
 end
