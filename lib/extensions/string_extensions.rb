@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class String
 	def to_b
 		if match(/^(true|t|yes|y|1|-1)$/i) != nil

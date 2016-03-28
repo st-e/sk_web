@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require_dependency 'duration'
 
 class FlightDbController < ApplicationController
@@ -85,8 +87,8 @@ protected
 
 	def format_available?(format)
 		case format
-		when 'html' : current_user && current_user.has_permission?(:read_flight_db)
-		when 'csv'  : current_user && current_user.has_permission?(:read_flight_db)
+		when 'html' then current_user && current_user.has_permission?(:read_flight_db)
+		when 'csv'  then current_user && current_user.has_permission?(:read_flight_db)
 		else false
 		end
 	end

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class PlaneLog
 	# Create a log for flights of a single plane, merging if possible
 	# Returns an array of entries

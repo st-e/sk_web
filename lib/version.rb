@@ -1,5 +1,7 @@
+# encoding: utf-8
+
 require 'rexml/document'
-require 'mysql'
+require 'mysql2'
 
 class Version
 	include Singleton
@@ -21,7 +23,11 @@ class Version
 
 		@ruby=RUBY_VERSION
 		@rails=Rails::VERSION::STRING
-		@mysql_client=Mysql.client_version.to_s.sub(/^(.)(..)(..)/, '\\1.\\2.\\3')
+
+		#There seems to be no equivalent in MySql2 other then MySql2::Client.info
+		#which would require an instance of Client.
+		#Disabled because I did not find a better solution (CK, 2014-07-26)
+		#@mysql_client=Mysql.client_version.to_s.sub(/^(.)(..)(..)/, '\\1.\\2.\\3')
 		@mysql_server=ActiveRecord::Base.connection.show_variable('version')
 		@mysql_server_short=@mysql_server.gsub(/-.*/, '')
 		@prawn=Prawn::VERSION

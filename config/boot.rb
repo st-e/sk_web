@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # Safeguard: in test mode, don't touch the environment
 unless ENV['RAILS_ENV']=='test'
 	# Read the local environment if it exists

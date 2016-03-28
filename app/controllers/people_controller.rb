@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require_dependency 'attempt'
 
 class PeopleController < ApplicationController
@@ -104,8 +106,8 @@ class PeopleController < ApplicationController
 		}
 
 		flash[:notice]=case num_deleted
-		when 0: "Es wurden keine Personen gelöscht."
-		when 1: "1 Person wurde gelöscht."
+		when 0 then "Es wurden keine Personen gelöscht."
+		when 1 then "1 Person wurde gelöscht."
 		else    "#{num_deleted} Personen wurden gelöscht."
 		end
 

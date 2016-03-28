@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Menu
 	# The text to display in the menu
 	attr_accessor :text

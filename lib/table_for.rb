@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class TableForRowContext
 	include ERB::Util
 

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'singleton'
 
 class Settings
@@ -6,7 +8,7 @@ class Settings
 	attr_accessor :location
 	attr_accessor :local_addresses
 
-	class <<self
+	class << self
 		attr_accessor :configuration_file
 	end
 	self.configuration_file=Rails.root.join('config', 'sk_web.yml').to_s

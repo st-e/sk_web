@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 def format_duration(seconds, include_seconds)
 	seconds=seconds.to_i
 

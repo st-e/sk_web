@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class PlaneLogController < ApplicationController
 	allow_local :index, :show
 

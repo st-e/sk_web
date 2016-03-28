@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module WillPaginate
 	class Collection
 		include ERB::Util

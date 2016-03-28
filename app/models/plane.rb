@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Plane < ActiveRecord::Base
 	has_many :flights
 

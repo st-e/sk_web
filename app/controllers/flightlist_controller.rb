@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class FlightlistController < ApplicationController
 	allow_local :index, :show
 
@@ -69,10 +71,10 @@ protected
 
 	def format_available?(format)
 		case format
-		when 'pdf'  : true
-		when 'html' : current_user && current_user.has_permission?(:read_flight_db)
-		when 'csv'  : current_user && current_user.has_permission?(:read_flight_db)
-#		when 'latex': current_user && current_user.has_permission?(:read_flight_db)
+		when 'pdf'  then true
+		when 'html' then current_user && current_user.has_permission?(:read_flight_db)
+		when 'csv'  then current_user && current_user.has_permission?(:read_flight_db)
+#		when 'latex'then current_user && current_user.has_permission?(:read_flight_db)
 		else false
 		end
 	end

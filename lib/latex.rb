@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 def latex_escape(value)
 	return nil if !value
 

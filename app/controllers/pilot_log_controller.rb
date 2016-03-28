@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class PilotLogController < ApplicationController
 	require_login :index, :show
 

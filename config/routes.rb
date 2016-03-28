@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 ActionController::Routing::Routes.draw do |map|
 	# Must be before any entries that will also match :controller=>'home', for
 	# example ':controller/:action'

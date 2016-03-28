@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # You can use redo in a block, like so:
 # attempt do
 #	@users = User.paginate :page => the_page

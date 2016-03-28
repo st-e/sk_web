@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Person < ActiveRecord::Base
 	include DateHandling
 
@@ -137,24 +139,24 @@ class Person < ActiveRecord::Base
 					# Old club ID given - identify by old club ID
 					candidates=Person.all(:conditions => { :club => @club, :club_id => @old_club_id }, :readonly=>true)
 					case candidates.size
-					when 0: @id=nil; @error_message="Keine Person mit der angegebenen alten Vereins-ID im Verein \"#{@club}\" gefunden"
-					when 1: @id=candidates[0].id
+					when 0 then @id=nil; @error_message="Keine Person mit der angegebenen alten Vereins-ID im Verein \"#{@club}\" gefunden"
+					when 1 then @id=candidates[0].id
 					else    @id=nil; @error_message="Mehrere Personen mit der angegebenen alten Vereins-ID im Verein \"#{@club}\" gefunden"
 					end
 				elsif !@club_id.blank?
 					# Club ID given - identify by club ID
 					candidates=Person.all(:conditions => { :club => @club, :club_id => @club_id }, :readonly=>true)
 					case candidates.size
-					when 0: @id=0 # Not found - create new
-					when 1: @id=candidates[0].id
+					when 0 then @id=0 # Not found - create new
+					when 1 then @id=candidates[0].id
 					else    @id=nil; @error_message="Mehrere Personen mit der angegebenen Vereins-ID im Verein \"#{@club}\" gefunden"
 					end
 				else
 					# Neither old nor current club ID given - identify by name
 					candidates=Person.all(:conditions => { :club => @club, :last_name => @last_name, :first_name => @first_name }, :readonly=>true)
 					case candidates.size
-					when 0: @id=0 # Not found - create new
-					when 1: @id=candidates[0].id
+					when 0 then @id=0 # Not found - create new
+					when 1 then @id=candidates[0].id
 					else    @id=nil; @error_message="Mehrere Personen mit dem angegebenen Namen im Verein \"#{@club}\" gefunden"; return
 					end
 				end
@@ -229,13 +231,13 @@ class Person < ActiveRecord::Base
 			columns={}
 			header_row.each_with_index { |column, index|
 				case column.strip
-				when /^nachname$/i                    : columns[:last_name              ]=index
-				when /^vorname$/i                     : columns[:first_name             ]=index
-				when /^medical gültig bis$/i          : columns[:medical_validity       ]=index
-				when /^medical prüfen$/i              : columns[:check_medical_validity ]=index
-				when /^bemerkungen$/i                 : columns[:comments               ]=index
-				when /^vereins-id$/i                  : columns[:club_id                ]=index
-				when /^vereins-id_alt$/i              : columns[:old_club_id            ]=index
+				when /^nachname$/i               then columns[:last_name              ]=index
+				when /^vorname$/i                then columns[:first_name             ]=index
+				when /^medical gültig bis$/i     then columns[:medical_validity       ]=index
+				when /^medical prüfen$/i         then columns[:check_medical_validity ]=index
+				when /^bemerkungen$/i            then columns[:comments               ]=index
+				when /^vereins-id$/i             then columns[:club_id                ]=index
+				when /^vereins-id_alt$/i         then columns[:old_club_id            ]=index
 				end
 			}
 

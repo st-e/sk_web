@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Rendering
 	# The message will not be escaped
 	# Note: this does not work in or after a respond_to block when the format

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Comparable
 	# 10.min(5) == 5
 	def min(x)
