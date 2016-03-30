@@ -59,8 +59,8 @@ end
 class DatabaseUser <SpecialUser
 	config=Rails::Configuration.new
 	credentials \
-		config.database_configuration[RAILS_ENV]["username"],
-		config.database_configuration[RAILS_ENV]["password"]
+		config.database_configuration[Rails.env]["username"],
+		config.database_configuration[Rails.env]["password"]
 
 	def has_permission?(permission)
 		true # :-)

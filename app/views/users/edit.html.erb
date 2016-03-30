@@ -1,7 +1,7 @@
-<% page_title "Benutzer #{h @user.username} editieren" do %>
+<%= page_title "Benutzer #{h @user.username} editieren" do %>
 
-	<% form_for(@user) do |f| %>
-		<% person=@user.person %>
+	<%= form_for(@user) do |f| %>
+		<%= person=@user.person %>
 		<%= f.error_messages %>
 
 		<div style="display:none;"><%= f.submit 'Speichern' %></div>
@@ -40,7 +40,7 @@
 		<p>
 		<%= f.submit 'Speichern' %>
 		</p>
-	<% end %>
+	<%= end %>
 
 	<p>
 	<%= link_to 'Anzeigen', @user %> |
@@ -48,5 +48,5 @@
 	<%= link_to 'Benutzerliste', users_path %>
 	</p>
 
-<% end %>
+<%= end %>
 

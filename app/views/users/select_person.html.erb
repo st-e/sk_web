@@ -1,8 +1,8 @@
-<% page_title "Personenauswahl für Benutzer #{h @user.username}" do %>
+<%= page_title "Personenauswahl für Benutzer #{h @user.username}" do %>
 
-	<% current_person_on_page=@people.any? { |person| person.id==@user.person_id } %>
+	<%= current_person_on_page=@people.any? { |person| person.id==@user.person_id } %>
 
-	<% form_for(@user, :url => { :action => "edit" }, :html => {:method => :post}) do |f| %>
+	<%= form_for(@user, :url => { :action => "edit" }, :html => {:method => :post}) do |f| %>
 		<%= f.hidden_field 'id'                 , { :value => @user.username            } %>
 		<%= f.hidden_field 'club'               , { :value => @user.club                } %>
 		<%= f.hidden_field 'perm_club_admin'    , { :value => @user.perm_club_admin     } %>
@@ -12,9 +12,9 @@
 		
 		<p><%= @people.page_info 'Person', 'Personen' %></p>
 
-		<% paginated_section @people, :renderer=>WillPaginate::ButtonRenderer do %>
-			<% table_for(@people) { |table| %>
-				<% table.body_row { |body| %>
+		<%= paginated_section @people, :renderer=>WillPaginate::ButtonRenderer do %>
+			<%= table_for(@people) { |table| %>
+				<%= table.body_row { |body| %>
 					<%= body.cell f.radio_button 'person_id', '0', :checked => !(@user.person) %>
 					<%= body.text "Keine Person", :colspan=>6 %>
 				<% } %>
@@ -26,7 +26,7 @@
 					<% } if !current_person_on_page %>
 				<% end %>
 
-				<% table.header_row { |header| %>
+				<%= table.header_row { |header| %>
 					<%= header.text nil          %>
 					<%= header.text "ID"         %>
 					<%= header.text "Nachname"   %>
@@ -36,7 +36,7 @@
 					<%= header.text "Bemerkung"  %>
 				<% } %>
 
-				<% table.body { |body, person| %>
+				<%= table.body { |body, person| %>
 					<% checked=(@user.person_id==person.id)  %>
 					<%= body.cell f.radio_button('person_id', person.id, :checked => checked) %>
 					<%= body.cell person.id                                                   %>

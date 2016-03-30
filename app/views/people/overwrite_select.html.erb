@@ -13,7 +13,7 @@
 
 		<p><%= @people.page_info 'Person', 'Personen' %></p>
 
-		<% form_tag do %>
+		<%= form_tag do %>
 			<%= hidden_field_tag 'id', @wrong_person.id %>
 
 			<% paginated_section @people do %>

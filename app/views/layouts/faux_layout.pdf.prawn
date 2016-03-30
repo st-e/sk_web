@@ -16,10 +16,10 @@ pdf.table_size=7
 
 pdf.font_families.update(
 	"DejaVuSans" => {
-	:bold        => "#{RAILS_ROOT}/lib/fonts/DejaVuSans-Bold.ttf",
-	:italic      => "#{RAILS_ROOT}/lib/fonts/DejaVuSans-Oblique.ttf",
-	:bold_italic => "#{RAILS_ROOT}/lib/fonts/DejaVuSans-BoldOblique.ttf",
-	:normal      => "#{RAILS_ROOT}/lib/fonts/DejaVuSans.ttf"
+	:bold        => "#{Rails.root}/lib/fonts/DejaVuSans-Bold.ttf",
+	:italic      => "#{Rails.root}/lib/fonts/DejaVuSans-Oblique.ttf",
+	:bold_italic => "#{Rails.root}/lib/fonts/DejaVuSans-BoldOblique.ttf",
+	:normal      => "#{Rails.root}/lib/fonts/DejaVuSans.ttf"
 	})
 
 

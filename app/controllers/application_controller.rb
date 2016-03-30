@@ -6,7 +6,9 @@
 # Hack
 # Don't output anything, it adds extra output to script/runner invocations
 #puts "Loading extensions"
-Dir[File.join(Rails.root, "lib", "extensions", "*.rb")].each {|l| require_dependency l }
+
+require_dependency 'rendering'
+Dir[File.join(Rails.root.to_s, "lib", "extensions", "*.rb")].each {|l| require_dependency l }
 
 class ApplicationController < ActionController::Base
 	include Rendering
@@ -229,8 +231,8 @@ private
 	# Filter that redirects to SSL unless the request comes from a local address
 	def require_ssl
 		return if request.ssl?
-		return if local_request? # Don't require SSL from localhost
-		return if RAILS_ENV=='development' # Don't require SSL in development mode
+		return if request.local? # Don't require SSL from localhost
+		return if Rails.env=='development' # Don't require SSL in development mode
 
 		# Old: loses the format (try loading http://.../today.pdf) in production mode
 		#redirect_to :protocol => "https://"

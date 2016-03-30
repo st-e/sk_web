@@ -17,7 +17,7 @@
 
 			<p>
 			<%# Note that for new people, the old club ID is always blank %>
-			<% table_for(new_people_entries) { |table| %>
+			<%= table_for(new_people_entries) { |table| %>
 				<% table.header_row { |header| %>
 					<%= header.text "Nachname"           %>
 					<%= header.text "Vorname"            %>
@@ -48,7 +48,7 @@
 			<p>Die folgenden Personen werden geändert:</p>
 
 			<p>
-			<% table_for(changed_people_entries) { |table| %>
+			<%= table_for(changed_people_entries) { |table| %>
 				<% table.header_row { |header| %>
 					<%= header.text "Neu", :colspan=>4 %>
 					<%= header.text "Alt", :colspan=>5 %>
@@ -104,7 +104,7 @@
 			<p>Die folgenden Personen werden nicht geändert:</p>
 
 			<p>
-			<% table_for(unchanged_people_entries) { |table| %>
+			<%= table_for(unchanged_people_entries) { |table| %>
 				<% table.header_row { |header| %>
 					<%= header.text "ID"              %>
 					<%= header.text "Nachname"        %>
@@ -137,7 +137,7 @@
 
 	<% heading h "OK?" do %>
 
-		<% form_tag 'import' do %>
+		<%= form_tag 'import' do %>
 			<%= hidden_field_tag 'confirm', 'true' %>
 			<%= hidden_field_tag 'import_data_filename', @import_data_filename %>
 			<p>

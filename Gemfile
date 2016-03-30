@@ -1,14 +1,15 @@
 source 'https://rubygems.org'
-# versions used on lsg-rheinstetten.de
-# TODO update to more recent versions
 
-gem 'rails', '~> 2.3'
-gem 'rake', '0.8.7'
-
+gem 'rails', '~> 3.0.20'
+gem 'rake', '10.1.0'
 gem 'prawn', '~> 0.8.4'
-gem 'will_paginate', '~> 2.3.11'
+gem 'prawn-layout', '0.8.4'
+gem 'will_paginate', '~> 3.1.0'
 
-gem 'mysql2', '~> 0.2.0'
-group :production do
-  gem 'fcgi'
-end
+gem 'mysql2', '~> 0.3.16'
+gem 'activerecord-mysql2-adapter', '0.0.3'
+
+
+#group :production do
+#  gem 'fcgi'
+#end

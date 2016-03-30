@@ -1,6 +1,6 @@
 <% page_title "Person anlegen" do %>
 
-	<% form_for(@person) do |f| %>
+	<%= form_for(@person) do |f| %>
 		<%= f.error_messages \
 			:header_message => "Fehlerhafte Angaben", # 1 error prohibited this user from being saved
 			:message => "Die folgenden Felder sind fehlerhaft:"

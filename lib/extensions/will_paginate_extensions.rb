@@ -34,7 +34,7 @@ module WillPaginate
 		end
 	end
 
-	class ButtonRenderer <LinkRenderer
+	class ButtonRenderer < ViewHelpers::LinkRenderer
 		def page_link(page, text, attributes = {})
 			# Enabled button
 			@template.submit_tag text, :name => "page_#{page}"

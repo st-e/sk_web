@@ -38,6 +38,6 @@ end
 
 # Load all plugins
 #DataFormatPlugin.list=[]
-Dir["#{RAILS_ROOT}/lib/plugins/data_format/*.rb"].each { |x| load x }
+Dir["#{Rails.root}/lib/plugins/data_format/*.rb"].each { |x| load x }
 
 

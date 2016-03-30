@@ -7,6 +7,7 @@ require_dependency 'yesno'
 require_dependency 'table_for'
 require_dependency 'version'
 require_dependency 'csv_methods'
+require_dependency 'date_handling'
 
 # TODO cleanup, move to lib
 

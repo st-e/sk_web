@@ -1,8 +1,8 @@
-<% multiple_formats=(@formats.size>1) %>
+<%= multiple_formats=(@formats.size>1) %>
 
-<% page_title "Startliste" do %>
+<%= page_title "Startliste" do %>
 
-	<% form_tag do %>
+	<%= form_tag do %>
 		<% if !multiple_formats %>
 			<%= hidden_field_tag 'format', @format %>
 		<% end %>
