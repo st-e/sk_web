@@ -32,11 +32,11 @@ class Version
 		@mysql_server_short=@mysql_server.gsub(/-.*/, '')
 		@prawn=Prawn::VERSION
 
-		config=Rails::Configuration.new
+		config=Rails.configuration.database_configuration
 		@host=`hostname`.strip
-		@database=config.database_configuration[Rails.env]["database"] 
-		@server=config.database_configuration[Rails.env]["host"] 
-		@database_user=config.database_configuration[Rails.env]["username"] 
+		@database=config[Rails.env]["database"] 
+		@server=config[Rails.env]["host"] 
+		@database_user=config[Rails.env]["username"] 
 		@effective_server=(@host if is_localhost?(server)) or @server
 
 		@version_string="#{@name} Version #{@version}/Ruby #{@ruby}/Rails #{@rails}/MySQL #{@mysql_server_short}"

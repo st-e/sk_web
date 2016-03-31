@@ -1,7 +1,7 @@
 # encoding: utf-8
 #require 'fileutils'
 
-# Load the rails application
+# Load the rails application from application.rb
 require File.expand_path('../application', __FILE__)
 
 # If template is nil, '.dist' is appended to file

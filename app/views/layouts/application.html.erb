@@ -1,69 +1,69 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<title>Startkladde <%= h Settings.instance.location %> - <%= yield :title %></title>
-		<%= stylesheet_link_tag 'sk_web' %>
-	</head>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <title>Startkladde <%= h Rails.configuration.location %> - <%= yield :title %></title>
+        <%= stylesheet_link_tag 'sk_web' %>
+    </head>
 
-	<%
-		menu=Menu.create(self)
+    <%
+        menu=Menu.create(self)
 
-		logged_in = !session[:username].nil?
-		debug_on  =  session[:debug]
+        logged_in = !session[:username].nil?
+        debug_on  =  session[:debug]
 
-		               menu.entry               "Startseite", root_path
-		flights_menu = menu.entry               "Flüge…"     , nil
-		people_menu  = menu.entry_if logged_in, "Personen…"  , nil
-		users_menu   = menu.entry_if logged_in, "Benutzer…"  , nil
-		session_menu = menu.entry               "Sitzung…"   , nil
+                       menu.entry               "Startseite", root_path
+        flights_menu = menu.entry               "Flüge…"     , nil
+        people_menu  = menu.entry_if logged_in, "Personen…"  , nil
+        users_menu   = menu.entry_if logged_in, "Benutzer…"  , nil
+        session_menu = menu.entry               "Sitzung…"   , nil
 
-		flights_menu.entry "Startliste"    , :controller => 'flightlist'
-		flights_menu.entry "Bordbücher"    , :controller => 'plane_log'
-		flights_menu.entry "Flugbuch"      , :controller => 'pilot_log'
-		flights_menu.entry "Flugdatenbank" , :controller => 'flight_db' if logged_in
+        flights_menu.entry "Startliste"    , :controller => 'flightlist'
+        flights_menu.entry "Bordbücher"    , :controller => 'plane_log'
+        flights_menu.entry "Flugbuch"      , :controller => 'pilot_log'
+        flights_menu.entry "Flugdatenbank" , :controller => 'flight_db' if logged_in
 
-		people_menu.entry "Personenliste" , people_path
-		people_menu.entry "Anlegen"       , new_person_path
-		people_menu.entry "Importieren"   , :controller => 'people', :action => 'import'
-		people_menu.entry "Exportieren"   , :controller => 'people', :action => 'export'
+        people_menu.entry "Personenliste" , people_path
+        people_menu.entry "Anlegen"       , new_person_path
+        people_menu.entry "Importieren"   , :controller => 'people', :action => 'import'
+        people_menu.entry "Exportieren"   , :controller => 'people', :action => 'export'
 
-		users_menu.entry "Benutzerliste", users_path
-		users_menu.entry "Anlegen", new_user_path
+        users_menu.entry "Benutzerliste", users_path
+        users_menu.entry "Anlegen", new_user_path
 
-		session_menu.entry "Anmelden",                          login_path                                                         if !logged_in
-		session_menu.entry "Passwort ändern",                   :controller => 'users'  , :action => 'change_own_password'         if logged_in
-		session_menu.entry "Diagnose #{(debug_on)?"aus":"an"}", :controller => 'session', :action => 'settings', :debug=>!debug_on if logged_in || debug_on
-		session_menu.entry "Abmelden",                          logout_path                                                        if logged_in
-	%>
+        session_menu.entry "Anmelden",                          login_path                                                         if !logged_in
+        session_menu.entry "Passwort ändern",                   :controller => 'users'  , :action => 'change_own_password'         if logged_in
+        session_menu.entry "Diagnose #{(debug_on)?"aus":"an"}", :controller => 'session', :action => 'settings', :debug=>!debug_on if logged_in || debug_on
+        session_menu.entry "Abmelden",                          logout_path                                                        if logged_in
+    %>
 
 
-	<body>
-		<div class="stretcher title">
-			<div class="box title">
-				<%= render :partial=>'layouts/loginbox' %>
+    <body>
+        <div class="stretcher title">
+            <div class="box title">
+                <%= render :partial=>'layouts/loginbox' %>
 
-				<h1>Startkladde <%= h Settings.instance.location %></h1>
-			</div>
-		</div>
+                <h1>Startkladde <%= h Rails.configuration.location %></h1>
+            </div>
+        </div>
 
-		<div class="stretcher main">
-			<div class="box main" style="padding: 0px">
+        <div class="stretcher main">
+            <div class="box main" style="padding: 0px">
 
-				<%= render :partial=>'layouts/menu_entries', :locals=>{:menu=>menu, :css_class=>"menu"} %>
+                <%= render :partial=>'layouts/menu_entries', :locals=>{:menu=>menu, :css_class=>"menu"} %>
 
-				<div style="padding: 8px;">
-					<%= render :partial=>'layouts/flash', :locals=>{:flash=>flash} %>
-					<%= yield %>
-				</div>
+                <div style="padding: 8px;">
+                    <%= render :partial=>'layouts/flash', :locals=>{:flash=>flash} %>
+                    <%= yield %>
+                </div>
 
-			</div><%# .main.box %>
-		</div>
+            </div><%# .main.box %>
+        </div>
 
-		<%= render :partial=>'layouts/footer' %>
+        <%= render :partial=>'layouts/footer' %>
 
-		<%= render :partial=>'layouts/debug' %>
+        <%= render :partial=>'layouts/debug' %>
 
-	</body>
+    </body>
 </html>
 

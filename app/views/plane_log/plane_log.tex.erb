@@ -19,7 +19,7 @@
 
 \newcommand{\cliptext}[2]{\psclip{\psframe[linestyle=none](-1,-1)(#1,2)}{\hbox{#2}}\endpsclip}
 
-\cohead{Bordbücher <%= l Settings.instance.location %>}
+\cohead{Bordbücher <%= l Rails.configuration.location %>}
 \lohead{}
 \rohead{<%= render :partial=>'partials/date_range.tex', :locals=>{:date_range=>@date_range} %>}
 

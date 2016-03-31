@@ -2,7 +2,11 @@
 
 SkWeb::Application.routes.draw do
     match '/' => 'home#index'
-    
+
+    #Fix undefined local variable root_path
+    root :to => 'pages#home'
+
+
     # Allow POST to edit for the "Select person" subpage
     # Specify the requirements for the ID because periods will confuse routing otherwise
     resources :users do
