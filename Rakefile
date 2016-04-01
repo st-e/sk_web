@@ -8,4 +8,4 @@ require 'rake/testtask'
 require 'rdoc/task'
 #require 'tasks/rails'
 
-Project::Application.load_tasks
+SkWeb::Application.load_tasks

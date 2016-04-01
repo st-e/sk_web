@@ -8,6 +8,8 @@
 #puts "Loading extensions"
 
 require_dependency 'rendering'
+require_dependency 'is_local'
+
 Dir[File.join(Rails.root.to_s, "lib", "extensions", "*.rb")].each {|l| require_dependency l }
 
 class ApplicationController < ActionController::Base
@@ -264,7 +266,7 @@ private
     # networks", as in "no login required from here". local_request? denotes
     # localhost, as in "no SSL required from here".
     def local_network?
-        Settings.instance.address_is_local? request.remote_ip
+        address_is_local? request.remote_ip
     end
 end
 

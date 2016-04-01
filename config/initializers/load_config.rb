@@ -10,8 +10,8 @@ yaml= YAML.load_file("#{Rails.root}/config/sk_web.yml")
 cfg= yaml['config']
 
 #set config variables
-SkWeb::Application.config.location      = cfg['location']        || "???" 
-SkWeb::Application.config.local_adresses= cfg['local_addresses'] || [] 
+SkWeb::Application.config.location       = cfg['location']        || "???" 
+SkWeb::Application.config.local_addresses= cfg['local_addresses'] || [] 
 #require 'singleton'
 
 #class Settings
