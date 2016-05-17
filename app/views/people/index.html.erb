@@ -1,54 +1,54 @@
 <%# coding: utf-8 %>
 <% page_title "Personen" do %>
 
-<p><%= @people.page_info 'Person', 'Personen' %></p>
+<%= page_info @people, 'Person', 'Personen' %>
 
 <% if not @people.empty? %>
-	<% paginated_section @people do %>
-		<% table_for(@people) { |table| %>
-			<% table.header_row { |header| %>
-				<%= header.hidden :colspan=>3 %>
-				<%= header.text "Medical", :colspan=>2 %>
-			<% } %>
+    <%= paginated_section @people do %>
+        <%= table_for(@people) { %>
+            <% header_row { %>
+                <% hidden :colspan=>3 %>
+                <% text "Medical", :colspan=>2 %>
+            <% } %>
 
-			<% table.header_row { |header| %>
-				<%= header.text "Nachname"           %>
-				<%= header.text "Vorname"            %>
-				<%= header.text "Verein"             %>
-				<%= header.text "Gültig bis"         %>
-				<%= header.text "Prüfen"             %>
-				<%= header.text "Vereins-ID"         %>
-				<%= header.text "Bemerkung"          %>
-				<%= header.text "Benutzer"           %>
-				<%= header.text "ID"                 %>
-				<%#= header.text "Benutzt?"   %>
-			<% } %>
+            <% header_row { %>
+                <% text "Nachname"           %>
+                <% text "Vorname"            %>
+                <% text "Verein"             %>
+                <% text "Gültig bis"         %>
+                <% text "Prüfen"             %>
+                <% text "Vereins-ID"         %>
+                <% text "Bemerkung"          %>
+                <% text "Benutzer"           %>
+                <% text "ID"                 %>
+                <%# text "Benutzt?"   %>
+            <% } %>
 
-			<% table.body { |body, person| %>
-				<% user=person.user %>
-				<%= body.cell link_to(person.last_name, person)               %>
-				<%= body.cell link_to(person.first_name, person)              %>
-				<%= body.text person.club                                     %>
-				<%= body.text person.effective_medical_validity("Unbekannt")  %>
-				<%= body.text yesno(person.check_medical_validity)            %>
-				<%= body.text person.club_id                                  %>
-				<%= body.text person.comments                                 %>
-				<%= body.cell((user)?link_to(user.username, user):h("-"))     %>
-				<%= body.cell link_to(person.id, person)                      %>
-				<%#= body.text yesno(person.used?)     %>
-				<%= body.cell link_to('Editieren',     edit_person_path(      person)) %>
-				<%= body.cell link_to('Löschen',       person, :method => :delete,
-					:confirm => "Person #{person.full_name} wirklich löschen?"       ) %>
-				<%= body.cell link_to('Überschreiben', overwrite_person_path( person)) %>
-			<% } %>
-		<% } %>
-	<% end %>
+            <% body { |person| %>
+                <% user=person.user %>
+                <% cell link_to(person.last_name, person)               %>
+                <% cell link_to(person.first_name, person)              %>
+                <% text person.club                                     %>
+                <% text person.effective_medical_validity("Unbekannt")  %>
+                <% text yesno(person.check_medical_validity)            %>
+                <% text person.club_id                                  %>
+                <% text person.comments                                 %>
+                <% cell((user)?link_to(user.username, user):h("-"))     %>
+                <% cell link_to(person.id, person)                      %>
+                <%# text yesno(person.used?)     %>
+                <% cell link_to('Editieren',     edit_person_path(      person)) %>
+                <% cell link_to('Löschen',       person, :method => :delete,
+                    :confirm => "Person #{person.full_name} wirklich löschen?"       ) %>
+                <% cell link_to('Überschreiben', overwrite_person_path( person)) %>
+            <% } %>
+        <% } %>
+    <% end %>
 <% end %>
 
 <p>
-	<%= link_to 'Person anlegen', new_person_path %>
-	<%= link_to 'Personen importieren', import_people_path %>
-	<%#= link_to 'Unbenutzte Personen löschen', delete_unused_people_path, :confirm => 'Wirklich alle unbenutzten Personen löschen?', :method => :post %>
+    <%= link_to 'Person anlegen', new_person_path %>
+    <%= link_to 'Personen importieren', import_people_path %>
+    <%#= link_to 'Unbenutzte Personen löschen', delete_unused_people_path, :confirm => 'Wirklich alle unbenutzten Personen löschen?', :method => :post %>
 </p>
 
 <% end %>
