@@ -1,59 +1,31 @@
 # encoding: utf-8
 
 module WillPaginate
-    class Collection
-        include ERB::Util
+    class ButtonRenderer < ::WillPaginate::ActionView::LinkRenderer
 
-        def page_first
-            offset+1
-        end
-
-        def page_last
-            offset+length
-        end
-
-        def singular_name
-            return "Eintrag" if empty?
-            first.class.name.underscore.sub('_', ' ')
-        end
-
-        def page_info(singular=nil, plural=nil, options = {})
-            singular ||= singular_name
-            plural   ||= singular.pluralize
-
-            if total_pages < 2
-                case size
-                when 0; "Keine #{h plural}"
-                when 1; "<b>1</b> #{h singular}"
-                else;   "<b>#{size}</b> #{h plural}"
-                end
+        #Creates the numbered buttons for each page & replaces standard
+        #will_paginate output by submit_tags 
+        def page_number(page)
+            unless page == current_page
+                @template.submit_tag(page, {:name=> "page_#{page}", :rel => rel_value(page)})
             else
-                %{%s <b>%d</b> bis <b>%d</b> von <b>%d</b>} %
-                    [h(plural.capitalize), page_first, page_last, total_entries]
+                @template.submit_tag(page, {:name=> "page_#{page}", :class => "current", :disabled => true})
             end
         end
-    end
 
-    class ButtonRenderer < ViewHelpers::LinkRenderer
-        def page_link(page, text, attributes = {})
-            # Enabled button
-            @template.submit_tag text, :name => "page_#{page}"
-        end
-
-        def page_span(page, text, attributes = {})
-            # A disabled link: either the current page (page!=nil) or a
-            # disabled prev/next button
-
+        #Creates the previous or next links in user edit dialog. Replaces the
+        # default will_paginate html by submit tags
+        def previous_or_next_page(page, text, classname)
             if page
-                # Current button
-                @template.submit_tag text, attributes.merge({ :name => "page_#{page}", :disabled=>true })
+                #active prev/next button
+                @template.submit_tag(text.html_safe, {:name=> "page_#{page}", :class => classname})
             else
-                # Disabled prev/next button
-                @template.submit_tag text, attributes.merge({ :name => "disabled", :disabled=>true })
+                #disabled prev/next button
+                @template.submit_tag(text.html_safe, {:name=> "disabled", :disabled => true, :class => classname + " disabled"})
             end
         end
-    end
-end
+    end #class ButtonRenderer
+end #module WillPaginate
 
 # Moved to locale settings in config/locales
 #WillPaginate::ViewHelpers.pagination_options[:previous_label] = '&laquo; Zurück'
