@@ -3,14 +3,14 @@
 require_dependency 'attempt'
 
 class UsersController < ApplicationController
-    filter_parameter_logging :password # Filter parameters containing "password"
+    # has no effect in rails 3, set config.filter_parameters in config/application.rb instead
+    #filter_parameter_logging :password # Filter parameters containing "password"
     
     require_permission :club_admin, :index, :show, :new, :create, :edit, :update, :destroy, :change_password
     require_login :change_own_password
 
     def index
         attempt do
-#            @users = User.paginate(:page => params[:page], :per_page => 20).order('username').readonly
             @users = User.page(params[:page]).per_page(20).order('username').readonly
             params[:page]=1 and redo if (!@users.empty? and @users.out_of_bounds?)
         end
@@ -94,13 +94,12 @@ class UsersController < ApplicationController
 
     def select_person
         page=page_parameter
-
         attempt do
-            @people = Person.paginate :page => page, :per_page => 20, :order => 'last_name, first_name', :readonly=>true
+            @people= Person.page(page).per_page(20).order('last_name, first_name').readonly
             params[:page]=1 and redo if @people.out_of_bounds?
         end
 
-        render 'select_person'
+        render :select_person
     end
 
     def destroy
