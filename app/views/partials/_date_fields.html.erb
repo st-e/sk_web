@@ -1,21 +1,21 @@
 <%
-	today=Date.today
-	first_date=Date.new(today.year, 1, 1)
+    today=Date.today
+    first_date=Date.new(today.year, 1, 1)
 %>
 <tr>
-	<th>Datum:</th>
-	<td>
-		<%= radio_button_tag('date', 'today', true) %>Heute
-		<br/>
-		<%= radio_button_tag('date', 'yesterday', false) %>Gestern
-		<br/>
-		<%= radio_button_tag('date', 'single', false) %>Anderes Datum: <%= text_field_tag 'single_date', date_formatter(german_format, true).call(today), :size=>10, :maxlength=>10 %>
+    <th>Datum:</th>
+    <td>
+        <%= radio_button_tag('date', 'today', true) %>Heute
+        <br/>
+        <%= radio_button_tag('date', 'yesterday', false) %>Gestern
+        <br/>
+        <%= radio_button_tag('date', 'single', false) %>Anderes Datum: <%= text_field_tag 'single_date', date_formatter(german_format, true).call(today), :size=>10, :maxlength=>10 %>
 <% if local_assigns[:enable_range] %>
-		<br/>
-		<%= radio_button_tag('date', 'range', false) %>Zeitraum:
-		<%= text_field_tag 'first_date', date_formatter(german_format, true).call(first_date), :size=>10, :maxlength=>10 %> bis
-		<%= text_field_tag 'last_date' , date_formatter(german_format, true).call(today     ), :size=>10, :maxlength=>10 %>
+        <br/>
+        <%= radio_button_tag('date', 'range', false) %>Zeitraum:
+        <%= text_field_tag 'first_date', date_formatter(german_format, true).call(first_date), :size=>10, :maxlength=>10 %> bis
+        <%= text_field_tag 'last_date' , date_formatter(german_format, true).call(today     ), :size=>10, :maxlength=>10 %>
 <% end %>
-	</td>
+    </td>
 </tr>
 
