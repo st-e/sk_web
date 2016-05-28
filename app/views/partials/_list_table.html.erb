@@ -1,17 +1,17 @@
 <%#div style="overflow: auto"%>
-	<table class="list">
-		<tr class="header">
-			<% table[:columns].reject { |column| column[:title]==nil }.each { |column| %>
-				<th class="nobreak"><%= h column[:title] %></th>
-			<% } %>
-		</tr>
-		<% table[:rows].each_with_index { |row, index| %>
-			<tr class="<%= "data#{index%2}" %>">
-				<% row.each { |column| %>
-					<td class="nobreak"><%= h (column || "-") %></td>
-				<% } %>
-			</tr>
-		<% } %>
-	</table>
+    <table class="list">
+        <tr class="header">
+            <% table[:columns].reject { |column| column[:title]==nil }.each { |column| %>
+                <th class="nobreak"><%= h column[:title] %></th>
+            <% } %>
+        </tr>
+        <% table[:rows].each_with_index { |row, index| %>
+            <tr class="<%= "data#{index%2}" %>">
+                <% row.each { |column| %>
+                    <td class="nobreak"><%= h (column || "-") %></td>
+                <% } %>
+            </tr>
+        <% } %>
+    </table>
 <%#/div%>
 
