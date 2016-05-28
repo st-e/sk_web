@@ -4,7 +4,6 @@ require 'erb'
 require 'csv'
 
 require_dependency 'yesno'
-require_dependency 'table_for'
 require_dependency 'version'
 require_dependency 'csv_methods'
 require_dependency 'date_handling'
@@ -18,13 +17,13 @@ module ApplicationHelper
     include DateHandling
 
     # The argument will not be HTML escaped!
-    def page_title(title)
-        content_for :title do
-            title
-        end
+    def page_title(title, &block)
+        content_for(:title, title)
 
-        heading title, :class=>"page_title" do
-            yield if block_given?
+        if block_given?
+            return heading(title, :class=>"page_title", &block)
+        else
+            return heading(title, :class=>"page_title")
         end
     end
 
@@ -39,34 +38,27 @@ module ApplicationHelper
     #     <% heading h("Subtitle 1") do %>
     #       <div>Contents</div>
     #     <% end %>
-    #     <% heading h("Subtitle 2") do %>
+    #     <%= heading h("Subtitle 2") do %>
     #       <div>Contents</div>
     #     <% end %>
     #   <% end %>
     # The contents will not be escaped.
     # In any case, options can be given, for example:
     #   heading "Title", :class=>"page_title"
-    def heading(contents, options=nil)
+    def heading(title, options=nil, &block)
         # The first usable heading level (h1 is taken by the application
         # layout, which does not use this method because it is rendered *after*
         # the page).
         @heading_level=2 if !defined? @heading_level
 
-        heading_tag=content_tag "h#{@heading_level}", contents, options
-
+        retval= content_tag("h#{@heading_level}", title, options)
         if block_given?
-            # Block mode, concat the heading yield with the new heading level, return nil
-            concat heading_tag
-
+            # Block mode
             @heading_level += 1
-            yield
+            retval << capture(&block)
             @heading_level -= 1
-
-            nil
-        else
-            # No-block mode, return the heading
-            heading_tag
         end
+        return retval
     end
 end
 

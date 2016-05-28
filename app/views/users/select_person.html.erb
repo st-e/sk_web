@@ -1,4 +1,4 @@
-<% page_title "Personenauswahl für Benutzer #{h @user.username}" do %>
+<%= page_title "Personenauswahl für Benutzer #{h @user.username}" do %>
 
     <% current_person_on_page=@people.any? { |person| person.id==@user.person_id } %>
 
@@ -10,41 +10,41 @@
 
         <%= hidden_field_tag 'subpage', 'select_person' %>
         
-        <p><%= @people.page_info 'Person', 'Personen' %></p>
+        <p><%= page_info @people, 'Person', 'Personen' %></p>
 
-        <% paginated_section @people, :renderer=>WillPaginate::ButtonRenderer do %>
-            <% table_for(@people) { |table| %>
-                <% table.body_row { |body| %>
-                    <%= body.cell f.radio_button 'person_id', '0', :checked => !(@user.person) %>
-                    <%= body.text "Keine Person", :colspan=>6 %>
+        <%= paginated_section @people, :renderer=>WillPaginate::ButtonRenderer do %>
+            <%= table_for(@people) { %>
+                <% body_row { %>
+                    <% cell f.radio_button 'person_id', '0', :checked => !(@user.person) %>
+                    <% text "Keine Person", :colspan=>6 %>
                 <% } %>
 
                 <% if @user.person %>
-                    <% table.body_row { |body| %>
-                        <%= body.cell f.radio_button 'person_id', @user.person_id, :checked => true %>
-                        <%= body.text "Aktuelle Person: #{@user.person.full_name} (#{@user.person_id})", :colspan=>6 %>
+                    <% body_row { %>
+                        <% cell f.radio_button 'person_id', @user.person_id, :checked => true %>
+                        <% text "Aktuelle Person: #{@user.person.full_name} (#{@user.person_id})", :colspan=>6 %>
                     <% } if !current_person_on_page %>
                 <% end %>
 
-                <% table.header_row { |header| %>
-                    <%= header.text nil          %>
-                    <%= header.text "ID"         %>
-                    <%= header.text "Nachname"   %>
-                    <%= header.text "Vorname"    %>
-                    <%= header.text "Verein"     %>
-                    <%= header.text "Vereins-ID" %>
-                    <%= header.text "Bemerkung"  %>
+                <% header_row { %>
+                    <% text nil          %>
+                    <% text "ID"         %>
+                    <% text "Nachname"   %>
+                    <% text "Vorname"    %>
+                    <% text "Verein"     %>
+                    <% text "Vereins-ID" %>
+                    <% text "Bemerkung"  %>
                 <% } %>
 
-                <% table.body { |body, person| %>
+                <% body { |person| %>
                     <% checked=(@user.person_id==person.id)  %>
-                    <%= body.cell f.radio_button('person_id', person.id, :checked => checked) %>
-                    <%= body.cell person.id                                                   %>
-                    <%= body.cell person.last_name                                            %>
-                    <%= body.cell person.first_name                                           %>
-                    <%= body.text person.club                                                 %>
-                    <%= body.text person.club_id                                              %>
-                    <%= body.text person.comments                                             %>
+                    <% cell f.radio_button('person_id', person.id, :checked => checked) %>
+                    <% cell person.id                                                   %>
+                    <% cell person.last_name                                            %>
+                    <% cell person.first_name                                           %>
+                    <% text person.club                                                 %>
+                    <% text person.club_id                                              %>
+                    <% text person.comments                                             %>
                 <% } %>
             <% } %>
         <% end %>
