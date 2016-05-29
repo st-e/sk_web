@@ -1,27 +1,28 @@
-<% page_title "Flugdatenbank" do %>
+<%# coding: utf-8 %>
+<%= page_title "Flugdatenbank" do %>
 
-	<%= form_tag do %>
-		<table class="form">
-			<%= render :partial=>'partials/date_fields', :locals=>{ :enable_range=>true } %>
-			<tr>
-				<th>Schleppflüge einzeln:</th>
-				<td><%= check_box_tag 'towflights_extra', 'true' %></td>
-			</tr>
-			<tr>
-				<th>Datenformat:</th>
-				<td><%= select_tag 'data_format', options_for_select(FlightDbController.data_format_options) %></td>
-			</tr>
-			<tr>
-				<th>Format:</th>
-				<td><%= select_tag('format', options_for_select(@formats, @format)) %></td>
-			</tr>
-			<tr>
-				<td colspan="5">
-					<%= submit_tag 'Abrufen' %>
-				</td>
-			</tr>
-		</table>
-	<% end %>
+    <%= form_tag do -%>
+        <table class="form">
+            <%= render :partial=>'partials/date_fields', :locals=>{ :enable_range=>true } %>
+            <tr>
+                <th>Schleppflüge einzeln:</th>
+                <td><%= check_box_tag 'towflights_extra', 'true' %></td>
+            </tr>
+            <tr>
+                <th>Datenformat:</th>
+                <td><%= select_tag 'data_format', options_for_select(FlightDbController.data_format_options) %></td>
+            </tr>
+            <tr>
+                <th>Format:</th>
+                <td><%= select_tag('format', options_for_select(@formats, @format)) %></td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <%= submit_tag 'Abrufen' %>
+                </td>
+            </tr>
+        </table>
+    <% end -%>
 
 <% end %>
 

@@ -1,14 +1,12 @@
 # encoding: utf-8
 
 require_dependency 'duration'
+require_dependency 'data_format_plugin'
+
 
 class FlightDbController < ApplicationController
     require_permission :read_flight_db, :index, :show
-
-    def initialize
-        @default_format="html"
-        @default_data_format="default"
-    end
+    before_filter :set_default_format
 
     def index
         @format=params['format'] || @default_format
@@ -53,7 +51,7 @@ class FlightDbController < ApplicationController
 
     def self.data_format_options
         result=[["Standard", 'default']]
-        
+
         result+=DataFormatPlugin.registered_plugins.to_a.map { |name, plugin|
             ["#{plugin.title} (Plugin)", name]
         }
@@ -173,5 +171,15 @@ protected
 
         { :columns => columns, :rows => rows, :data => flights }
     end
+
+private
+    #moved here from initialize in combination with before_filter
+    #Overriding initialize is not recommended in rails:
+    #http://stackoverflow.com/questions/18576150/ruby-on-rails-before-filter-vs-rubys-initialize
+    def set_default_format
+        @default_format="html"
+        @default_data_format="default"
+    end
+
 end
 
