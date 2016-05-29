@@ -131,7 +131,8 @@ class PeopleController < ApplicationController
 
             # Let the user select a person
             attempt do
-                @people = Person.paginate(:page => params[:page], :per_page => 50, :order => 'last_name, first_name', :readonly=>true).reject { |person| person.id==@wrong_person.id }
+#               @people = Person.paginate(:page => params[:page], :per_page => 50, :order => 'last_name, first_name', :readonly=>true).reject { |person| person.id==@wrong_person.id }
+                @people = Person.page(params[:page]).per_page(50).where("id != #{@wrong_person.id}").order('last_name, first_name').readonly
                 params[:page]=1 and redo if (!@people.empty? and @people.out_of_bounds?)
             end
 
