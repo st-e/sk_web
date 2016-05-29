@@ -27,7 +27,7 @@ module PageInfoHelper
                         concat content_tag(:b, 1)
                         concat " #{h singular}"
                     else
-                        concat content_tag(:b, "#{size}")
+                        concat content_tag(:b, "#{collection.size}")
                         concat " #{h plural}"
                 end
             else
