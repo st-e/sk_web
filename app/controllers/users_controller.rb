@@ -5,7 +5,6 @@ require_dependency 'attempt'
 class UsersController < ApplicationController
     # has no effect in rails 3, set config.filter_parameters in config/application.rb instead
     #filter_parameter_logging :password # Filter parameters containing "password"
-    
     require_permission :club_admin, :index, :show, :new, :create, :edit, :update, :destroy, :change_password
     require_login :change_own_password
 

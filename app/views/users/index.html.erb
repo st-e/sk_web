@@ -26,8 +26,9 @@
                     <% cell((person)?link_to(person_formatter.call(person), person):h("-")) %>
                     <% text yesno(user.perm_club_admin)                                     %>
                     <% text yesno(user.perm_read_flight_db)                                 %>
-                    <% cell link_to 'Editieren', edit_user_path(user)                                                              %>
-                    <% cell link_to 'Löschen', user, :confirm => "Benutzer #{user.username} wirklich löschen?", :method => :delete %>
+                    <% cell button_to 'Editieren', edit_user_path(user)                                                              %>
+                    <%# cell (link_to 'Löschen', user, confirm: "Benutzer #{user.username} wirklich löschen?", method: :delete) %>
+                    <% cell (button_to 'Löschen', user, :confirm => "Benutzer #{user.username} wirklich löschen?", :method => :delete) %>
                 <% } %>
             <% } %>
         <% end %>
