@@ -36,10 +36,10 @@
                 <% cell((user)?link_to(user.username, user):h("-"))     %>
                 <% cell link_to(person.id, person)                      %>
                 <%# text yesno(person.used?)     %>
-                <% cell link_to('Editieren',     edit_person_path(      person)) %>
-                <% cell link_to('Löschen',       person, :method => :delete,
+                <% cell button_to('Editieren', edit_person_path(person), :method => :get) %>
+                <% cell button_to('Löschen',       person, :method => :delete,
                     :confirm => "Person #{person.full_name} wirklich löschen?"       ) %>
-                <% cell link_to('Überschreiben', overwrite_person_path( person)) %>
+                <% cell button_to('Überschreiben', overwrite_person_path( person)) %>
             <% } %>
         <% } %>
     <% end %>
