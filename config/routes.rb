@@ -9,7 +9,7 @@ SkWeb::Application.routes.draw do
 
     # Allow POST to edit for the "Select person" subpage
     # Specify the requirements for the ID because periods will confuse routing otherwise
-    resources :users do
+    resources :users, constraints: { id: /[^\/]+/ } do
         member do
             post :edit
             get :change_password
