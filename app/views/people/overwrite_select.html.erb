@@ -1,56 +1,56 @@
-<% page_title "Person #{h @wrong_person.full_name} überschreiben" do %>
+<%= page_title "Person #{h @wrong_person.full_name} überschreiben" do %>
 
-	<% heading h "Falsche Person" do %>
+    <%= heading h "Falsche Person" do %>
 
-		<p>Die folgende (falsche) Person wird überschrieben:</p>
-		<%= render :partial => 'person', :locals => { :person=>@wrong_person } %>
+        <p>Die folgende (falsche) Person wird überschrieben:</p>
+        <%= render :partial => 'person', :locals => { :person=>@wrong_person } %>
 
-	<% end %>
+    <% end %>
 
-	<% heading h "Korrekte Person" do %>
+    <%= heading h "Korrekte Person" do %>
 
-		<p>Bitte die korrekte Person auswählen:</p>
+        <p>Bitte die korrekte Person auswählen:</p>
 
-		<p><%= @people.page_info 'Person', 'Personen' %></p>
+        <p><%= page_info @people, 'Person', 'Personen' %></p>
 
-		<% form_tag do %>
-			<%= hidden_field_tag 'id', @wrong_person.id %>
+        <%= form_tag do %>
+            <%= hidden_field_tag 'id', @wrong_person.id %>
 
-			<% paginated_section @people do %>
-				<% table_for(@people) { |table| %>
-					<% table.header_row { |header| %>
-						<%= header.text nil          %>
-						<%= header.text "ID"         %>
-						<%= header.text "Nachname"   %>
-						<%= header.text "Vorname"    %>
-						<%= header.text "Verein"     %>
-						<%= header.text "Medical gültig bis" %>
-						<%= header.text "Medical prüfen"     %>
-						<%= header.text "Vereins-ID" %>
-						<%= header.text "Bemerkung"  %>
-					<% } %>
+            <%= paginated_section @people do %>
+                <%= table_for(@people) { %>
+                    <% header_row { %>
+                        <% text nil          %>
+                        <% text "ID"         %>
+                        <% text "Nachname"   %>
+                        <% text "Vorname"    %>
+                        <% text "Verein"     %>
+                        <% text "Medical gültig bis" %>
+                        <% text "Medical prüfen"     %>
+                        <% text "Vereins-ID" %>
+                        <% text "Bemerkung"  %>
+                    <% } %>
 
-					<% table.body { |body, person| %>
-						<%= body.cell radio_button_tag('correct_person_id', person.id, false) %>
-						<%= body.cell person.id                                       %>
-						<%= body.cell person.last_name                                %>
-						<%= body.cell person.first_name                               %>
-						<%= body.text person.club                                     %>
-						<%= body.text person.effective_medical_validity("Unbekannt")  %>
-						<%= body.text yesno(person.check_medical_validity)            %>
-						<%= body.text person.club_id                                  %>
-						<%= body.text person.comments                                 %>
-					<% } %>
-				<% } %>
-			<% end %>
+                    <% body { |person| %>
+                        <% cell radio_button_tag('correct_person_id', person.id, false) %>
+                        <% cell person.id                                       %>
+                        <% cell person.last_name                                %>
+                        <% cell person.first_name                               %>
+                        <% text person.club                                     %>
+                        <% text person.effective_medical_validity("Unbekannt")  %>
+                        <% text yesno(person.check_medical_validity)            %>
+                        <% text person.club_id                                  %>
+                        <% text person.comments                                 %>
+                    <% } %>
+                <% } %>
+            <% end %>
 
-			<p><%= submit_tag 'Auswählen' %></p>
-		<% end %>
+            <p><%= submit_tag 'Auswählen' %></p>
+        <% end %>
 
-		<p>
-		<%= link_to 'Personenliste', people_path %>
-		</p>
+        <p>
+        <%= link_to 'Personenliste', people_path %>
+        </p>
 
-	<% end %>
+    <% end %>
 <% end %>
 

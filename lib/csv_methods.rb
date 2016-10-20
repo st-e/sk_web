@@ -1,7 +1,7 @@
-def make_csv
-	out=""
+# encoding: utf-8
 
-	CSV::Writer.generate(out) { |csv|
+def make_csv
+	out=CSV::generate { |csv|
 		yield csv
 	}
 

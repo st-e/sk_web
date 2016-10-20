@@ -1,6 +1,6 @@
 <% page_title "Person #{h @person.full_name} editieren" do %>
 
-	<% form_for(@person) do |f| %>
+	<%= form_for(@person) do |f| %>
 		<%# TODO code duplication %>
 		<%= f.error_messages \
 			:header_message => "Fehlerhafte Angaben", # 1 error prohibited this user from being saved

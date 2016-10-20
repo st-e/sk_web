@@ -1,4 +1,4 @@
-ppdf.centered_header="Bordbücher #{Settings.instance.location}"
+ppdf.centered_header="Bordbücher #{Rails.configuration.location}"
 render :partial=>'partials/date_range', :locals=>{:ppdf=>ppdf, :date_range=>@date_range}
 
 if @plane_log.empty?

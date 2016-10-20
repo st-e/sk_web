@@ -10,30 +10,30 @@ ul.menu { height: 2em; } /* Menu bar */
 
 /* All menu items */
 ul.menu a {
-	height: 2em;
-	line-height: 2em;
-	width: 10em;
+    height: 2em;
+    line-height: 2em;
+    width: 10em;
 }
 
 
 /* Menu bar and menus */
 ul.menu, ul.menu ul {
-	padding: 0;
-	margin: 0;
-	list-style-image: none;
-	list-style-type: none;
+    padding: 0;
+    margin: 0;
+    list-style-image: none;
+    list-style-type: none;
 }
 
 
 /* Menus (first level menus and submenus) */
 ul.menu ul {
-	position: absolute;
+    position: absolute;
 }
 
 /* First level menus */
 ul.menu > li > ul {
-	margin-left: -1px;
-	margin-top: 1px;
+    margin-left: -1px;
+    margin-top: 1px;
 }
 
 
@@ -49,8 +49,8 @@ ul.menu li:hover > ul { display: block; }
 
 /* Submenus */
 ul.menu ul ul {
-	margin-top: -2em;
-	margin-left: 10em;
+    margin-top: -2em;
+    margin-left: 10em;
 }
 
 
@@ -58,27 +58,27 @@ ul.menu ul ul {
 
 /* All menu items (menu bar, first level menus and submenus) */
 ul.menu li {
-	margin: 0px;
-	padding: 0px;
+    margin: 0px;
+    padding: 0px;
 }
 /* All menu items */
 ul.menu a {
-	text-align: center;
-	display: block;
-	text-decoration: none;
-	white-space: nowrap;
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    white-space: nowrap;
 }
 
 /* Menu bar entries */
 ul.menu > li {
-	float: left;
-	border-right: 1px solid;
+    float: left;
+    border-right: 1px solid;
 }
 
 /* Menu items (first level and submenu) */
 ul.menu ul li {
-	border: 1px solid;
-	margin-top: -1px; /* Compensate non-collapsing border and make sure there is no gap between the menu bar and the first menu item */
+    border: 1px solid;
+    margin-top: -1px; /* Compensate non-collapsing border and make sure there is no gap between the menu bar and the first menu item */
 }
 
 /* Submenu items */
@@ -102,10 +102,10 @@ body { margin: 8px; }
  * This is why we need the stretcher.
  */
 div.stretcher {
-	float:left; /* Can grow larger than the body */
-	min-width: 100%;
-	padding:0px; /* May not have a padding */
-	margin-right: 8px;
+    float:left; /* Can grow larger than the body */
+    min-width: 100%;
+    padding:0px; /* May not have a padding */
+    margin-right: 8px;
 }
 
 /* The body is made up of divs (with a padding) each wrapped in a stretcher. We
@@ -125,10 +125,10 @@ h2.page_title { margin-top: 8px; }
 div.box { border: 1px solid; }
 
 div.box_title {
-	padding: 0px 8px;
-	border: 1px solid;
-	border-bottom-width: 0px;
-	border-bottom-width: 0px;
+    padding: 0px 8px;
+    border: 1px solid;
+    border-bottom-width: 0px;
+    border-bottom-width: 0px;
 }
 
 div.box_title span.box_title { font-weight: bold; }
@@ -143,7 +143,7 @@ body, p, ol, ul, td {
 }
 
 div.box.footer {
-	font-size:x-small;
+    font-size:x-small;
 }
 
 
@@ -199,8 +199,8 @@ ul.menu ul li { border-color:       white; } /* Menu items (first level and subm
 
 /* All pagination elements */
 div.pagination a, div.pagination span, div.pagination input {
-	background-color: #EEE;
-	border-color: #CCC;
+    background-color: #EEE;
+    border-color: #CCC;
 }
 
 div.pagination span.disabled { color: #999 }
@@ -319,17 +319,17 @@ div.pagination { margin: 8px 0px; }
 
 /* All pagination elements */
 div.pagination a, div.pagination span, div.pagination input {
-	font-size: 13px;
-	border: 1px solid;
-	text-decoration: none;
-	padding: 1px 9px 1px 9px;
+    font-size: 13px;
+    border: 1px solid;
+    text-decoration: none;
+    padding: 1px 9px 1px 9px;
 }
 
 /* The gap is an exception: no background, lower padding */
 div.pagination span.gap {
-	background-color: transparent;
-	border: none;
-	padding: 1px
+    background-color: transparent;
+    border: none;
+    padding: 1px
 }
 
 
@@ -338,8 +338,8 @@ div.pagination span.gap {
  **********/
 
 div#logo pre {
-	font-size: small;
-	background-color: white;
+    font-size: small;
+    background-color: white;
 }
 
 /***************

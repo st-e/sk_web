@@ -21,7 +21,7 @@
 		should be on the same line. %>
 
 		<table class="form"><tr>
-				<% form_tag do %>
+				<%= form_tag do %>
 					<%= hidden_field_tag 'id'               , @wrong_person.id   %>
 					<%= hidden_field_tag 'correct_person_id', @correct_person.id %>
 					<%= hidden_field_tag 'confirm'          , 'true'             %>
@@ -29,7 +29,7 @@
 					<td><%= submit_tag 'Überschreiben' %></td>
 				<% end %>
 
-				<% form_tag do %>
+				<%= form_tag do %>
 					<%= hidden_field_tag 'id'               , @wrong_person.id   %>
 
 					<td><%= submit_tag 'Neu auswählen' %></td>

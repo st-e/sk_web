@@ -1,6 +1,6 @@
 require 'test_helper'
 
-require 'text'
+#require 'text'
 
 class TextTest < ActiveSupport::TestCase
 	test "to_b" do

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # Contrary to Ruby's Tempfile, this file will not be deleted automatically;
 # the name of the file is returned. Also, it is not thread safe, although
 # it does guarantee that no two threads or processes will try to create the

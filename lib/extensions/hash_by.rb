@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # http://flowcoder.com/65
 
 # I created these Array extensions for handling the common case of creating a

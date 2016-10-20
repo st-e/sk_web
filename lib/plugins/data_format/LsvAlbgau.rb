@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 DataFormatPlugin.define "lsv_albgau" do
 	title "LSV Albgau"
 	author "Martin Herrmann"
@@ -74,10 +76,10 @@ DataFormatPlugin.define "lsv_albgau" do
 			launch_method=(flight.departs_here?)?(flight.launch_method):nil
 			if launch_method
 				launch_method_text=case launch_method.type
-					when 'airtow': 'FS'
-					when 'self'  : 'SS'
-					when 'winch' : launch_method.short_name
-					when 'other' : 'SO'
+					when 'airtow' then 'FS'
+					when 'self'   then 'SS'
+					when 'winch'  then launch_method.short_name
+					when 'other'  then 'SO'
 					else           'SO'
 				end
 			else
@@ -86,18 +88,18 @@ DataFormatPlugin.define "lsv_albgau" do
 
 			flight_type_text=
 				case flight.accounting_notes
-				when /Bezahlt/i       : "B"
-				when /Werkstattflug/i : "W"
-				when /Pauschal/i      : "P"
-				when /Kinderfliegen/i : "K"
+				when /Bezahlt/i       then "B"
+				when /Werkstattflug/i then "W"
+				when /Pauschal/i      then "P"
+				when /Kinderfliegen/i then "K"
 				else \
 					case flight.type
-					when Flight::TYPE_NORMAL         : 'Ü'
-					when Flight::TYPE_TRAINING_2     : 'S'
-					when Flight::TYPE_TRAINING_1     : 'E'
-					when Flight::TYPE_GUEST_PRIVATE  : 'Ü'
-					when Flight::TYPE_GUEST_EXTERNAL : 'Ü'
-					when Flight::TYPE_TOW            : '-'
+					when Flight::TYPE_NORMAL         then 'Ü'
+					when Flight::TYPE_TRAINING_2     then 'S'
+					when Flight::TYPE_TRAINING_1     then 'E'
+					when Flight::TYPE_GUEST_PRIVATE  then 'Ü'
+					when Flight::TYPE_GUEST_EXTERNAL then 'Ü'
+					when Flight::TYPE_TOW            then '-'
 					else                       ''
 					end
 				end

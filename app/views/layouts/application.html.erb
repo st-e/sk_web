@@ -1,69 +1,71 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<title>Startkladde <%= h Settings.instance.location %> - <%= yield :title %></title>
-		<%= stylesheet_link_tag 'sk_web' %>
-	</head>
-
-	<%
-		menu=Menu.create(self)
-
-		logged_in = !session[:username].nil?
-		debug_on  =  session[:debug]
-
-		               menu.entry               "Startseite", root_path
-		flights_menu = menu.entry               "Flüge…"     , nil
-		people_menu  = menu.entry_if logged_in, "Personen…"  , nil
-		users_menu   = menu.entry_if logged_in, "Benutzer…"  , nil
-		session_menu = menu.entry               "Sitzung…"   , nil
-
-		flights_menu.entry "Startliste"    , :controller => 'flightlist'
-		flights_menu.entry "Bordbücher"    , :controller => 'plane_log'
-		flights_menu.entry "Flugbuch"      , :controller => 'pilot_log'
-		flights_menu.entry "Flugdatenbank" , :controller => 'flight_db' if logged_in
-
-		people_menu.entry "Personenliste" , people_path
-		people_menu.entry "Anlegen"       , new_person_path
-		people_menu.entry "Importieren"   , :controller => 'people', :action => 'import'
-		people_menu.entry "Exportieren"   , :controller => 'people', :action => 'export'
-
-		users_menu.entry "Benutzerliste", users_path
-		users_menu.entry "Anlegen", new_user_path
-
-		session_menu.entry "Anmelden",                          login_path                                                         if !logged_in
-		session_menu.entry "Passwort ändern",                   :controller => 'users'  , :action => 'change_own_password'         if logged_in
-		session_menu.entry "Diagnose #{(debug_on)?"aus":"an"}", :controller => 'session', :action => 'settings', :debug=>!debug_on if logged_in || debug_on
-		session_menu.entry "Abmelden",                          logout_path                                                        if logged_in
-	%>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <title>Startkladde <%= h Rails.configuration.location %> - <%= content_for :title %></title>
+        <%= stylesheet_link_tag 'sk_web' %>
+        <%= javascript_include_tag :defaults%>
+    </head>
 
 
-	<body>
-		<div class="stretcher title">
-			<div class="box title">
-				<%= render :partial=>'layouts/loginbox' %>
+    <%
+        menu=Menu.create(self)
 
-				<h1>Startkladde <%= h Settings.instance.location %></h1>
-			</div>
-		</div>
+        logged_in = !session[:username].nil?
+        debug_on  =  session[:debug]
 
-		<div class="stretcher main">
-			<div class="box main" style="padding: 0px">
+                       menu.entry               "Startseite", root_path
+        flights_menu = menu.entry               "Flüge…"     , nil
+        people_menu  = menu.entry_if logged_in, "Personen…"  , nil
+        users_menu   = menu.entry_if logged_in, "Benutzer…"  , nil
+        session_menu = menu.entry               "Sitzung…"   , nil
 
-				<%= render :partial=>'layouts/menu_entries', :locals=>{:menu=>menu, :css_class=>"menu"} %>
+        flights_menu.entry "Startliste"    , :controller => 'flightlist'
+        flights_menu.entry "Bordbücher"    , :controller => 'plane_log'
+        flights_menu.entry "Flugbuch"      , :controller => 'pilot_log'
+        flights_menu.entry "Flugdatenbank" , :controller => 'flight_db' if logged_in
 
-				<div style="padding: 8px;">
-					<%= render :partial=>'layouts/flash', :locals=>{:flash=>flash} %>
-					<%= yield %>
-				</div>
+        people_menu.entry "Personenliste" , people_path
+        people_menu.entry "Anlegen"       , new_person_path
+        people_menu.entry "Importieren"   , :controller => 'people', :action => 'import'
+        people_menu.entry "Exportieren"   , :controller => 'people', :action => 'export'
 
-			</div><%# .main.box %>
-		</div>
+        users_menu.entry "Benutzerliste", users_path
+        users_menu.entry "Anlegen", new_user_path
 
-		<%= render :partial=>'layouts/footer' %>
+        session_menu.entry "Anmelden",                          login_path                                                         if !logged_in
+        session_menu.entry "Passwort ändern",                   :controller => 'users'  , :action => 'change_own_password'         if logged_in
+        session_menu.entry "Diagnose #{(debug_on)?"aus":"an"}", :controller => 'session', :action => 'settings', :debug=>!debug_on if logged_in || debug_on
+        session_menu.entry "Abmelden",                          logout_path                                                        if logged_in
+    %>
 
-		<%= render :partial=>'layouts/debug' %>
 
-	</body>
+    <body>
+        <div class="stretcher title">
+            <div class="box title">
+                <%= render :partial=>'layouts/loginbox' %>
+
+                <h1>Startkladde <%= h Rails.configuration.location %></h1>
+            </div>
+        </div>
+
+        <div class="stretcher main">
+            <div class="box main" style="padding: 0px">
+
+                <%= render :partial=>'layouts/menu_entries', :locals=>{:menu=>menu, :css_class=>"menu"} %>
+
+                <div style="padding: 8px;">
+                    <%= render :partial=>'layouts/flash', :locals=>{:flash=>flash} %>
+                    <%= yield %>
+                </div>
+
+            </div><%# .main.box %>
+        </div>
+
+        <%= render :partial=>'layouts/footer' %>
+
+        <%= render :partial=>'layouts/debug' %>
+
+    </body>
 </html>
 

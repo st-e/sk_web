@@ -1,51 +1,47 @@
-ActionController::Routing::Routes.draw do |map|
-	# Must be before any entries that will also match :controller=>'home', for
-	# example ':controller/:action'
-	map.root :controller => 'home', :action=>'index'
+# encoding: utf-8
 
-	# The priority is based upon order of creation: first created -> highest priority.
-	# See how all your routes lay out with "rake routes"
+SkWeb::Application.routes.draw do
+    match '/' => 'home#index'
 
-	# Sample of named route:
-	#   map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
-	# This route can be invoked with purchase_url(:id => product.id)
-
-	# Sample resource route with options:
-	#   map.resources :products, :member => { :short => :get, :toggle => :post }, :collection => { :sold => :get }
+    #Fix undefined local variable root_path
+    root :to => 'pages#home'
 
 
+    # Allow POST to edit for the "Select person" subpage
+    # Specify the requirements for the ID because periods will confuse routing otherwise
+    resources :users, constraints: { id: /[^\/]+/ } do
+        member do
+            post :edit
+            get :change_password
+            post :change_password
+        end
+    end
 
-	# Allow POST to edit for the "Select person" subpage
-	# Specify the requirements for the ID because periods will confuse routing otherwise
-	map.resources :users, :member => { :edit => :post, :change_password => [:get, :post] }, :requirements => { :id => /[a-zA-Z0-9_.-]+/ }
-	#map.resources :flights # Not available
-	#map.resources :planes # Not available
-	map.resources :people, :member => { :overwrite => [:get, :post] }, :collection => { :import => [:get, :post], :export => [:get, :post], :delete_unused => [:post] }
+    resources :people do
+        collection do
+            get :import
+            post :import
+            get :export
+            post :export
+            post :delete_unused
+        end
+        
+	member do
+            get :overwrite
+            post :overwrite
+        end
+    end
 
-
-	# Flight list, plane log, pilot log and flight log accept a date specification
-	map.flightlist 'flightlist/:date.:format', :controller => 'flightlist', :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ }
-	map.plane_log  'plane_log/:date.:format' , :controller => 'plane_log' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ }
-	map.pilot_log  'pilot_log/:date.:format' , :controller => 'pilot_log' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d|\d\d\d\d-\d\d-\d\d_\d\d\d\d-\d\d-\d\d)/ }
-	map.flight_db  'flight_db/:date.:format' , :controller => 'flight_db' , :action => 'show', :requirements => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d|\d\d\d\d-\d\d-\d\d_\d\d\d\d-\d\d-\d\d)/ }
-
-	#  map.connect '/usars/:id', :controller => 'users', :action => 'show'
-
-
-	# Session control
-	map.login           'login',  :controller => 'session', :action => 'login'
-	map.logout          'logout', :controller => 'session', :action => 'logout'
-	map.change_password 'change_password', :controller => 'users', :action => 'change_own_password'
-
-	# Install the default routes as the lowest priority.
-	# Note: These default routes make all actions in every controller accessible via GET requests. You should
-	# consider removing or commenting them out if you're using named routes and resources.
-	# The order is important: more specific first, because for reverse routing, a
-	# generic route will also match: users/change_password?id=fred
-	# ':controller/:id/:action does not work because it will match
-	# session/controller with id='controller' and default action='index'
-	#map.connect ':controller/:action/:id' # not used - add members to the resources instead
-	map.connect ':controller/:action'
-	map.connect ':controller', :action => 'index'
+    # Flight list, plane log, pilot log and flight log accept a date specification
+    match 'flightlist/:date.:format' => 'flightlist#show', :as => :flightlist, :constraints => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ }
+    match 'plane_log/:date.:format' => 'plane_log#show', :as => :plane_log, :constraints => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d)/ }
+    match 'pilot_log/:date.:format' => 'pilot_log#show', :as => :pilot_log, :constraints => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d|\d\d\d\d-\d\d-\d\d_\d\d\d\d-\d\d-\d\d)/ }
+    match 'flight_db/:date.:format' => 'flight_db#show', :as => :flight_db, :constraints => { :date => /(today|yesterday|\d\d\d\d-\d\d-\d\d|\d\d\d\d-\d\d-\d\d_\d\d\d\d-\d\d-\d\d)/ }
+    
+    # Session control
+    match 'login' => 'session#login', :as => :login
+    match 'logout' => 'session#logout', :as => :logout
+    match 'change_password' => 'users#change_own_password', :as => :change_password
+    match ':controller/:action' => '#index'
+    match ':controller' => '#index'
 end
-

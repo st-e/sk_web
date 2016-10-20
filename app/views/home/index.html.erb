@@ -1,37 +1,37 @@
 <%# Instead of overflow:auto we could also use a clear:both div at the end, but that breaks IE7. %>
 <div style="overflow: auto">
-	<div id="logo" style="float: right">
-		<pre><%= render :partial=>'partials/logo_ohne_startwagen.txt' %></pre>
-	</div>
+    <div id="logo" style="float: right">
+        <pre><%= render :partial=>'partials/logo_ohne_startwagen.txt' %></pre>
+    </div>
 
-	<% page_title "Hauptseite" do %>
-		<p>
-			Willkommen im Web-Zugang der Startkladde am Flugplatz <%= h Settings.instance.location %>!
-		</p>
+    <%= page_title("Hauptseite") do %>
+        <p>
+            Willkommen im Web-Zugang der Startkladde am Flugplatz <%= h Rails.configuration.location %>!
+        </p>
 
-		<p>
-			Die wichtigsten Links:
-		</p>
+        <p>
+            Die wichtigsten Links:
+        </p>
 
-		<ul>
-			<li><%= link_to 'Startliste von heute', flightlist_path(:date=>'today', :format=>'pdf') %></li>
-			<li>
-				<%= link_to 'Bordbücher von heute', plane_log_path(:date=>'today', :format=>'html') %>
-				(<%= link_to 'als PDF', plane_log_path(:date=>'today', :format=>'pdf') %>)
-			</li>
-			<li>
-				<% today=Date.today %>
-				<%= link_to 'Persönliches Flugbuch der letzten Woche', pilot_log_path(:date=>"#{today-7.days}_#{today}", :format=>'html') %>
-			</li>
-		</ul>
+        <ul>
+            <li><%= link_to 'Startliste von heute', flightlist_path(:date=>'today', :format=>'pdf') %></li>
+            <li>
+                <%= link_to 'Bordbücher von heute', plane_log_path(:date=>'today', :format=>'html') %>
+                (<%= link_to 'als PDF', plane_log_path(:date=>'today', :format=>'pdf') %>)
+            </li>
+            <li>
+                <% today=Date.today %>
+                <%= link_to 'Persönliches Flugbuch der letzten Woche', pilot_log_path(:date=>"#{today-7.days}_#{today}", :format=>'html') %>
+            </li>
+        </ul>
 
-		<p>
-		Alle anderen Funktionen sind über das obige Menü zugänglich (gegebenenfalls ist eine Anmeldung erforderlich).
-		</p>
-	<% end %>
+        <p>
+        Alle anderen Funktionen sind über das obige Menü zugänglich (gegebenenfalls ist eine Anmeldung erforderlich).
+        </p>
+    <% end %>
 
-	<% begin %>
-		<%= render :partial=>'local/main_page' %>
-	<% rescue ActionView::MissingTemplate; end %>
+    <% begin %>
+        <%= render :partial=>'local/main_page' %>
+    <% rescue ActionView::MissingTemplate; end %>
 </div>
 

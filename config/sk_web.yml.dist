@@ -1,5 +1,5 @@
 config:
-  location: Dingenskirchen
+  location: OBI
   local_addresses:
     - 127.0.0.1
     - 192.168.*.*

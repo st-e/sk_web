@@ -1,6 +1,6 @@
 require 'test_helper'
 
-require 'util'
+#require 'util'
 
 class TextTest < ActiveSupport::TestCase
 	test "mysql_password_hash" do

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 #!/usr/bin/ruby1.8
 
 # Default to production, can be overridden by setting RAILS_ENV

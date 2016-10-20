@@ -1,26 +1,26 @@
 <% multiple_formats=(@formats.size>1) %>
 
-<% page_title "Startliste" do %>
+<%= page_title "Startliste" do %>
 
-	<% form_tag do %>
-		<% if !multiple_formats %>
-			<%= hidden_field_tag 'format', @format %>
-		<% end %>
-		<table class="form">
-			<%= render :partial=>'partials/date_fields' %>
-			<% if multiple_formats %>
-				<tr>
-					<th>Format:</th>
-					<td><%= select_tag('format', options_for_select(@formats, @format)) %></td>
-				</tr>
-			<% end %>
-			<tr>
-				<td colspan="5">
-					<%= submit_tag 'Abrufen' %>
-				</td>
-			</tr>
-		</table>
-	<% end %>
+    <%= form_tag do %>
+        <% if !multiple_formats %>
+            <%= hidden_field_tag 'format', @format %>
+        <% end %>
+        <table class="form">
+            <%= render :partial=>'partials/date_fields' %>
+            <% if multiple_formats %>
+                <tr>
+                    <th>Format:</th>
+                    <td><%= select_tag('format', options_for_select(@formats, @format)) %></td>
+                </tr>
+            <% end %>
+            <tr>
+                <td colspan="5">
+                    <%= submit_tag 'Abrufen' %>
+                </td>
+            </tr>
+        </table>
+    <% end %>
 
 <% end %>
 

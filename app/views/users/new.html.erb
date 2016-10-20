@@ -1,45 +1,45 @@
 <% page_title "Benutzer anlegen" do %>
 
-	<% @user.clear_passwords %>
-	<% form_for(@user) do |f| %>
-		<%= f.error_messages \
-			:header_message => "Fehlerhafte Angaben", # 1 error prohibited this user from being saved
-			:message => "Die folgenden Felder sind fehlerhaft:"
-		%>
+    <% @user.clear_passwords %>
+    <%= form_for(@user) do |f| %>
+        <%= f.error_messages \
+            :header_message => "Fehlerhafte Angaben", # 1 error prohibited this user from being saved
+            :message => "Die folgenden Felder sind fehlerhaft:"
+        %>
 
-		<table class="form">
-			<tr>
-				<th><%= f.label :username, "Benutzername:" %></th>
-				<td><%= f.text_field :username %></td>
-			</tr>
-			<tr>
-				<th><%= f.label :password, "Passwort:" %></th>
-				<td><%= f.password_field :password %></td>
-			</tr>
-			<tr>
-				<th><%= f.label :password_confirmation, "Passwort (Wiederholung):" %></th>
-				<td><%= f.password_field :password_confirmation %></td>
-			</tr>
-			<tr>
-				<th><%= f.label :club, "Verein:" %></th>
-				<td><%= f.text_field :club %></td>
-			</tr>
-			<tr>
-				<th><%= f.label :perm_club_admin, "Vereinsadministrator:" %></th>
-				<td><%= f.check_box :perm_club_admin %></td>
-			</tr>
-			<tr>
-				<th><%= f.label :perm_read_flight_db, "Flugdatenbank lesen:" %></th>
-				<td><%= f.check_box :perm_read_flight_db %></td>
-			</tr>
-		</table>
+        <table class="form">
+            <tr>
+                <th><%= f.label :username, "Benutzername:" %></th>
+                <td><%= f.text_field :username %></td>
+            </tr>
+            <tr>
+                <th><%= f.label :password, "Passwort:" %></th>
+                <td><%= f.password_field :password %></td>
+            </tr>
+            <tr>
+                <th><%= f.label :password_confirmation, "Passwort (Wiederholung):" %></th>
+                <td><%= f.password_field :password_confirmation %></td>
+            </tr>
+            <tr>
+                <th><%= f.label :club, "Verein:" %></th>
+                <td><%= f.text_field :club %></td>
+            </tr>
+            <tr>
+                <th><%= f.label :perm_club_admin, "Vereinsadministrator:" %></th>
+                <td><%= f.check_box :perm_club_admin %></td>
+            </tr>
+            <tr>
+                <th><%= f.label :perm_read_flight_db, "Flugdatenbank lesen:" %></th>
+                <td><%= f.check_box :perm_read_flight_db %></td>
+            </tr>
+        </table>
 
-		<p><%= f.submit 'Anlegen' %></p>
-	<% end %>
+        <p><%= f.submit 'Anlegen' %></p>
+    <% end %>
 
-	<p>
-	<%= link_to 'Benutzerliste', users_path %>
-	</p>
+    <p>
+    <%= link_to 'Benutzerliste', users_path %>
+    </p>
 
 <% end %>
 
