@@ -7,7 +7,7 @@
 	</style>
 <% end %>
 
-<% page_title "Environment dumper" do %>
+<%= page_title "Environment dumper" do %>
 	<% heading "Location" do %>
 		<p><%= h s.username||"?" %>@<%= h s.hostname||"?" %>:<%= h Dir.pwd %></p>
 	<% end %>
