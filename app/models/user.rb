@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 class User < ActiveRecord::Base
-	set_primary_key "username"
+	self.primary_key = "username"
 
 	# Associations
 	belongs_to :person
@@ -28,9 +28,9 @@ class User < ActiveRecord::Base
 	validates_confirmation_of :password,                                     :message => "stimmt nicht mit Bestätigung überein"
 
 	# Human names for attributes
-	attr_human_name :username         => 'Benutzername'
-	attr_human_name :current_password => 'Altes Passwort'
-	attr_human_name :password         => 'Passwort'
+	human_attribute_name :username         => 'Benutzername'
+	human_attribute_name :current_password => 'Altes Passwort'
+	human_attribute_name :password         => 'Passwort'
 
 	# Callbacks
 	# If a password confirmation is given, a password is also given and must be

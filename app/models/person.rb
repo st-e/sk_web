@@ -21,16 +21,16 @@ class Person < ActiveRecord::Base
 
     # Human names for attributes
     # .label of form_helper does not use this, but error_messages does
-    attr_human_name 'last_name'                  => 'Nachname'
-    attr_human_name :first_name                  => 'Vorname'
-    attr_human_name :club                        => 'Verein'
-    attr_human_name :medical_validity            => 'Medical gültig bis'
-    attr_human_name :medical_validity_text       => 'Medical gültig bis'
-    attr_human_name :check_medical_validity      => 'Medical prüfen'
-    attr_human_name :check_medical_validity_text => 'Medical prüfen'
-    attr_human_name :club_id                     => 'Vereins-ID'
-    attr_human_name :nickname                    => 'Verein'
-    attr_human_name 'comments'                   => 'Bemerkungen'
+    human_attribute_name 'last_name'                  => 'Nachname'
+    human_attribute_name :first_name                  => 'Vorname'
+    human_attribute_name :club                        => 'Verein'
+    human_attribute_name :medical_validity            => 'Medical gültig bis'
+    human_attribute_name :medical_validity_text       => 'Medical gültig bis'
+    human_attribute_name :check_medical_validity      => 'Medical prüfen'
+    human_attribute_name :check_medical_validity_text => 'Medical prüfen'
+    human_attribute_name :club_id                     => 'Vereins-ID'
+    human_attribute_name :nickname                    => 'Verein'
+    human_attribute_name 'comments'                   => 'Bemerkungen'
 
     # Callbacks
     # Prevent destruction of people that are in use.
